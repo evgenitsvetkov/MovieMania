@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MovieMania.Data;
+using MovieMania.Infrastructure.Data;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
