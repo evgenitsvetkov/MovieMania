@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MovieMania.Data;
-using System.Runtime.CompilerServices;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
