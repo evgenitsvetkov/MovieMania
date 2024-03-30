@@ -10,7 +10,7 @@ using MovieMania.Infrastructure.Data;
 
 namespace MovieMania.Infrastructure.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(MovieManiaDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -224,6 +224,183 @@ namespace MovieMania.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Actors.Actor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Actor's identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasComment("Actor's bio");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2")
+                        .HasComment("Actor's birthdate");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Actor's profile picture url");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Actor's name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actors");
+
+                    b.HasComment("Movie's actor");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Mappings.MovieActor", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int")
+                        .HasComment("Movie's identifier");
+
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int")
+                        .HasComment("Actor's identifier");
+
+                    b.HasKey("MovieId", "ActorId");
+
+                    b.HasIndex("ActorId");
+
+                    b.ToTable("MoviesActors");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Movies.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Genre's identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)")
+                        .HasComment("Genre's name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genres");
+
+                    b.HasComment("Movie's genre");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Movies.Movie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Movie's identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasComment("Movie's description");
+
+                    b.Property<string>("Director")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Movie's director");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int")
+                        .HasComment("Movie's genre identifier");
+
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Movie's image url");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)")
+                        .HasComment("Price for single movie");
+
+                    b.Property<int>("ProducerId")
+                        .HasColumnType("int")
+                        .HasComment("Producer's identifier");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float")
+                        .HasComment("Movie's rating");
+
+                    b.Property<int>("ReleaseDate")
+                        .HasMaxLength(4)
+                        .HasColumnType("int")
+                        .HasComment("Movie's release date");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Movie's title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GenreId");
+
+                    b.HasIndex("ProducerId");
+
+                    b.ToTable("Movies");
+
+                    b.HasComment("Movie to buy");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Producers.Producer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Producer's identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasComment("Producer's bio");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2")
+                        .HasComment("Producer's birthday");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Producer's profile picture url");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Producer's name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Producer");
+
+                    b.HasComment("Movie's producer");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -273,6 +450,64 @@ namespace MovieMania.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Mappings.MovieActor", b =>
+                {
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.Actors.Actor", "Actor")
+                        .WithMany("MoviesActors")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.Movies.Movie", "Movie")
+                        .WithMany("MoviesActors")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Movies.Movie", b =>
+                {
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.Movies.Genre", "Genre")
+                        .WithMany("Movies")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.Producers.Producer", "Producer")
+                        .WithMany("Movies")
+                        .HasForeignKey("ProducerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Genre");
+
+                    b.Navigation("Producer");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Actors.Actor", b =>
+                {
+                    b.Navigation("MoviesActors");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Movies.Genre", b =>
+                {
+                    b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Movies.Movie", b =>
+                {
+                    b.Navigation("MoviesActors");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Producers.Producer", b =>
+                {
+                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }

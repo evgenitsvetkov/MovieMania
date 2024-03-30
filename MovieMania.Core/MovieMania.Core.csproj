@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MovieMania.Infrastructure\MovieMania.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
