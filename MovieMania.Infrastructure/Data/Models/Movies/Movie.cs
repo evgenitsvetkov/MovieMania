@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Infrastructure.Data.Models.Mappings;
+using MovieMania.Infrastructure.Data.Models.Orders;
 using MovieMania.Infrastructure.Data.Models.Producers;
+using MovieMania.Infrastructure.Data.Models.ShoppingCarts;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static MovieMania.Infrastructure.Constants.DataConstants;
@@ -64,5 +66,7 @@ namespace MovieMania.Infrastructure.Data.Models.Movies
         public string ImageURL { get; set; } = string.Empty;
 
         public IEnumerable<MovieActor> MoviesActors { get; set; } = new List<MovieActor>();
+        public IEnumerable<Cart> Carts { get; set; } = new List<Cart>();
+        public IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

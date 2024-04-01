@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieMania.Infrastructure.Data.Models.Mappings
 {
+    [Comment("Movie and actor mapping")]
     public class MovieActor
     {
         [Comment("Movie's identifier")]

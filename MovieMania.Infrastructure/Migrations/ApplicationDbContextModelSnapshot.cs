@@ -256,7 +256,7 @@ namespace MovieMania.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actors");
+                    b.ToTable("Actors", (string)null);
 
                     b.HasComment("Movie's actor");
                 });
@@ -275,7 +275,7 @@ namespace MovieMania.Infrastructure.Migrations
 
                     b.HasIndex("ActorId");
 
-                    b.ToTable("MoviesActors");
+                    b.ToTable("MoviesActors", (string)null);
                 });
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Movies.Genre", b =>
@@ -295,7 +295,7 @@ namespace MovieMania.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
 
                     b.HasComment("Movie's genre");
                 });
@@ -359,7 +359,7 @@ namespace MovieMania.Infrastructure.Migrations
 
                     b.HasIndex("ProducerId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
 
                     b.HasComment("Movie to buy");
                 });
@@ -396,7 +396,7 @@ namespace MovieMania.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Producer");
+                    b.ToTable("Producer", (string)null);
 
                     b.HasComment("Movie's producer");
                 });
