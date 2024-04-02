@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieMania.Infrastructure.Data.Models.Actors;
+using MovieMania.Infrastructure.Data.Models.Carts;
 using MovieMania.Infrastructure.Data.Models.Mappings;
 using MovieMania.Infrastructure.Data.Models.Movies;
 using MovieMania.Infrastructure.Data.Models.Orders;
 using MovieMania.Infrastructure.Data.Models.Producers;
-using MovieMania.Infrastructure.Data.Models.ShoppingCarts;
 
 namespace MovieMania.Infrastructure.Data
 {
@@ -33,7 +33,7 @@ namespace MovieMania.Infrastructure.Data
 
             builder.Entity<MovieActor>()
                 .HasKey(ma => new { ma.MovieId, ma.ActorId });
-
+                       
             base.OnModelCreating(builder);
         }
 
@@ -49,9 +49,12 @@ namespace MovieMania.Infrastructure.Data
 
         public DbSet<Cart> Carts { get; set; }
 
+        public DbSet<CartDetail> CartDetails { get; set; }
+
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderDetail> OrderDetails { get; set; }
 
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
     }
 }

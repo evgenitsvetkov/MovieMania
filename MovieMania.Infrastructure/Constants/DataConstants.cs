@@ -28,25 +28,10 @@
 
         public const int OrderStatusNameMaxLength = 20;
 
-        public const int UsernameMaxLength = 50;
-
         public const int FirstNameMaxLength = 50;
 
         public const int LastNameMaxLength = 50;
 
-        public const int AddressMaxLength = 200;
-
-        public const int CityMaxLength = 150;
-
-        public const int PostalCodeMaxLength = 10;
-        public const int PostalCodeMinLength = 4;
-
-        public const int CountryMaxLength = 150;
-
-        public const int PhoneMaxLength = 15;
-        public const int PhoneMinLength = 10;
-
-        public const int EmailMaxLength = 100;  
 
     }
 }

@@ -9,7 +9,15 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
     public class OrderDetail
     {
         [Key]
+        [Comment("Order detail identifier")]
         public int Id { get; set; }
+
+        [Required]
+        [Comment("Order's identifier")]
+        public int OrderId { get; set; }
+
+        [ForeignKey(nameof(OrderId))]
+        public Order Order { get; set; } = null!;
 
         [Required]
         [Comment("Quantity of ordered movies")]
@@ -19,14 +27,7 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
         [Comment("Price for single movie")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal UnitPrice { get; set; }
-
-        [Required]
-        [Comment("Order's identifier")]
-        public int OrderId { get; set; }
-
-        [ForeignKey(nameof(OrderId))]
-        public Order Order { get; set; } = null!;
-
+                
         [Required]
         [Comment("Movie's identifier")]
         public int MovieId { get; set; }
