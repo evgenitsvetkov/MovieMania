@@ -40,11 +40,6 @@ namespace MovieMania.Infrastructure.Data.Models.Movies
         public decimal Price { get; set; }
 
         [Required]
-        [MaxLength(NameMaxLength)]
-        [Comment("Movie's director")]
-        public string Director { get; set; } = string.Empty;
-
-        [Required]
         [MaxLength(MovieDescriptionMaxLength)]
         [Comment("Movie's description")]
         public string Description { get; set; } = string.Empty;
