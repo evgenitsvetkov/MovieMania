@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Infrastructure.Data.Models.Carts;
+using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Mappings;
 using MovieMania.Infrastructure.Data.Models.Orders;
-using MovieMania.Infrastructure.Data.Models.Producers;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static MovieMania.Infrastructure.Constants.DataConstants;
@@ -49,12 +49,12 @@ namespace MovieMania.Infrastructure.Data.Models.Movies
         public double Rating { get; set; }
 
         [Required]
-        [Comment("Producer's identifier")]
-        public int ProducerId { get; set; }
+        [Comment("Director's identifier")]
+        public int DirectorId { get; set; }
 
-        [ForeignKey(nameof(ProducerId))]
-        [Comment("Movie's producer")]
-        public Producer Producer { get; set; } = null!;
+        [ForeignKey(nameof(DirectorId))]
+        [Comment("Movie's Director")]
+        public Director Director { get; set; } = null!;
 
         [Required]
         [Comment("Movie's image url")]

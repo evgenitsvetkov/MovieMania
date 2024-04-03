@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using MovieMania.Infrastructure.Data.Models.Actors;
 using MovieMania.Infrastructure.Data.Models.Carts;
+using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Mappings;
 using MovieMania.Infrastructure.Data.Models.Movies;
 using MovieMania.Infrastructure.Data.Models.Orders;
-using MovieMania.Infrastructure.Data.Models.Producers;
 
 namespace MovieMania.Infrastructure.Data
 {
@@ -26,9 +26,9 @@ namespace MovieMania.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Movie>()
-                .HasOne(m => m.Producer)
+                .HasOne(m => m.Director)
                 .WithMany(m => m.Movies)
-                .HasForeignKey(m => m.ProducerId)
+                .HasForeignKey(m => m.DirectorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<MovieActor>()
@@ -41,7 +41,7 @@ namespace MovieMania.Infrastructure.Data
 
         public DbSet<Actor> Actors { get; set; }
 
-        public DbSet<Producer> Producer { get; set; }
+        public DbSet<Director> Director { get; set; }
 
         public DbSet<MovieActor> MoviesActors { get; set; }
 
