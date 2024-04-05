@@ -6,6 +6,7 @@ using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Mappings;
 using MovieMania.Infrastructure.Data.Models.Movies;
 using MovieMania.Infrastructure.Data.Models.Orders;
+using MovieMania.Infrastructure.Data.SeedDb.Configurations;
 
 namespace MovieMania.Infrastructure.Data
 {
@@ -18,43 +19,37 @@ namespace MovieMania.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
-            builder.Entity<Movie>()
-                .HasOne(m => m.Genre)
-                .WithMany(m => m.Movies)
-                .HasForeignKey(m => m.GenreId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Movie>()
-                .HasOne(m => m.Director)
-                .WithMany(m => m.Movies)
-                .HasForeignKey(m => m.DirectorId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.Entity<MovieActor>()
                 .HasKey(ma => new { ma.MovieId, ma.ActorId });
-                       
+
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new ActorConfiguration());
+            builder.ApplyConfiguration(new DirectorConfiguration());
+            builder.ApplyConfiguration(new GenreConfiguration());
+            builder.ApplyConfiguration(new MovieConfiguration());
+            builder.ApplyConfiguration(new MovieActorConfiguration());
+
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Movie> Movies { get; set; } = null!;
 
-        public DbSet<Actor> Actors { get; set; }
+        public DbSet<Actor> Actors { get; set; } = null!;
 
-        public DbSet<Director> Director { get; set; }
+        public DbSet<Director> Director { get; set; } = null!;
 
-        public DbSet<MovieActor> MoviesActors { get; set; }
+        public DbSet<MovieActor> MoviesActors { get; set; } = null!;
 
-        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Genre> Genres { get; set; } = null!;
 
-        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Cart> Carts { get; set; } = null!;
 
-        public DbSet<CartDetail> CartDetails { get; set; }
+        public DbSet<CartDetail> CartDetails { get; set; } = null!;
 
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<Order> Orders { get; set; } = null!;
 
-        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
-        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
     }
 }
