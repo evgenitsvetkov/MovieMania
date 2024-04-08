@@ -1,4 +1,4 @@
-﻿namespace MovieMania.Core.Models.House
+﻿namespace MovieMania.Core.Models.Movie
 {
     public class MovieFormModel
     {
