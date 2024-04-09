@@ -1,10 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Actor;
 
 namespace MovieMania.Controllers
 {
     public class ActorController : Controller
     {
+        private readonly IActorService actorService;
+
+        public ActorController(IActorService _actorService)
+        {
+            actorService = _actorService;            
+        }
+
         [HttpGet]
         public async Task<IActionResult> All()
         {
