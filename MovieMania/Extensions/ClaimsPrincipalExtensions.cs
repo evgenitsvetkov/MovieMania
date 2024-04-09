@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace MovieMania.Extensions
+﻿namespace System.Security.Claims
 {
     public static class ClaimsPrincipalExtensions
     {
