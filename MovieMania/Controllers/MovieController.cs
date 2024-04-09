@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieMania.Core.Models.House;
+using MovieMania.Core.Models.Movie;
 
 namespace MovieMania.Controllers
 {
