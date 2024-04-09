@@ -23,7 +23,7 @@ namespace MovieMania.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var model = await movieService.LastFiveMovies(); 
+            var model = await movieService.LastFiveMoviesAsync(); 
 
             return View(model);
         }

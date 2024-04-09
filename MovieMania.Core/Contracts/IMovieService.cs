@@ -4,6 +4,6 @@ namespace MovieMania.Core.Contracts
 {
     public interface IMovieService
     {
-        Task<IEnumerable<MovieIndexServiceModel>> LastFiveMovies();
+        Task<IEnumerable<MovieIndexServiceModel>> LastFiveMoviesAsync();
     }
 }

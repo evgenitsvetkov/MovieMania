@@ -15,7 +15,7 @@ namespace MovieMania.Core.Services
             unitOfWork = _unitOfWork;
         }
 
-        public async Task<IEnumerable<MovieIndexServiceModel>> LastFiveMovies()
+        public async Task<IEnumerable<MovieIndexServiceModel>> LastFiveMoviesAsync()
         {
             return await unitOfWork.AllReadOnly<Movie>()
                 .OrderByDescending(m => m.Id)
