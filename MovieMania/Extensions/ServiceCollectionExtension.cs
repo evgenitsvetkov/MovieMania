@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MovieMania.Core.Contracts.Movie;
+using MovieMania.Core.Services.Movie;
 using MovieMania.Infrastructure.Data;
+using MovieMania.Infrastructure.Data.Common;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -8,6 +11,8 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IMovieService, MovieService>();
+
             return services;
         }
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
@@ -15,6 +20,8 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionString = config.GetConnectionString("DefaultConnection");
                 services.AddDbContext<MovieManiaDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
