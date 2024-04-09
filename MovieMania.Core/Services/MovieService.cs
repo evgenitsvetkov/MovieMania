@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MovieMania.Core.Contracts.Movie;
+using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Home;
 using MovieMania.Infrastructure.Data.Common;
+using MovieMania.Infrastructure.Data.Models.Movies;
 
-namespace MovieMania.Core.Services.Movie
+namespace MovieMania.Core.Services
 {
     public class MovieService : IMovieService
     {
@@ -16,7 +17,7 @@ namespace MovieMania.Core.Services.Movie
 
         public async Task<IEnumerable<MovieIndexServiceModel>> LastFiveMovies()
         {
-            return await unitOfWork.AllReadOnly<Infrastructure.Data.Models.Movies.Movie>()
+            return await unitOfWork.AllReadOnly<Movie>()
                 .OrderByDescending(m => m.Id)
                 .Take(5)
                 .Select(m => new MovieIndexServiceModel()
@@ -25,6 +26,6 @@ namespace MovieMania.Core.Services.Movie
                     ImageURL = m.ImageURL
                 })
                 .ToListAsync();
-        }   
+        }
     }
 }

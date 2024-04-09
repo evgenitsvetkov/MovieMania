@@ -1,6 +1,6 @@
 ﻿using MovieMania.Core.Models.Home;
 
-namespace MovieMania.Core.Contracts.Movie
+namespace MovieMania.Core.Contracts
 {
     public interface IMovieService
     {

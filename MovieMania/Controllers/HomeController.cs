@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieMania.Core.Contracts.Movie;
+using MovieMania.Core.Contracts;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Models;
 using System.Diagnostics;

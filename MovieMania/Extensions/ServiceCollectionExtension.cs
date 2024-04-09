@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MovieMania.Core.Contracts.Movie;
-using MovieMania.Core.Services.Movie;
+using MovieMania.Core.Contracts;
+using MovieMania.Core.Services;
 using MovieMania.Infrastructure.Data;
 using MovieMania.Infrastructure.Data.Common;
 
