@@ -8,14 +8,14 @@
         public const int MovieReleaseDateMaxLength = 4;
         public const int MovieReleaseDateMinLength = 4;
 
-        public const string MoviePriceMaxLength = "1000";
-        public const string MoviePriceMinLength = "0";
+        public const string MoviePriceMaxLength = "1000.00";
+        public const string MoviePriceMinLength = "0.00";
 
         public const int MovieDescriptionMaxLength = 300;
         public const int MovieDescriptionMinLength = 20;
 
-        public const string MovieRatingMaxLength = "10";
-        public const string MovieRatingMinLength = "0";
+        public const string MovieRatingMaxLength = "10.00";
+        public const string MovieRatingMinLength = "0.00";
 
         public const int BioMaxLength = 400;
         public const int BioMinLength = 10;
