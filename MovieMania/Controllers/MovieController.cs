@@ -1,10 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Movie;
 
 namespace MovieMania.Controllers
 {
-    public class MovieController : Controller
+    public class MovieController : BaseController
     {
+        private readonly IMovieService movieService;
+
+        public MovieController(IMovieService _movieService)
+        {
+            movieService = _movieService;
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> All()
         {
@@ -13,6 +23,7 @@ namespace MovieMania.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -22,15 +33,42 @@ namespace MovieMania.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            return View();
+            var model = new MovieFormModel()
+            {
+                Genres = await movieService.AllGenresAsync(),
+                Directors = await movieService.AllDirectorsAsync()
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(MovieFormModel model)
         {
-            return RedirectToAction(nameof(Details), new { id = 1});
+            if (await movieService.GenreExistsAsync(model.GenreId) == false)
+            {
+                ModelState.AddModelError(nameof(model.GenreId), "The genre does not exist!");
+            }
+
+            if (await movieService.DirectorExistsAsync(model.DirectorId) == false)
+            {
+                ModelState.AddModelError(nameof(model.DirectorId), "The director does not exist!");
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                model.Genres = await movieService.AllGenresAsync();
+                model.Directors = await movieService.AllDirectorsAsync();
+
+                return View(model);
+            }
+
+            int newMovieId = await movieService.CreateAsync(model);
+
+
+            return RedirectToAction(nameof(Details), new { id = newMovieId});
         }
 
         [HttpGet]
@@ -54,7 +92,7 @@ namespace MovieMania.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(MovieDetailsViewModel model)
+        public async Task<IActionResult> DeleteConfirm(MovieDetailsViewModel model)
         {
 
             return RedirectToAction(nameof(All));

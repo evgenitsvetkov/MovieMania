@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
-using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Models;
 using System.Diagnostics;
 
 namespace MovieMania.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMovieService movieService;

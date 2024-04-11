@@ -351,7 +351,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2011,
                 Price = 29.99M,
                 Description = "On a weekend trip to Hawaii, a plastic surgeon convinces his loyal assistant to pose as his soon-to-be-divorced wife in order to cover up a careless lie he told to his much-younger girlfriend.",
-                Rating = 6.4d,
                 DirectorId = 7,
                 ImageURL = "https://upload.wikimedia.org/wikipedia/en/b/b8/Just_Go_with_It_Poster.jpg"
             };
@@ -364,7 +363,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2013,
                 Price = 35.99M,
                 Description = "Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.",
-                Rating = 8.2d,
                 DirectorId = 4,
                 ImageURL = "https://moviesfilmsandflix.files.wordpress.com/2013/12/wolf-of-wall-street.jpg"
             };
@@ -377,7 +375,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2023,
                 Price = 59.99M,
                 Description = "Full-time detectives Nick and Audrey are struggling to get their private eye agency off the ground. They find themselves at the center of international abduction when their friend Maharaja is kidnapped at his own lavish wedding.",
-                Rating = 5.7d,
                 DirectorId = 3,
                 ImageURL = "https://upload.wikimedia.org/wikipedia/en/7/71/Murder_Mystery_2_poster.png"
             };
@@ -390,7 +387,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2010,
                 Price = 25.99M,
                 Description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.",
-                Rating = 8.8d,
                 DirectorId = 5,
                 ImageURL = "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_%282010%29_theatrical_poster.jpg"
             };
@@ -403,7 +399,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2009,
                 Price = 19.99M,
                 Description = "When seasoned comedian George Simmons learns of his terminal, inoperable health condition, his desire to form a genuine friendship causes him to take a relatively green performer under his wing as his opening act.",
-                Rating = 6.3d,
                 DirectorId = 2,
                 ImageURL = "https://upload.wikimedia.org/wikipedia/en/2/26/PosterFunnyPeople.jpg"
             };
@@ -416,7 +411,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2019,
                 Price = 49.99M,
                 Description = "Carol Danvers becomes one of the universe's most powerful heroes when Earth is caught in the middle of a galactic war between two alien races.",
-                Rating = 6.8d,
                 DirectorId = 1,
                 ImageURL = "https://upload.wikimedia.org/wikipedia/en/4/4e/Captain_Marvel_%28film%29_poster.jpg"
             };
@@ -429,7 +423,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2023,
                 Price = 69.99M,
                 Description = "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
-                Rating = 8.3d,
                 DirectorId = 5,
                 ImageURL = "https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg"
             };
@@ -442,7 +435,6 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 ReleaseDate = 2019,
                 Price = 65.99M,
                 Description = "After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
-                Rating = 8.4d,
                 DirectorId = 6,
                 ImageURL = "https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg"
             };

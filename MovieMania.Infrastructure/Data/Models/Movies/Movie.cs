@@ -45,10 +45,6 @@ namespace MovieMania.Infrastructure.Data.Models.Movies
         public string Description { get; set; } = string.Empty;
 
         [Required]
-        [Comment("Movie's rating")]
-        public double Rating { get; set; }
-
-        [Required]
         [Comment("Director's identifier")]
         public int DirectorId { get; set; }
 

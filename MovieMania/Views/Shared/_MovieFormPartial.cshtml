@@ -1,0 +1,56 @@
+﻿@model MovieFormModel 
+<div class="row"> 
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6"> 
+        <form method="post"> 
+            <div class="form-group"> 
+                <label asp-for="Title"></label> 
+                <input asp-for="Title" class="form-control" placeholder="Title..."> 
+                <span asp-validation-for="Title" class="small text-danger"></span> 
+            </div>
+            <div class="form-group">
+                <label asp-for="GenreId"></label>
+                <select asp-for="GenreId" class="form-control">
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <option value="@genre.Id">@genre.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="GenreId" class="small text-danger"></span>
+            </div>
+            <div class="form-group"> 
+                <label asp-for="ReleaseDate"></label> 
+                <input asp-for="ReleaseDate" class="form-control" placeholder="Address..."> 
+                <span asp-validation-for="ReleaseDate" class="small text-danger"></span> 
+            </div> 
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" placeholder="Price...">
+                <span asp-validation-for="Price" class="small text-danger"></span>
+            </div>
+            <div class="form-group"> 
+                <label asp-for="Description"></label> 
+                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Description..."></textarea> 
+                <span asp-validation-for="Description" class="small text-danger"></span> 
+            </div> 
+            <div class="form-group">
+                <label asp-for="DirectorId"></label>
+                <select asp-for="DirectorId" class="form-control">
+                    @foreach (var director in Model.Directors)
+                    {
+                        <option value="@director.Id">@director.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="DirectorId" class="small text-danger"></span>
+            </div>
+            <div class="form-group"> 
+                <label asp-for="ImageUrl"></label> 
+                <input asp-for="ImageUrl" class="form-control" placeholder="Image URL...">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span> 
+            </div>  
+            
+            <div class="text-center"> 
+                <input class="btn btn-primary mt-3" type="submit" value="Save" /> 
+            </div> 
+        </form> 
+    </div> 
+</div>
