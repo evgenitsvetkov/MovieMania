@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
+using MovieMania.Core.Enumerations;
 using MovieMania.Core.Models.Home;
 using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
@@ -15,6 +16,60 @@ namespace MovieMania.Core.Services
         public MovieService(IUnitOfWork _unitOfWork)
         {
             unitOfWork = _unitOfWork;
+        }
+
+        public async Task<MovieQueryServiceModel> AllAsync(
+            string? genre = null, 
+            string? searchTerm = null, 
+            MovieSorting sorting = MovieSorting.Newest,
+            int currentPage = 1, 
+            int moviesPerPage = 1)
+        {
+            var moviesToShow = unitOfWork.AllReadOnly<Movie>();
+
+            if (genre != null)
+            {
+                moviesToShow = moviesToShow
+                    .Where(m => m.Genre.Name == genre);
+            }
+
+            if (searchTerm != null)
+            {
+                string normalizedSearchTerm = searchTerm.ToLower();
+                moviesToShow = moviesToShow
+                    .Where(m => (m.Title.ToLower().Contains(normalizedSearchTerm) ||
+                                m.Description.ToLower().Contains(normalizedSearchTerm)));
+            }
+
+            moviesToShow = sorting switch
+            { 
+                MovieSorting.Price => moviesToShow.OrderBy(m => m.Price),
+                _ => moviesToShow.OrderByDescending(m => m.Id),
+            };
+
+            var movies = await moviesToShow
+                .Skip((currentPage - 1) * moviesPerPage)
+                .Take(moviesPerPage)
+                .Select(m => new MovieServiceModel()
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    Genre = m.Genre.Name,
+                    ReleaseDate = m.ReleaseDate,
+                    ImageUrl = m.ImageURL,
+                    Price = m.Price,
+                    
+                })
+                .ToListAsync();
+
+            int totalMovies = await moviesToShow.CountAsync();
+
+            return new MovieQueryServiceModel()
+            { 
+                Movies = movies,
+                TotalMoviesCount = totalMovies,
+            };
+
         }
 
         public async Task<IEnumerable<MovieDirectorServiceModel>> AllDirectorsAsync()
@@ -36,6 +91,14 @@ namespace MovieMania.Core.Services
                     Id = g.Id,
                     Name = g.Name
                 })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> AllGenresNamesAsync()
+        {
+            return await unitOfWork.AllReadOnly<Genre>()
+                .Select(g => g.Name)
+                .Distinct()
                 .ToListAsync();
         }
 

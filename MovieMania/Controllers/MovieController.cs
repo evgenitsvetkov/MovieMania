@@ -16,11 +16,20 @@ namespace MovieMania.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery]AllMoviesQueryModel query)
         {
-            var model = new AllMoviesQueryModel();
+            var model = await movieService.AllAsync(
+                query.Genre,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                query.MoviesPerPage);
 
-            return View(model);
+            query.TotalMoviesCount = model.TotalMoviesCount;
+            query.Movies = model.Movies;
+            query.Genres = await movieService.AllGenresNamesAsync();
+
+            return View(query);
         }
 
         [AllowAnonymous]

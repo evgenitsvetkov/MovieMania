@@ -1,4 +1,5 @@
-﻿using MovieMania.Core.Models.Home;
+﻿using MovieMania.Core.Enumerations;
+using MovieMania.Core.Models.Home;
 using MovieMania.Core.Models.Movie;
 
 namespace MovieMania.Core.Contracts
@@ -16,5 +17,14 @@ namespace MovieMania.Core.Contracts
         Task<bool> DirectorExistsAsync(int directorId);
 
         Task<int> CreateAsync(MovieFormModel model);
+
+        Task<MovieQueryServiceModel> AllAsync(
+            string? genre = null,
+            string searchTerm = null,
+            MovieSorting sorting = MovieSorting.Newest,
+            int currentPage = 1,
+            int moviesPerPage = 1);
+
+        Task<IEnumerable<string>> AllGenresNamesAsync();
     }
 }
