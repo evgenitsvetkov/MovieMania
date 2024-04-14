@@ -50,16 +50,7 @@ namespace MovieMania.Core.Services
             var movies = await moviesToShow
                 .Skip((currentPage - 1) * moviesPerPage)
                 .Take(moviesPerPage)
-                .Select(m => new MovieServiceModel()
-                {
-                    Id = m.Id,
-                    Title = m.Title,
-                    Genre = m.Genre.Name,
-                    ReleaseDate = m.ReleaseDate,
-                    ImageUrl = m.ImageURL,
-                    Price = m.Price,
-                    
-                })
+                .ProjectToMovieServiceModel()
                 .ToListAsync();
 
             int totalMovies = await moviesToShow.CountAsync();
@@ -127,6 +118,12 @@ namespace MovieMania.Core.Services
                 .AnyAsync(d => d.Id == directorId);
         }
 
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await unitOfWork.AllReadOnly<Movie>()
+                .AnyAsync(m => m.Id == id);
+        }
+
         public async Task<bool> GenreExistsAsync(int genreId)
         {
             return await unitOfWork.AllReadOnly<Genre>()
@@ -144,6 +141,24 @@ namespace MovieMania.Core.Services
                     ImageURL = m.ImageURL
                 })
                 .ToListAsync();
+        }
+
+        public async Task<MovieDetailsServiceModel> MoviesDetailsByIdAsync(int id)
+        {
+            return await unitOfWork.AllReadOnly<Movie>()
+                .Where(m => m.Id == id)
+                .Select(m => new MovieDetailsServiceModel()
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    Genre = m.Genre.Name,
+                    ReleaseDate = m.ReleaseDate,
+                    ImageUrl = m.ImageURL,
+                    Price = m.Price,
+                    Description = m.Description,
+                    Director = m.Director.Name
+                })
+                .FirstAsync();
         }
     }
 }

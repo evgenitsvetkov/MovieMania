@@ -1,7 +1,35 @@
-﻿@model MovieDetailsViewModel
-@{
-    ViewData["Title"] = "Movie Details";
+﻿@model MovieDetailsServiceModel 
+
+@{ 
+    ViewBag.Title = "Movie Details"; 
 }
 
-<h2 class="text-center">@ViewData["Title"]</h2>
-<hr />
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr /> 
+
+<div class="container" style="display:inline">
+    <div class="row"> 
+        <div class="col-4"> 
+            <img class="card-img-top" style="width: 20rem;" src="@Model.ImageUrl" alt="Movie Image">
+        </div> 
+        <div class="card col-8 border-0"> 
+            <p style="font-size:25px;"><u>@Model.Title</u></p> 
+            <p>Genre: <b>@Model.Genre</b></p>
+            <p>Release date: <b>@Model.ReleaseDate</b></p>
+            <p>
+                Price:
+                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
+            </p>
+            <p>@Model.Description</p>
+            <p>Director: <b>@Model.Director</b></p>
+            <div class="form-inline"> 
+                @if (this.User.Identity.IsAuthenticated) 
+                { 
+                    <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
+                    <a class="ml-2 btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a> 
+                } 
+            </div> 
+            <p></p>
+        </div> 
+    </div>
+</div>

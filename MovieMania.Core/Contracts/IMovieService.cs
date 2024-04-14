@@ -20,11 +20,15 @@ namespace MovieMania.Core.Contracts
 
         Task<MovieQueryServiceModel> AllAsync(
             string? genre = null,
-            string searchTerm = null,
+            string? searchTerm = null,
             MovieSorting sorting = MovieSorting.Newest,
             int currentPage = 1,
             int moviesPerPage = 1);
 
         Task<IEnumerable<string>> AllGenresNamesAsync();
+
+        Task<bool> ExistsAsync(int id);
+
+        Task<MovieDetailsServiceModel> MoviesDetailsByIdAsync(int id);
     }
 }

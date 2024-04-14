@@ -12,11 +12,11 @@
                 <b>@String.Format("{0:f2}", Model.Price) BGN</b> 
             </h6>
             <br /> 
-            <a asp-controller="House" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a> 
+            <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a> 
             @if (this.User.Identity.IsAuthenticated) 
             { 
-                <a asp-controller="House" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                <a asp-controller="House" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
                 <p></p> 
             } 
         </div> 

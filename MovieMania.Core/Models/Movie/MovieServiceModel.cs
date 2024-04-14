@@ -1,7 +1,6 @@
-﻿using MovieMania.Infrastructure.Data.Models.Movies;
-using System.ComponentModel.DataAnnotations;
-using static MovieMania.Infrastructure.Constants.DataConstants;
+﻿using System.ComponentModel.DataAnnotations;
 using static MovieMania.Core.Constants.MessageConstants;
+using static MovieMania.Infrastructure.Constants.DataConstants;
 
 namespace MovieMania.Core.Models.Movie
 {

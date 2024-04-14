@@ -36,7 +36,12 @@ namespace MovieMania.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = new MovieDetailsViewModel();
+            if (await movieService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            var model = await movieService.MoviesDetailsByIdAsync(id);
 
             return View(model);
         }
