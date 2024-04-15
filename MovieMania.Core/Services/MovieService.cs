@@ -112,6 +112,13 @@ namespace MovieMania.Core.Services
             return movie.Id;
         }
 
+        public async Task DeleteAsync(int movieId)
+        {
+            await unitOfWork.DeleteAsync<Movie>(movieId);
+            await unitOfWork.SaveChangesAsync();
+
+        }
+
         public async Task<bool> DirectorExistsAsync(int directorId)
         {
             return await unitOfWork.AllReadOnly<Director>()

@@ -34,5 +34,7 @@ namespace MovieMania.Core.Contracts
         Task EditAsync(int movieId, MovieFormModel model);
 
         Task<MovieFormModel?> GetMovieFormModelByIdAsync(int id);
+
+        Task DeleteAsync(int movieId);
     }
 }
