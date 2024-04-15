@@ -63,12 +63,12 @@ namespace MovieMania.Controllers
         {
             if (await movieService.GenreExistsAsync(model.GenreId) == false)
             {
-                ModelState.AddModelError(nameof(model.GenreId), "The genre does not exist!");
+                ModelState.AddModelError(nameof(model.GenreId), "Genre does not exist!");
             }
 
             if (await movieService.DirectorExistsAsync(model.DirectorId) == false)
             {
-                ModelState.AddModelError(nameof(model.DirectorId), "The director does not exist!");
+                ModelState.AddModelError(nameof(model.DirectorId), "Director does not exist!");
             }
 
             if (ModelState.IsValid == false)
@@ -81,14 +81,18 @@ namespace MovieMania.Controllers
 
             int newMovieId = await movieService.CreateAsync(model);
 
-
             return RedirectToAction(nameof(Details), new { id = newMovieId});
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = new MovieFormModel();
+            if (await movieService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            var model = await movieService.GetMovieFormModelByIdAsync(id);
 
             return View(model);
         }
@@ -96,7 +100,32 @@ namespace MovieMania.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, MovieFormModel model)
         {
-            return RedirectToAction(nameof(Details), new { id = 1 });
+            if (await movieService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await movieService.GenreExistsAsync(model.GenreId) == false)
+            {
+                ModelState.AddModelError(nameof(model.GenreId), "Genre does not exist!");
+            }
+
+            if (await movieService.DirectorExistsAsync(model.DirectorId) == false)
+            {
+                ModelState.AddModelError(nameof(model.DirectorId), "Director does not exist!");
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                model.Genres = await movieService.AllGenresAsync();
+                model.Directors = await movieService.AllDirectorsAsync();
+                
+                return View(model);
+            }
+
+            await movieService.EditAsync(id, model);
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpGet]

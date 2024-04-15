@@ -30,5 +30,9 @@ namespace MovieMania.Core.Contracts
         Task<bool> ExistsAsync(int id);
 
         Task<MovieDetailsServiceModel> MoviesDetailsByIdAsync(int id);
+
+        Task EditAsync(int movieId, MovieFormModel model);
+
+        Task<MovieFormModel?> GetMovieFormModelByIdAsync(int id);
     }
 }

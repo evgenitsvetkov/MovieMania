@@ -118,6 +118,24 @@ namespace MovieMania.Core.Services
                 .AnyAsync(d => d.Id == directorId);
         }
 
+        public async Task EditAsync(int movieId, MovieFormModel model)
+        {
+            var movie = await unitOfWork.GetByIdAsync<Movie>(movieId);
+
+            if (movie != null)
+            {
+                movie.Title = model.Title;
+                movie.GenreId = model.GenreId;
+                movie.ReleaseDate = model.ReleaseDate;
+                movie.Price = model.Price;
+                movie.Description = model.Description;
+                movie.DirectorId = model.DirectorId;
+                movie.ImageURL = model.ImageUrl;
+
+                await unitOfWork.SaveChangesAsync();
+            }         
+        }
+
         public async Task<bool> ExistsAsync(int id)
         {
             return await unitOfWork.AllReadOnly<Movie>()
@@ -128,6 +146,31 @@ namespace MovieMania.Core.Services
         {
             return await unitOfWork.AllReadOnly<Genre>()
                 .AnyAsync(g => g.Id == genreId);
+        }
+
+        public async Task<MovieFormModel?> GetMovieFormModelByIdAsync(int id)
+        {
+            var movie = await unitOfWork.AllReadOnly<Movie>()
+                .Where(m => m.Id == id)
+                .Select(m => new MovieFormModel()
+                {
+                    Title = m.Title,
+                    GenreId = m.GenreId,
+                    ReleaseDate = m.ReleaseDate,
+                    Price = m.Price,
+                    Description = m.Description,
+                    DirectorId = m.DirectorId,
+                    ImageUrl = m.ImageURL
+                })
+                .FirstOrDefaultAsync();
+
+            if (movie != null)
+            {
+                movie.Genres = await AllGenresAsync();
+                movie.Directors = await AllDirectorsAsync();
+            }
+
+            return movie;
         }
 
         public async Task<IEnumerable<MovieIndexServiceModel>> LastFiveMoviesAsync()
