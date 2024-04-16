@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MovieMania.Infrastructure.Data.Models.Actors;
+using MovieMania.Infrastructure.Data.Models.CustomUser;
 using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Mappings;
 using MovieMania.Infrastructure.Data.Models.Movies;
@@ -10,9 +11,9 @@ namespace MovieMania.Infrastructure.Data.SeedDb
 {
     internal class SeedData
     {
-        public IdentityUser AdminUser { get; set; }
+        public ApplicationUser AdminUser { get; set; }
 
-        public IdentityUser GuestUser { get; set; }
+        public ApplicationUser GuestUser { get; set; }
 
         public Actor FirstActor { get; set; }
 
@@ -124,7 +125,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
         {
             var hasher = new PasswordHasher<IdentityUser>();
 
-            AdminUser = new IdentityUser()
+            AdminUser = new ApplicationUser()
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
                 UserName = "admin@mail.com",
@@ -136,7 +137,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
             AdminUser.PasswordHash =
                 hasher.HashPassword(AdminUser, "admin1233");
 
-            GuestUser = new IdentityUser()
+            GuestUser = new ApplicationUser()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 UserName = "guest@mail.com",

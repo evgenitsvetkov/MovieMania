@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieMania.Infrastructure.Data.Models.Actors;
 using MovieMania.Infrastructure.Data.Models.Carts;
+using MovieMania.Infrastructure.Data.Models.CustomUser;
 using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Mappings;
 using MovieMania.Infrastructure.Data.Models.Movies;
@@ -10,7 +11,7 @@ using MovieMania.Infrastructure.Data.SeedDb.Configurations;
 
 namespace MovieMania.Infrastructure.Data
 {
-    public class MovieManiaDbContext : IdentityDbContext
+    public class MovieManiaDbContext : IdentityDbContext<ApplicationUser>
     {
         public MovieManiaDbContext(DbContextOptions<MovieManiaDbContext> options)
             : base(options)

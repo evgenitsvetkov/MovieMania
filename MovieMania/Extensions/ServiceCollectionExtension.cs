@@ -4,6 +4,7 @@ using MovieMania.Core.Contracts;
 using MovieMania.Core.Services;
 using MovieMania.Infrastructure.Data;
 using MovieMania.Infrastructure.Data.Common;
+using MovieMania.Infrastructure.Data.Models.CustomUser;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -29,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireNonAlphanumeric = false;

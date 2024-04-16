@@ -33,5 +33,11 @@
         public const int LastNameMaxLength = 50;
 
         public const string DateTimeAuthorBirthday = "dd/MM/yyyy";
+
+        public const int UserFirstNameMaxLength = 50;
+        public const int UserFirstNameMinLength = 1;
+
+        public const int UserLastNameMaxLength = 50;
+        public const int UserLastNameMinLength = 1;
     }
 }
