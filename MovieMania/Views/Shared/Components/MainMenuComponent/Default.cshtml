@@ -11,7 +11,11 @@
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="Director" asp-action="All">Directors</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="Add">Add Movie</a>
-    </li>
+
+    @if (this.User.IsAdmin())
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="Add">Add Movie</a>
+        </li>
+    }
 </ul>

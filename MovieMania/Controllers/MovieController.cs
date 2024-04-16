@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Movie;
+using static MovieMania.Core.Constants.RoleConstants;
 
 namespace MovieMania.Controllers
 {
+    [Authorize(Roles = AdminRole)]
     public class MovieController : BaseController
     {
         private readonly IMovieService movieService;

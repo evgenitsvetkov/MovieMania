@@ -23,7 +23,7 @@
             <p>@Model.Description</p>
             <p>Director: <b>@Model.Director</b></p>
             <div class="form-inline"> 
-                @if (this.User.Identity.IsAuthenticated) 
+                @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin()) 
                 { 
                     <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
                     <a class="ml-2 btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a> 
