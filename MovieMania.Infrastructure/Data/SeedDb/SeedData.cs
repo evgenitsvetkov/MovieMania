@@ -131,7 +131,9 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 UserName = "admin@mail.com",
                 NormalizedUserName = "admin@mail.com",
                 Email = "admin@mail.com",
-                NormalizedEmail = "admin@mail.com"
+                NormalizedEmail = "admin@mail.com",
+                FirstName = "Evgeni",
+                LastName = "Tsvetkov"
             };
 
             AdminUser.PasswordHash =
@@ -143,7 +145,9 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 UserName = "guest@mail.com",
                 NormalizedUserName = "guest@mail.com",
                 Email = "guest@mail.com",
-                NormalizedEmail = "guest@mail.com"
+                NormalizedEmail = "guest@mail.com",
+                FirstName = "Guest",
+                LastName = "Guestt"
             };
 
             GuestUser.PasswordHash =

@@ -39,7 +39,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapDefaultControllerRoute();
-app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "Movie Details",
+        pattern: "/Movie/Details/{id}/{information}",
+        defaults: new { Controller = "Movie", Action = "Details"}
+    );
+    endpoints.MapDefaultControllerRoute();
+    endpoints.MapRazorPages();
+
+});
+
+await app.CreateAdminRoleAsync();
 
 await app.RunAsync();
