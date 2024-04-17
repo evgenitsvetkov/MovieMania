@@ -6,6 +6,7 @@ using MovieMania.Infrastructure.Data.Models.Mappings;
 using MovieMania.Infrastructure.Data.Models.Movies;
 using System.Globalization;
 using static MovieMania.Infrastructure.Constants.DataConstants;
+using static MovieMania.Infrastructure.Constants.CustomClaims;
 
 namespace MovieMania.Infrastructure.Data.SeedDb
 {
@@ -14,6 +15,10 @@ namespace MovieMania.Infrastructure.Data.SeedDb
         public ApplicationUser AdminUser { get; set; }
 
         public ApplicationUser GuestUser { get; set; }
+
+        public IdentityUserClaim<string> AdminUserClaim { get; set; }
+
+        public IdentityUserClaim<string> GuestUserClaim { get; set; }
 
         public Actor FirstActor { get; set; }
 
@@ -136,6 +141,14 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 LastName = "Tsvetkov"
             };
 
+            AdminUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 1,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Evgeni Tsvetkov",
+                UserId = "dea12856-c198-4129-b3f3-b893d8395082",
+            };
+
             AdminUser.PasswordHash =
                 hasher.HashPassword(AdminUser, "admin1233");
 
@@ -148,6 +161,14 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 NormalizedEmail = "guest@mail.com",
                 FirstName = "Guest",
                 LastName = "Guestt"
+            };
+
+            GuestUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 2,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Guest Guestt",
+                UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
             };
 
             GuestUser.PasswordHash =

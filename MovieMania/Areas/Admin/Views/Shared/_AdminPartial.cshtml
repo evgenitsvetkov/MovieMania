@@ -9,7 +9,7 @@
 
     if (SignInManager.IsSignedIn(User))
     {
-        userName = User.FindFirstValue(MovieMania.Core.Constants.CustomClaims.UserFullNameClaim) ?? string.Empty;
+        userName = User.FindFirstValue(MovieMania.Infrastructure.Constants.CustomClaims.UserFullNameClaim) ?? string.Empty;
     }
 }
 

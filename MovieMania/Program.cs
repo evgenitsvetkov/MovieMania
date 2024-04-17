@@ -42,15 +42,15 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
+            name: "Areas",
+            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+          );
+
+    endpoints.MapControllerRoute(
         name: "Movie Details",
         pattern: "/Movie/Details/{id}/{information}",
         defaults: new { Controller = "Movie", Action = "Details"}
     );
-
-    endpoints.MapControllerRoute(
-            name: "areas",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-          );
 
     endpoints.MapDefaultControllerRoute();
     endpoints.MapRazorPages();

@@ -1,4 +1,4 @@
-﻿namespace MovieMania.Core.Constants
+﻿namespace MovieMania.Infrastructure.Constants
 {
     public static class CustomClaims
     {

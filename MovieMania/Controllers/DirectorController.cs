@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
-using MovieMania.Core.Models.Actor;
 using MovieMania.Core.Models.Director;
-using MovieMania.Core.Services;
 
 namespace MovieMania.Controllers
 {

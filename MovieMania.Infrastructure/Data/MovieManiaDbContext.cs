@@ -29,6 +29,7 @@ namespace MovieMania.Infrastructure.Data
             builder.ApplyConfiguration(new GenreConfiguration());
             builder.ApplyConfiguration(new MovieConfiguration());
             builder.ApplyConfiguration(new MovieActorConfiguration());
+            builder.ApplyConfiguration(new UserClaimsConfiguration());
 
             base.OnModelCreating(builder);
         }
