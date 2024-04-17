@@ -13,25 +13,14 @@
     }
 }
 
-
-
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    if (this.User.IsAdmin())
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Home" asp-action="DashBoard" title="Dashboard">Admin Interface</a>
-        </li>
-    }
-
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @userName!</a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" title="Back">Public Interface</a>
     </li>
 }
 else
