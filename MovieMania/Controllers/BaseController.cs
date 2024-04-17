@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static MovieMania.Core.Constants.RoleConstants;
+using static MovieMania.Core.Constants.AdministratorConstants;
 
 namespace MovieMania.Controllers
 {

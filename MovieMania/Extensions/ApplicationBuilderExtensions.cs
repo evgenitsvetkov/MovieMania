@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MovieMania.Infrastructure.Data.Models.CustomUser;
-using static MovieMania.Core.Constants.RoleConstants;
+using static MovieMania.Core.Constants.AdministratorConstants;
 
 namespace Microsoft.AspNetCore.Builder
 {

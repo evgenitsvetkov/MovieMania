@@ -1,4 +1,4 @@
-﻿using static MovieMania.Core.Constants.RoleConstants;
+﻿using static MovieMania.Core.Constants.AdministratorConstants;
 
 namespace System.Security.Claims
 {

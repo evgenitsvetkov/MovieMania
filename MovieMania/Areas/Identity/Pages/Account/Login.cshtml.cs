@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MovieMania.Infrastructure.Data.Models.CustomUser;
-using static MovieMania.Core.Constants.RoleConstants;
+using static MovieMania.Core.Constants.AdministratorConstants;
 
 namespace MovieMania.Areas.Identity.Pages.Account
 {
