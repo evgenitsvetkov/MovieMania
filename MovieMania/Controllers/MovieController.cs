@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Movie;
 
+
 namespace MovieMania.Controllers
 {
     public class MovieController : BaseController
