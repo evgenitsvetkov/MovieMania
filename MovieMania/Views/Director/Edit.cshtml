@@ -5,3 +5,9 @@
 
 <h2 class="text-center">@ViewData["Title"]</h2>
 <hr />
+
+<partial name="_DirectorFormPartial" model="@Model" />
+
+@section Scripts {
+    <Partial name="_ValidationScriptsPartial" />
+}

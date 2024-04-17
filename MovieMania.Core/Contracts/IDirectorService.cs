@@ -15,7 +15,7 @@ namespace MovieMania.Core.Contracts
 
         Task<int> CreateAsync(DirectorFormModel model);
 
-        Task<DirectorFormModel?> GetActorFormModelByIdAsync(int id);
+        Task<DirectorFormModel?> GetDirectorFormModelByIdAsync(int id);
 
         Task EditAsync(int directorId, DirectorFormModel model);
 

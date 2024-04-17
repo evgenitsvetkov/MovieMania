@@ -103,7 +103,7 @@ namespace MovieMania.Core.Services
                 .AnyAsync(d => d.Id == id);
         }
 
-        public async Task<DirectorFormModel?> GetActorFormModelByIdAsync(int id)
+        public async Task<DirectorFormModel?> GetDirectorFormModelByIdAsync(int id)
         {
             var director = await unitOfWork.AllReadOnly<Director>()
                 .Where(d => d.Id == id)
