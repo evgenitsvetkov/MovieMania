@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Actor;
+using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Actors;
+using MovieMania.Infrastructure.Data.Models.Movies;
 
 namespace MovieMania.Core.Services
 {
@@ -77,10 +79,42 @@ namespace MovieMania.Core.Services
             return actor.Id;
         }
 
+        public async Task EditAsync(int actorId, ActorFormModel model)
+        {
+            var actor = await unitOfWork.GetByIdAsync<Actor>(actorId);
+
+            if (actor != null)
+            {
+                actor.Name = model.Name;
+                actor.Bio = model.Bio;
+                actor.BirthDate = model.BirthDate;
+                actor.ImageUrl = model.ImageUrl;
+
+                await unitOfWork.SaveChangesAsync();
+            }
+        }
+
         public async Task<bool> ExistsAsync(int id)
         {
             return await unitOfWork.AllReadOnly<Actor>()
                 .AnyAsync(a => a.Id == id);
         }
+
+        public async Task<ActorFormModel?> GetActorFormModelByIdAsync(int id)
+        {
+            var actor = await unitOfWork.AllReadOnly<Actor>()
+                .Where(a => a.Id == id)
+                .Select(a => new ActorFormModel()
+                {
+                    Name = a.Name,
+                    Bio = a.Bio,
+                    BirthDate = a.BirthDate,
+                    ImageUrl = a.ImageUrl
+                })
+                .FirstOrDefaultAsync();
+
+            return actor;
+        }
+
     }
 }

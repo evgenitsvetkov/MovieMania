@@ -1,4 +1,5 @@
 ﻿using MovieMania.Core.Models.Actor;
+using MovieMania.Core.Models.Movie;
 
 namespace MovieMania.Core.Contracts
 {
@@ -14,5 +15,9 @@ namespace MovieMania.Core.Contracts
         Task<ActorDetailsServiceModel> ActorsDetailsByIdAsync(int id);
 
         Task<int> CreateAsync(ActorFormModel model);
+
+        Task<ActorFormModel?> GetActorFormModelByIdAsync(int id);
+
+        Task EditAsync(int actorId, ActorFormModel model);
     }
 }

@@ -69,7 +69,12 @@ namespace MovieMania.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = new ActorFormModel();
+            if (await actorService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            var model = await actorService.GetActorFormModelByIdAsync(id);
 
             return View(model);
         }
@@ -77,7 +82,19 @@ namespace MovieMania.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, ActorFormModel model)
         {
-            return RedirectToAction(nameof(Details), new { id = 1 });
+            if (await actorService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return View(model);
+            }
+
+            await actorService.EditAsync(id, model);
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         [HttpGet]
