@@ -1,7 +1,29 @@
-﻿@model DirectorDetailsViewModel
+﻿@model DirectorDetailsServiceModel
+
 @{
-    ViewData["Title"] = "Director Details";
+    ViewBag.Title = "Director Details";
 }
 
-<h2 class="text-center">@ViewData["Title"]</h2>
+<h2 class="text-center">@ViewBag.Title</h2>
 <hr />
+
+<div class="container" style="display:inline">
+    <div class="row">
+        <div class="col-4">
+            <img class="card-img-top" style="width: 20rem;" src="@Model.ImageUrl" alt="Director Image">
+        </div>
+        <div class="card col-8 border-0">
+            <p style="font-size:25px;"><u>@Model.Name</u></p>
+            <p>Birthdate: <b>@Model.BirthDate</b></p>
+            <p>Bio: <b>@Model.Bio</b></p>
+            <div class="form-inline">
+                @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
+                {
+                    <a class="btn btn-warning" asp-controller="Director" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a class="ml-2 btn btn-danger" asp-controller="Director" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                }
+            </div>
+            <p></p>
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@ using MovieMania.Core.Models.Director;
 
 namespace MovieMania.Controllers
 {
-    public class DirectorController : Controller
+    public class DirectorController : BaseController
     {
         private readonly IDirectorService directorService;
 
@@ -29,10 +29,16 @@ namespace MovieMania.Controllers
             return View(query);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = new DirectorDetailsViewModel();
+            if (await directorService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            var model = await directorService.DirectorsDetailsByIdAsync(id);
 
             return View(model);
         }
