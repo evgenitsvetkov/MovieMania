@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Actor;
-using MovieMania.Core.Models.Movie;
-using MovieMania.Core.Services;
 
 namespace MovieMania.Controllers
 {
@@ -100,12 +98,32 @@ namespace MovieMania.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            return View(new ActorDetailsViewModel());
+            if (await actorService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            var actor = await actorService.ActorsDetailsByIdAsync(id);
+
+            var model = new ActorDetailsViewModel()
+            {
+                Id = id,
+                Name = actor.Name,
+                ImageUrl = actor.ImageUrl
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(ActorDetailsViewModel model)
         {
+            if (await actorService.ExistsAsync(model.Id) == false)
+            {
+                return BadRequest();
+            }
+
+            await actorService.DeleteAsync(model.Id);
 
             return RedirectToAction(nameof(All));
         }

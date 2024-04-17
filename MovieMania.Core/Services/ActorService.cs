@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Actor;
-using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Actors;
-using MovieMania.Infrastructure.Data.Models.Movies;
 
 namespace MovieMania.Core.Services
 {
@@ -77,6 +75,12 @@ namespace MovieMania.Core.Services
             await unitOfWork.SaveChangesAsync();
 
             return actor.Id;
+        }
+
+        public async Task DeleteAsync(int actorId)
+        {
+            await unitOfWork.DeleteAsync<Actor>(actorId);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task EditAsync(int actorId, ActorFormModel model)

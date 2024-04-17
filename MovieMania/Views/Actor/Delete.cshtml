@@ -1,7 +1,25 @@
 ﻿@model ActorDetailsViewModel
+
 @{
-    ViewData["Title"] = "Delete Actor";
+    ViewBag.Title = "Delete Actor";
 }
 
-<h2 class="text-center">@ViewData["Title"]</h2>
+<h2 class="text-center">@ViewBag.Title</h2>
 <hr />
+
+<form asp-action="Delete">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="card-img-top" src="@Model.ImageUrl" alt="Actor Image">
+        </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
