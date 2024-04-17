@@ -1,0 +1,34 @@
+﻿<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="All">Movies</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Actor" asp-action="All">Actors</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Director" asp-action="All">Directors</a>
+    </li>
+
+    @if (this.User.IsAdmin())
+    {
+        <li class="nav-item dropdown">
+            <div>
+                <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Add</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li>
+                        <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="Add">Movie</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Actor" asp-action="Add">Actor</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Director" asp-action="Add">Director</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    }
+</ul>

@@ -1,0 +1,18 @@
+﻿@model ActorServiceModel
+
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="Actor Image">
+        <div class="card-body text-center">
+            <h4>@Model.Name</h4>
+            <br />
+            <a asp-controller="Actor" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
+            @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
+            {
+                <a asp-controller="Actor" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-controller="Actor" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                <p></p>
+            }
+        </div>
+    </div>
+</div>

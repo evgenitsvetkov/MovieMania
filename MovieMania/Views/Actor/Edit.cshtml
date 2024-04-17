@@ -1,0 +1,13 @@
+﻿@model ActorFormModel
+@{
+    ViewData["Title"] = "Edit Actor";
+}
+
+<h2 class="text-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_ActorFormPartial" model="@Model" />
+
+@section Scripts {
+    <Partial name="_ValidationScriptsPartial" />
+}

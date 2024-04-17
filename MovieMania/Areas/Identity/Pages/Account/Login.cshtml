@@ -1,0 +1,47 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <section>
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div data-mdb-input-init class="form-outline mb-4">
+                    <input asp-for="Input.Email" type="email" id="form2Example1" class="form-control" placeholder="Email address" autocomplete="username" aria-required="true" />
+                    <label for="InputEmail" class="form-label"></label>
+                </div>
+
+                <div data-mdb-input-init class="form-outline mb-4">
+                    <input asp-for="Input.Password" type="password" id="form2Example2" class="form-control" placeholder="Password" autocomplete="current-password" aria-required="true" />
+                    <label for="InputPassword" class="form-label"></label>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col d-flex justify-content-center">
+                        <div class="form-check">
+                            <label asp-for="Input.RememberMe" class="form-check-label">
+                                <input class="form-check-input" asp-for="Input.RememberMe" /> 
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <a href="#!">Forgot password?</a>
+                    </div>
+                </div>
+
+                <button id="login-submit" type="submit" data-mdb-button-init data-mdb-ripple-init class="w-100 btn btn-lg btn-primary">Sign in</button>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
