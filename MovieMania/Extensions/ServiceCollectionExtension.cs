@@ -14,6 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IActorService, ActorService>();
+            services.AddScoped<IDirectorService, DirectorService>();
             return services;
         }
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
