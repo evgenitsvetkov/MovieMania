@@ -100,12 +100,32 @@ namespace MovieMania.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            return View(new DirectorDetailsViewModel());
+            if (await directorService.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            var director = await directorService.DirectorsDetailsByIdAsync(id);
+
+            var model = new DirectorDetailsViewModel()
+            {
+                Id = id,
+                Name = director.Name,
+                ImageUrl = director.ImageUrl
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(DirectorDetailsViewModel model)
         {
+            if (await directorService.ExistsAsync(model.Id) == false)
+            {
+                return BadRequest();
+            }
+
+            await directorService.DeleteAsync(model.Id);
 
             return RedirectToAction(nameof(All));
         }
