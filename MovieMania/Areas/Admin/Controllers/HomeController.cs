@@ -8,15 +8,5 @@ namespace MovieMania.Areas.Admin.Controllers
         {
             return View();
         }
-
-        public async Task<IActionResult> AllOrders()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> AllUsers()
-        {
-            return View();
-        }
     }
 }
