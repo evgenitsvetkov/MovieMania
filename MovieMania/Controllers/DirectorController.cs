@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
+using MovieMania.Core.Models.Actor;
 using MovieMania.Core.Models.Director;
+using MovieMania.Core.Services;
 
 namespace MovieMania.Controllers
 {
@@ -44,15 +46,24 @@ namespace MovieMania.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            return View();
+            var model = new DirectorFormModel();
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(DirectorFormModel model)
         {
-            return RedirectToAction(nameof(Details), new { id = 1 });
+            if (ModelState.IsValid == false)
+            {
+                return View(model);
+            }
+
+            int newDirectorId = await directorService.CreateAsync(model);
+
+            return RedirectToAction(nameof(Details), new { id = newDirectorId });
         }
 
         [HttpGet]
