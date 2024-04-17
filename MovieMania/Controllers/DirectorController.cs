@@ -1,16 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Director;
 
 namespace MovieMania.Controllers
 {
     public class DirectorController : Controller
     {
-        [HttpGet]
-        public async Task<IActionResult> All()
-        {
-            var model = new AllDirectorsQueryModel();
+        private readonly IDirectorService directorService;
 
-            return View(model);
+        public DirectorController(IDirectorService _directorService)
+        {
+            directorService = _directorService;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> All([FromQuery] AllDirectorsQueryModel query)
+        {
+            var model = await directorService.AllAsync(
+            query.SearchTerm,
+            query.CurrentPage,
+            query.DirectorsPerPage);
+
+            query.TotalDirectorsCount = model.TotalDirectorsCount;
+            query.Directors = model.Directors;
+
+            return View(query);
         }
 
         [HttpGet]

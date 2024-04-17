@@ -4,24 +4,19 @@ using static MovieMania.Infrastructure.Constants.DataConstants;
 
 namespace MovieMania.Core.Models.Director
 {
-    public class DirectorFormModel
+    public class DirectorServiceModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(NameMaxLength,
             MinimumLength = NameMinLength,
             ErrorMessage = LengthMessage)]
+        [Display(Name = "Full name")]
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]
-        [StringLength(BioMaxLength,
-            MinimumLength = BioMinLength,
-            ErrorMessage = LengthMessage)]
-        public string Bio { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = RequiredMessage)]
-        public DateTime BirthDate { get; set; }
-
-        [Required(ErrorMessage = RequiredMessage)]
+        [Display(Name = "Image URL")]
         public string ImageUrl { get; set; } = string.Empty;
     }
 }

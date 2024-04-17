@@ -1,6 +1,6 @@
-﻿namespace MovieMania.Core.Models.Actor
+﻿namespace MovieMania.Core.Models.Director
 {
-    public class ActorDetailsServiceModel : ActorServiceModel
+    public class DirectorDetailsServiceModel : DirectorServiceModel
     {
         public string Bio { get; set; } = string.Empty;
 
