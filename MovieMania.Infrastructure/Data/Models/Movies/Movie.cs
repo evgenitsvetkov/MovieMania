@@ -58,6 +58,6 @@ namespace MovieMania.Infrastructure.Data.Models.Movies
 
         public IEnumerable<MovieActor> MoviesActors { get; set; } = new List<MovieActor>();
         public IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
-        public IEnumerable<CartDetail> CartDetails { get; set; } = new List<CartDetail>();
+        public IEnumerable<Cart> Carts { get; set; } = new List<Cart>();
     }
 }

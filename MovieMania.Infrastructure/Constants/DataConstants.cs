@@ -14,9 +14,6 @@
         public const int MovieDescriptionMaxLength = 300;
         public const int MovieDescriptionMinLength = 10;
 
-        public const string MovieRatingMaxLength = "10";
-        public const string MovieRatingMinLength = "0";
-
         public const int BioMaxLength = 400;
         public const int BioMinLength = 10;
 
@@ -39,5 +36,24 @@
 
         public const int UserLastNameMaxLength = 50;
         public const int UserLastNameMinLength = 1;
+
+        public const int UsernameMaxLength = 50;
+        public const int UsernameMinLength = 10;
+
+        public const int UserAddressMaxLength = 150;
+        public const int UserAddressMinLength = 10;
+
+        public const int UserCityMaxLength = 50;
+        public const int UserCityMinLength = 5;
+
+        public const int UserCountryMaxLength = 50;
+        public const int UserCountryMinLength = 2;
+
+        public const int UserPhoneMaxLength = 20;
+        public const int UserPhoneMinLength = 20;
+
+        public const int UserEmailMaxLength = 50;
+        public const int UserEmailMinLength = 10;
+
     }
 }

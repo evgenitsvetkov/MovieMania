@@ -1,7 +1,4 @@
 using MovieMania.ModelBinders;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using MovieMania.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

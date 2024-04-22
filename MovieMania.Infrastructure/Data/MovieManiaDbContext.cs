@@ -46,12 +46,9 @@ namespace MovieMania.Infrastructure.Data
 
         public DbSet<Cart> Carts { get; set; } = null!;
 
-        public DbSet<CartDetail> CartDetails { get; set; } = null!;
-
         public DbSet<Order> Orders { get; set; } = null!;
 
         public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
-        public DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
     }
 }
