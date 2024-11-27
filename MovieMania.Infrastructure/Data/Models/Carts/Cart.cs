@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using MovieMania.Infrastructure.Data.Models.CustomUser;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieMania.Infrastructure.Data.Models.Movies;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,18 +10,22 @@ namespace MovieMania.Infrastructure.Data.Models.Carts
     {
         [Key]
         [Comment("Shopping cart's identifier")]
-        public int Id { get; set; }
+        public int RecordId { get; set; }
 
-        [Required]
-        [Comment("User's identifier")]
-        public string UserId { get; set; } = string.Empty;
+        [Comment("Cart item's identifier")]
+        public string CartId { get; set; } = string.Empty;
 
-        [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; } = null!;
+        [Comment("Movie's identifier")]
+        public int MovieId { get; set; }
 
-        public bool IsDeleted { get; set; } = false;
+        [Comment("Count of items")]
+        public int Count { get; set; }
 
-        public IEnumerable<CartDetail> CartDetails { get; set; } = new List<CartDetail>();
+        [Comment("Date of cart's creation")]
+        public DateTime DateCreated { get; set; }
+
+        [ForeignKey(nameof(MovieId))]
+        public Movie Movie { get; set; } = null!;
 
     }
 }
