@@ -1,6 +1,7 @@
 using MovieMania.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity(builder.Configuration);
@@ -10,6 +11,7 @@ builder.Services.AddControllersWithViews(options =>
     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
 });
 
+builder.WebHost.UseStaticWebAssets();
 builder.Services.AddApplicationServices();
 
 
