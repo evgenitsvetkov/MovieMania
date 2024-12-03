@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieMania.Infrastructure.Data.Models.CustomUser;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static MovieMania.Infrastructure.Constants.DataConstants;
@@ -11,12 +12,14 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
     {
         [Key]
         [Comment("Order's identifier")]
-        public int Id { get; set; }
+        public int OrderId { get; set; }
 
         [Required]
-        [MaxLength(UsernameMaxLength)]
-        [Comment("User's username")]
-        public string Username { get; set; } = null!;
+        [Comment("User's identifier")]
+        public string UserId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; }
 
         [Required]
         [MaxLength(UserFirstNameMaxLength)]
@@ -44,7 +47,6 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
         [Comment("User's postal code")]
         public string PostalCode { get; set; } = string.Empty;
 
-        [Required]
         [MaxLength(UserCountryMaxLength)]
         [Comment("User's country")]
         public string Country { get; set; } = null!;
@@ -60,14 +62,14 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
         public string Email { get; set; } = null!;
 
         [Required]
-        [Comment("Order's total price")]
+        [Comment("Order's total amount")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Total { get; set; } 
+        public decimal TotalAmount { get; set; }
 
+        [Required]
         [Comment("The date of order")]
         public DateTime OrderDate { get; set; }
-                     
-        public IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();   
 
+        public IEnumerable<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

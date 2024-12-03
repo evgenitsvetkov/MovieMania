@@ -1,21 +1,16 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace MovieMania.Infrastructure.Migrations
 {
-    public partial class ShoppingCartTablesTweaked : Migration
+    public partial class ShoppingCartAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Carts_AspNetUsers_UserId",
-                table: "Carts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Orders_AspNetUsers_UserId",
-                table: "Orders");
+                name: "FK_Movies_Director_DirectorId",
+                table: "Movies");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Orders_OrderStatuses_OrderStatusId",
@@ -31,13 +26,9 @@ namespace MovieMania.Infrastructure.Migrations
                 name: "IX_Orders_OrderStatusId",
                 table: "Orders");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Orders_UserId",
-                table: "Orders");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Carts_UserId",
-                table: "Carts");
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Director",
+                table: "Director");
 
             migrationBuilder.DropColumn(
                 name: "IsDeleted",
@@ -48,21 +39,31 @@ namespace MovieMania.Infrastructure.Migrations
                 table: "Orders");
 
             migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Orders");
+                name: "UnitPrice",
+                table: "OrderDetails");
 
             migrationBuilder.DropColumn(
                 name: "IsDeleted",
                 table: "Carts");
 
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Carts");
+            migrationBuilder.RenameTable(
+                name: "Director",
+                newName: "Directors");
+
+            migrationBuilder.RenameColumn(
+                name: "Id",
+                table: "Orders",
+                newName: "OrderId");
+
+            migrationBuilder.RenameColumn(
+                name: "Id",
+                table: "OrderDetails",
+                newName: "OrderDetailId");
 
             migrationBuilder.RenameColumn(
                 name: "Id",
                 table: "Carts",
-                newName: "RecordId");
+                newName: "CartId");
 
             migrationBuilder.AddColumn<string>(
                 name: "Address",
@@ -144,91 +145,107 @@ namespace MovieMania.Infrastructure.Migrations
                 comment: "User's state");
 
             migrationBuilder.AddColumn<decimal>(
-                name: "Total",
+                name: "TotalAmount",
                 table: "Orders",
                 type: "decimal(18,2)",
                 nullable: false,
                 defaultValue: 0m,
-                comment: "Order's total price");
+                comment: "Order's total amount");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Username",
-                table: "Orders",
-                type: "nvarchar(50)",
-                maxLength: 50,
+            migrationBuilder.AddColumn<decimal>(
+                name: "ItemTotal",
+                table: "OrderDetails",
+                type: "decimal(18,2)",
                 nullable: false,
-                defaultValue: "",
-                comment: "User's username");
+                defaultValue: 0m,
+                comment: "Total amount of item");
 
-            migrationBuilder.AddColumn<string>(
-                name: "CartId",
+            migrationBuilder.AddColumn<decimal>(
+                name: "TotalAmount",
                 table: "Carts",
-                type: "nvarchar(max)",
+                type: "decimal(18,2)",
                 nullable: false,
-                defaultValue: "",
-                comment: "Cart item's identifier");
+                defaultValue: 0m,
+                comment: "Total amount of all items in the cart");
 
-            migrationBuilder.AddColumn<int>(
-                name: "Count",
-                table: "Carts",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                comment: "Count of items");
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Directors",
+                table: "Directors",
+                column: "Id");
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateCreated",
-                table: "Carts",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                comment: "Date of cart's creation");
-
-            migrationBuilder.AddColumn<int>(
-                name: "MovieId",
-                table: "Carts",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                comment: "Movie's identifier");
+            migrationBuilder.CreateTable(
+                name: "CartItems",
+                columns: table => new
+                {
+                    CartItemId = table.Column<int>(type: "int", nullable: false, comment: "Cart item identifier")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartId = table.Column<int>(type: "int", nullable: false, comment: "Cart identifier"),
+                    MovieId = table.Column<int>(type: "int", nullable: false, comment: "Movie identifier"),
+                    Quantity = table.Column<int>(type: "int", nullable: false, comment: "Item quantity"),
+                    ItemTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false, comment: "Total amount of item")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItems", x => x.CartItemId);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Carts_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Carts",
+                        principalColumn: "CartId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartItems_Movies_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "f1ef9be3-e020-4535-9bca-b42cc8a3026b", "AQAAAAEAACcQAAAAEG+rFoLhSGJT37rsSTj2+95Zb8OQ5MjUfyRWoUtoFC/cHSONaj+k8yB7y6Smkqv6oA==", "f12f8cdd-727a-4afa-97d6-c174354eddb4" });
+                values: new object[] { "5b3b204b-4331-4b1a-bba3-4f5f26971ab5", "AQAAAAEAACcQAAAAEEyOmxLsgVsdrMsGyCtOeuS+jXem4zHbHGQpQD8ig1qZLUCHMOR/zXyjrUCnrcwUzg==", "9273df2e-c501-4c03-93cc-edc055f82df7" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "dea12856-c198-4129-b3f3-b893d8395082",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "5ab6c1b3-5762-4b7e-8092-f4660ccd8df8", "AQAAAAEAACcQAAAAEHHTZFJvV/fc8H0eCKHxFKq4MPNFGZJyd43KJagdujGHW0adhICFlNWWuHiOaQY93A==", "147a30a1-e9ed-4ec8-98c2-f1dd8b3e7660" });
+                values: new object[] { "a6d9d2ee-3ae2-48e9-a2b5-13ec02f1c38b", "AQAAAAEAACcQAAAAEDmVg4qW85hdHIPL9glHMkdSfbyZQej/twxrxSVPdanZlt5GH5F74Yzlu0LdqC45ow==", "1075132f-4f66-4014-a30d-8a736814ea41" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carts_MovieId",
-                table: "Carts",
+                name: "IX_CartItems_CartId",
+                table: "CartItems",
+                column: "CartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItems_MovieId",
+                table: "CartItems",
                 column: "MovieId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Carts_Movies_MovieId",
-                table: "Carts",
-                column: "MovieId",
-                principalTable: "Movies",
+                name: "FK_Movies_Directors_DirectorId",
+                table: "Movies",
+                column: "DirectorId",
+                principalTable: "Directors",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Carts_Movies_MovieId",
-                table: "Carts");
+                name: "FK_Movies_Directors_DirectorId",
+                table: "Movies");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Carts_MovieId",
-                table: "Carts");
+            migrationBuilder.DropTable(
+                name: "CartItems");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Directors",
+                table: "Directors");
 
             migrationBuilder.DropColumn(
                 name: "Address",
@@ -267,31 +284,33 @@ namespace MovieMania.Infrastructure.Migrations
                 table: "Orders");
 
             migrationBuilder.DropColumn(
-                name: "Total",
+                name: "TotalAmount",
                 table: "Orders");
 
             migrationBuilder.DropColumn(
-                name: "Username",
-                table: "Orders");
+                name: "ItemTotal",
+                table: "OrderDetails");
 
             migrationBuilder.DropColumn(
-                name: "CartId",
+                name: "TotalAmount",
                 table: "Carts");
 
-            migrationBuilder.DropColumn(
-                name: "Count",
-                table: "Carts");
-
-            migrationBuilder.DropColumn(
-                name: "DateCreated",
-                table: "Carts");
-
-            migrationBuilder.DropColumn(
-                name: "MovieId",
-                table: "Carts");
+            migrationBuilder.RenameTable(
+                name: "Directors",
+                newName: "Director");
 
             migrationBuilder.RenameColumn(
-                name: "RecordId",
+                name: "OrderId",
+                table: "Orders",
+                newName: "Id");
+
+            migrationBuilder.RenameColumn(
+                name: "OrderDetailId",
+                table: "OrderDetails",
+                newName: "Id");
+
+            migrationBuilder.RenameColumn(
+                name: "CartId",
                 table: "Carts",
                 newName: "Id");
 
@@ -310,13 +329,13 @@ namespace MovieMania.Infrastructure.Migrations
                 defaultValue: 0,
                 comment: "Order status identifier");
 
-            migrationBuilder.AddColumn<string>(
-                name: "UserId",
-                table: "Orders",
-                type: "nvarchar(450)",
+            migrationBuilder.AddColumn<decimal>(
+                name: "UnitPrice",
+                table: "OrderDetails",
+                type: "decimal(18,2)",
                 nullable: false,
-                defaultValue: "",
-                comment: "User's identifier");
+                defaultValue: 0m,
+                comment: "Price for single movie");
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsDeleted",
@@ -325,13 +344,10 @@ namespace MovieMania.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.AddColumn<string>(
-                name: "UserId",
-                table: "Carts",
-                type: "nvarchar(450)",
-                nullable: false,
-                defaultValue: "",
-                comment: "User's identifier");
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Director",
+                table: "Director",
+                column: "Id");
 
             migrationBuilder.CreateTable(
                 name: "CartDetails",
@@ -396,16 +412,6 @@ namespace MovieMania.Infrastructure.Migrations
                 column: "OrderStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserId",
-                table: "Orders",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Carts_UserId",
-                table: "Carts",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CartDetails_MovieId",
                 table: "CartDetails",
                 column: "MovieId");
@@ -416,20 +422,12 @@ namespace MovieMania.Infrastructure.Migrations
                 column: "ShoppingCartId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Carts_AspNetUsers_UserId",
-                table: "Carts",
-                column: "UserId",
-                principalTable: "AspNetUsers",
+                name: "FK_Movies_Director_DirectorId",
+                table: "Movies",
+                column: "DirectorId",
+                principalTable: "Director",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Orders_AspNetUsers_UserId",
-                table: "Orders",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_OrderStatuses_OrderStatusId",

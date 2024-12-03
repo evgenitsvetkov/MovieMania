@@ -12,8 +12,8 @@ using MovieMania.Infrastructure.Data;
 namespace MovieMania.Infrastructure.Migrations
 {
     [DbContext(typeof(MovieManiaDbContext))]
-    [Migration("20240422154947_ShoppingCartTablesTweaked")]
-    partial class ShoppingCartTablesTweaked
+    [Migration("20241203153428_ShoppingCartAdded")]
+    partial class ShoppingCartAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -282,37 +282,63 @@ namespace MovieMania.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Carts.Cart", b =>
                 {
-                    b.Property<int>("RecordId")
+                    b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasComment("Shopping cart's identifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"), 1L, 1);
 
-                    b.Property<string>("CartId")
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasComment("Total amount of all items in the cart");
+
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasComment("Cart item's identifier");
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("User's identifier");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int")
-                        .HasComment("Count of items");
+                    b.HasKey("CartId");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2")
-                        .HasComment("Date of cart's creation");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int")
-                        .HasComment("Movie's identifier");
-
-                    b.HasKey("RecordId");
-
-                    b.HasIndex("MovieId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
 
                     b.HasComment("User's shopping cart");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Carts.CartItem", b =>
+                {
+                    b.Property<int>("CartItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Cart item identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"), 1L, 1);
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int")
+                        .HasComment("Cart identifier");
+
+                    b.Property<decimal>("ItemTotal")
+                        .HasColumnType("decimal(18,2)")
+                        .HasComment("Total amount of item");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int")
+                        .HasComment("Movie identifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasComment("Item quantity");
+
+                    b.HasKey("CartItemId");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.CustomUser.ApplicationUser", b =>
@@ -394,7 +420,7 @@ namespace MovieMania.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5ab6c1b3-5762-4b7e-8092-f4660ccd8df8",
+                            ConcurrencyStamp = "a6d9d2ee-3ae2-48e9-a2b5-13ec02f1c38b",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Evgeni",
@@ -402,9 +428,9 @@ namespace MovieMania.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@mail.com",
                             NormalizedUserName = "admin@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHHTZFJvV/fc8H0eCKHxFKq4MPNFGZJyd43KJagdujGHW0adhICFlNWWuHiOaQY93A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDmVg4qW85hdHIPL9glHMkdSfbyZQej/twxrxSVPdanZlt5GH5F74Yzlu0LdqC45ow==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "147a30a1-e9ed-4ec8-98c2-f1dd8b3e7660",
+                            SecurityStamp = "1075132f-4f66-4014-a30d-8a736814ea41",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         },
@@ -412,7 +438,7 @@ namespace MovieMania.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f1ef9be3-e020-4535-9bca-b42cc8a3026b",
+                            ConcurrencyStamp = "5b3b204b-4331-4b1a-bba3-4f5f26971ab5",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Guest",
@@ -420,9 +446,9 @@ namespace MovieMania.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "guest@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG+rFoLhSGJT37rsSTj2+95Zb8OQ5MjUfyRWoUtoFC/cHSONaj+k8yB7y6Smkqv6oA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEyOmxLsgVsdrMsGyCtOeuS+jXem4zHbHGQpQD8ig1qZLUCHMOR/zXyjrUCnrcwUzg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f12f8cdd-727a-4afa-97d6-c174354eddb4",
+                            SecurityStamp = "9273df2e-c501-4c03-93cc-edc055f82df7",
                             TwoFactorEnabled = false,
                             UserName = "guest@mail.com"
                         });
@@ -460,7 +486,7 @@ namespace MovieMania.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Director");
+                    b.ToTable("Directors");
 
                     b.HasComment("Movie's director");
 
@@ -839,12 +865,12 @@ namespace MovieMania.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Orders.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasComment("Order's identifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -902,17 +928,18 @@ namespace MovieMania.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasComment("User's state");
 
-                    b.Property<decimal>("Total")
+                    b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)")
-                        .HasComment("Order's total price");
+                        .HasComment("Order's total amount");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("User's username");
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("User's identifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
 
@@ -921,12 +948,16 @@ namespace MovieMania.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Orders.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("OrderDetailId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasComment("Order detail identifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"), 1L, 1);
+
+                    b.Property<decimal>("ItemTotal")
+                        .HasColumnType("decimal(18,2)")
+                        .HasComment("Total amount of item");
 
                     b.Property<int>("MovieId")
                         .HasColumnType("int")
@@ -940,11 +971,7 @@ namespace MovieMania.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasComment("Quantity of ordered movies");
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)")
-                        .HasComment("Price for single movie");
-
-                    b.HasKey("Id");
+                    b.HasKey("OrderDetailId");
 
                     b.HasIndex("MovieId");
 
@@ -1008,13 +1035,28 @@ namespace MovieMania.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Carts.Cart", b =>
                 {
-                    b.HasOne("MovieMania.Infrastructure.Data.Models.Movies.Movie", "Movie")
-                        .WithMany("Carts")
-                        .HasForeignKey("MovieId")
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.CustomUser.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Movie");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Carts.CartItem", b =>
+                {
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.Carts.Cart", null)
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.Movies.Movie", null)
+                        .WithMany("CartItems")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Mappings.MovieActor", b =>
@@ -1055,6 +1097,17 @@ namespace MovieMania.Infrastructure.Migrations
                     b.Navigation("Genre");
                 });
 
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Orders.Order", b =>
+                {
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.CustomUser.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Orders.OrderDetail", b =>
                 {
                     b.HasOne("MovieMania.Infrastructure.Data.Models.Movies.Movie", "Movie")
@@ -1079,6 +1132,11 @@ namespace MovieMania.Infrastructure.Migrations
                     b.Navigation("MoviesActors");
                 });
 
+            modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Carts.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Directors.Director", b =>
                 {
                     b.Navigation("Movies");
@@ -1091,7 +1149,7 @@ namespace MovieMania.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Movies.Movie", b =>
                 {
-                    b.Navigation("Carts");
+                    b.Navigation("CartItems");
 
                     b.Navigation("MoviesActors");
 

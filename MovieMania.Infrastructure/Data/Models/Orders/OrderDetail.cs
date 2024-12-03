@@ -10,7 +10,7 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
     {
         [Key]
         [Comment("Order detail identifier")]
-        public int Id { get; set; }
+        public int OrderDetailId { get; set; }
 
         [Required]
         [Comment("Order's identifier")]
@@ -24,10 +24,10 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
         public int Quantity { get; set; }
 
         [Required]
-        [Comment("Price for single movie")]
+        [Comment("Total amount of item")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal UnitPrice { get; set; }
-                
+        public decimal ItemTotal { get; set; }
+
         [Required]
         [Comment("Movie's identifier")]
         public int MovieId { get; set; }

@@ -38,13 +38,15 @@ namespace MovieMania.Infrastructure.Data
 
         public DbSet<Actor> Actors { get; set; } = null!;
 
-        public DbSet<Director> Director { get; set; } = null!;
+        public DbSet<Director> Directors { get; set; } = null!;
 
         public DbSet<MovieActor> MoviesActors { get; set; } = null!;
 
         public DbSet<Genre> Genres { get; set; } = null!;
 
         public DbSet<Cart> Carts { get; set; } = null!;
+
+        public DbSet<CartItem> CartItems { get; set; } = null!;
 
         public DbSet<Order> Orders { get; set; } = null!;
 
