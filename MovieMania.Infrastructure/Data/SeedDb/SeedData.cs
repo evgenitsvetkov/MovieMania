@@ -182,7 +182,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 1,
                 Name = "Jeniffer Aniston",
                 Bio = "Jennifer Aniston is an American actress. She rose to international fame for her role as Rachel Green on the television sitcom Friends from 1994 to 2004, which earned her Primetime Emmy, Golden Globe, and Screen Actors Guild awards.",
-                BirthDate = DateTime.ParseExact("11/02/1969", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("11/02/1969", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/1/16/JenniferAnistonHWoFFeb2012.jpg"
             };
 
@@ -191,7 +191,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 2,
                 Name = "Adam Sandler",
                 Bio = "Adam Sandler is an American actor and comedian. Primarily a comedic leading actor in films, his accolades include nominations for three Grammy Awards, five Primetime Emmy Awards, a Golden Globe Award, and a Screen Actors Guild Award. Sandler was awarded the Mark Twain Prize for American Humor.",
-                BirthDate = DateTime.ParseExact("09/09/1966", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("09/09/1966", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Adam_Sandler_at_Berlinale_2024.jpg/800px-Adam_Sandler_at_Berlinale_2024.jpg"
             };
 
@@ -200,7 +200,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 3,
                 Name = "Jonah Hill",
                 Bio = "Jonah Hill is an American actor, director and screenwriter. He is known for his comedic roles in films including Superbad, Knocked Up, 21 Jump Street. For his performances in Moneyball and The Wolf of Wall Street, he was nominated for the Academy Award for Best Supporting Actor.",
-                BirthDate = DateTime.ParseExact("20/12/1983", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("20/12/1983", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Jonah_Hill-4939_%28cropped%29_%28cropped%29.jpg/1024px-Jonah_Hill-4939_%28cropped%29_%28cropped%29.jpg"
             };
 
@@ -209,7 +209,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 4,
                 Name = "Leonardo DiCaprio",
                 Bio = "Leonardo DiCaprio is an American actor and film producer. Known for his work in biographical and period films, he is the recipient of numerous accolades, including an Academy Award, a British Academy Film Award, and three Golden Globe Awards. ",
-                BirthDate = DateTime.ParseExact("11/11/1974", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("11/11/1974", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://www.usmagazine.com/wp-content/uploads/2024/01/Stars-Who-Are-Continually-Snubbed-by-the-Oscars-Leonardo-DiCaprio-Margot-Robbie-and-More-4.jpg?w=800&h=1421&crop=1&quality=86&strip=all"
             };
 
@@ -218,7 +218,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 5,
                 Name = "Cillian Murphy",
                 Bio = "Cillian Murphy is an Irish actor. He made his professional debut in Enda Walsh's 1996 play Disco Pigs, a role he later reprised in the 2001 screen adaptation. He gained greater prominence for his role as Tommy Shelby in the BBC period drama series Peaky Blinders.",
-                BirthDate = DateTime.ParseExact("25/05/1976", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("25/05/1976", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://i0.wp.com/www.thewrap.com/wp-content/uploads/2016/04/Cillian-Murphy.jpg?w=618&ssl=1"
             };
 
@@ -227,7 +227,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 6,
                 Name = "Robert Downey Jr.",
                 Bio = "Robert Downey Jr. is an American actor. His career has been characterized by some early success, a period of drug-related problems and run-ins with the law, and a surge in population and commercial success in the 2000s. In 2008, Downey was named by Time magazine as one of the 100 most influential people in the world.",
-                BirthDate = DateTime.ParseExact("04/04/1965", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("04/04/1965", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/9/94/Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg"
             };
 
@@ -236,7 +236,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 7,
                 Name = "Samuel L. Jackson",
                 Bio = "Samuel L. Jackson is an American actor. One of the most widely recognized actors of his generation, the films in which he has appeared have collectively grossed over $27 billion worldwide, making him the highest-grossing actor of all time. In 2022, he received the Academy Honorary Award as a cultural icon whose dynamic work has resonated across genres and generations and audiences worldwide.",
-                BirthDate = DateTime.ParseExact("21/12/1948", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("21/12/1948", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/SamuelLJackson.jpg/800px-SamuelLJackson.jpg"
             };
 
@@ -245,7 +245,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 8,
                 Name = "Brie Larson",
                 Bio = "Brianne Desaulniers, known professionally as Brie Larson, is an American actress. Known for her supporting roles in comedies as a teenager, she has since expanded to leading roles in independent films and blockbusters. She has received various accolades, including an Academy Award, a Golden Globe Award, and a Primetime Emmy Award.",
-                BirthDate = DateTime.ParseExact("01/10/1989", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("01/10/1989", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Captain_Marvel_trailer_at_the_National_Air_and_Space_Museum_4_%28cropped%29.jpg/1024px-Captain_Marvel_trailer_at_the_National_Air_and_Space_Museum_4_%28cropped%29.jpg"
             };
         }
@@ -257,7 +257,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 1,
                 Name = "Anna Boden",
                 Bio = "Anna Boden is an American film director, cinematographer, editor, andscreenwriter best known as the co-writer of the 2006 film Half Nelson.She is known for her collaborations with fellow filmmaker Ryan Fleck.",
-                BirthDate = DateTime.ParseExact("20/10/1979", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("20/10/1979", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/8/8f/Anna_Boden.jpg/revision/latest?cb=20190305123354"
             };
 
@@ -266,7 +266,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 2,
                 Name = "Judd Apatow",
                 Bio = "Judd Apatow is an American director, producer and screenwriter, best known for his work in comedy films. He is the founder of Apatow Productions. Throughout his career, Apatow has received nominations for 11 Primetime Emmy Awards, five Writers Guild of America Awards, two Producers Guild of America Awards, one Golden Globe Award and one Grammy Award.",
-                BirthDate = DateTime.ParseExact("09/12/1967", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("09/12/1967", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/3b/2024-03-08_SXSW-2024_comedy-directors_3.jpg"
             };
 
@@ -275,7 +275,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 3,
                 Name = "Jeremy Garelick",
                 Bio = "After graduating from college, Garelick began his career working as an assistant in Creative Artists Agency's Motion Picture Literary department. He served as the assistant to director Joel Schumacher on Tigerland, Bad Company, and Phone Booth. He was the second unit director on Schumacher’s 2003 movie Veronica Guerin.",
-                BirthDate = DateTime.ParseExact("30/11/1975", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("30/11/1975", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/c/c4/Jeremy_Garelick.png"
             };
 
@@ -284,7 +284,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 4,
                 Name = "Martin Scorsese",
                 Bio = "Martin Scorsese is an American filmmaker. he emerged as one of the major figures of the New Hollywood era. Scorsese has received many accolades, including an Academy Award, four BAFTA Awards, three Emmy Awards, a Grammy Award, three Golden Globe Awards, and two Directors Guild of America Awards. He has been honored with the AFI Life Achievement Award in 1997.",
-                BirthDate = DateTime.ParseExact("17/11/1942", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("17/11/1942", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Martin_Scorsese-68754.jpg/800px-Martin_Scorsese-68754.jpg"
             };
 
@@ -293,7 +293,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 5,
                 Name = "Christopher Nolan",
                 Bio = "Christopher Nolan is a British and American filmmaker. Known for his Hollywood blockbusters with complex storytelling, he is considered a leading filmmaker of the 21st century.  His accolades include two Academy Awards and two British Academy Film Awards. Nolan was appointed as a Commander of the Order of the British Empire in 2019, and received a knighthood in 2024 for his contributions to film.",
-                BirthDate = DateTime.ParseExact("30/07/1970", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("30/07/1970", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/9/95/Christopher_Nolan_Cannes_2018.jpg"
             };
 
@@ -302,7 +302,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 6,
                 Name = "Anthony Russo",
                 Bio = "Anthony Russo and Joseph Russo collectively known as the Russo brothers, are American directors, producers, and screenwriters. They direct most of their work together. They are best known for directing four films in the Marvel Cinematic Universe: Captain America: The Winter Soldier, Captain America: Civil War, Avengers: Infinity War, and Avengers: Endgame.",
-                BirthDate = DateTime.ParseExact("03/02/1970", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("03/02/1970", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://imageio.forbes.com/specials-images/imageserve/62ca4312f62dcb9b9e34a6e9/Russo-Brothers---Exterior-horizontal/960x0.jpg?format=jpg&width=1440"
             };
 
@@ -311,7 +311,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Id = 7,
                 Name = "Dennis Dugan",
                 Bio = "Dennis Dugan is an American film director, actor, and comedian. He is known for directing the films Problem Child, Brain Donors, Beverly Hills Ninja and National Security, and his partnership with comedic actor Adam Sandler, for whom he directed the films Happy Gilmore, Big Daddy, The Benchwarmers, I Now Pronounce You Chuck & Larry etc.",
-                BirthDate = DateTime.ParseExact("05/09/1943", DateTimeBirthdate, CultureInfo.InvariantCulture, DateTimeStyles.None),
+                BirthDate = DateTime.ParseExact("05/09/1943", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = "https://images.hobbydb.com/processed_uploads/subject_photo/subject_photo/image/49245/1553650458-4334-5610/Dennis_20Dugan_large.jpg"
             };
         }

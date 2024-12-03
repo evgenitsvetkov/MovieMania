@@ -41,9 +41,11 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
         [Comment("User's city")]
         public string City { get; set; } = null!;
 
+        [MaxLength(StateMaxLength)]
         [Comment("User's state")]
         public string State { get; set; } = string.Empty;
 
+        [MaxLength(PostalCodeMaxLength)]
         [Comment("User's postal code")]
         public string PostalCode { get; set; } = string.Empty;
 
