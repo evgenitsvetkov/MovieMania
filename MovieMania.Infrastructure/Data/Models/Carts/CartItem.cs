@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieMania.Infrastructure.Data.Models.Movies;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,9 +15,15 @@ namespace MovieMania.Infrastructure.Data.Models.Carts
         [Comment("Cart identifier")]
         public int CartId { get; set; }
 
+        [ForeignKey(nameof(CartId))]
+        public Cart Cart { get; set; }
+
         [Required]
         [Comment("Movie identifier")]
         public int MovieId { get; set; }
+
+        [ForeignKey(nameof(MovieId))]
+        public Movie Movie { get; set; } = null!;
 
         [Required]
         [Comment("Item quantity")]

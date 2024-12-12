@@ -13,9 +13,22 @@ namespace MovieMania.Infrastructure.Data
 {
     public class MovieManiaDbContext : IdentityDbContext<ApplicationUser>
     {
-        public MovieManiaDbContext(DbContextOptions<MovieManiaDbContext> options)
+        private bool _seedDb;
+
+        public MovieManiaDbContext(DbContextOptions<MovieManiaDbContext> options, bool seed = true)
             : base(options)
         {
+            if (Database.IsRelational())
+            {
+                Database.Migrate();
+            }
+            else
+            {
+                Database.EnsureDeleted();
+                Database.EnsureCreated();
+            }
+
+            _seedDb = seed;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -23,13 +36,17 @@ namespace MovieMania.Infrastructure.Data
             builder.Entity<MovieActor>()
                 .HasKey(ma => new { ma.MovieId, ma.ActorId });
 
-            builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new ActorConfiguration());
-            builder.ApplyConfiguration(new DirectorConfiguration());
-            builder.ApplyConfiguration(new GenreConfiguration());
-            builder.ApplyConfiguration(new MovieConfiguration());
-            builder.ApplyConfiguration(new MovieActorConfiguration());
-            builder.ApplyConfiguration(new UserClaimsConfiguration());
+            if (_seedDb)
+            {
+                builder.ApplyConfiguration(new UserConfiguration());
+                builder.ApplyConfiguration(new ActorConfiguration());
+                builder.ApplyConfiguration(new DirectorConfiguration());
+                builder.ApplyConfiguration(new GenreConfiguration());
+                builder.ApplyConfiguration(new MovieConfiguration());
+                builder.ApplyConfiguration(new MovieActorConfiguration());
+                builder.ApplyConfiguration(new UserClaimsConfiguration());
+                builder.ApplyConfiguration(new CartConfiguration());
+            }
 
             base.OnModelCreating(builder);
         }
