@@ -50,7 +50,7 @@
         public const int UserCountryMinLength = 2;
 
         public const int UserPhoneMaxLength = 20;
-        public const int UserPhoneMinLength = 20;
+        public const int UserPhoneMinLength = 10;
 
         public const int UserEmailMaxLength = 50;
         public const int UserEmailMinLength = 10;

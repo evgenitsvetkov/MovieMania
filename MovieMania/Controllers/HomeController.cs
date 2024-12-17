@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
-using MovieMania.Models;
-using System.Diagnostics;
 
 namespace MovieMania.Controllers
 {
