@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieMania.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using MovieMania.Infrastructure.Data;
 namespace MovieMania.Infrastructure.Migrations
 {
     [DbContext(typeof(MovieManiaDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241207103557_AddedCartItemMoviesReference")]
+    partial class AddedCartItemMoviesReference
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -418,7 +420,7 @@ namespace MovieMania.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f926a30-8ef9-42e2-8e02-5723c98c8e26",
+                            ConcurrencyStamp = "2ad30732-d6fd-4c09-83aa-365a88844c58",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Evgeni",
@@ -426,9 +428,9 @@ namespace MovieMania.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@mail.com",
                             NormalizedUserName = "admin@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEElJ95Ujks5U9lmJHp88qr3i+rPDz+CDNK8lJi+k6gEfrspG5lD++ENZjWKTm2NDLg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEENX4s+XJgV5/GRYqteaTyBS6TFMdaKOl6fp+JwDg0MSiF0SSQT2nwitfdlWkfIjcQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9adf27ca-75de-41e4-9efe-94dc9dfdc79b",
+                            SecurityStamp = "f05b9b8e-b7ec-4115-aa07-da17a23df9d4",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         },
@@ -436,7 +438,7 @@ namespace MovieMania.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "307551c5-be6a-48f6-9fce-22d1046700fe",
+                            ConcurrencyStamp = "cf1c3034-b0f3-4b61-9f4a-55bf07b4e5c7",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Guest",
@@ -444,9 +446,9 @@ namespace MovieMania.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "guest@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAHe6Bc09LYBL+MSBdIcVwuMMgMyX24hTBtFaV4u+4f0sucuVY+IV9IP9flvmmq82w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE2HMeyrmtDsslMownqmVuWYGv4vD4EoFjvjkVxOlc+8Ka6vkVJwGvYIMEWyZuyvsw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3a9cb536-1ce4-4a3f-8738-9df9347b0a2a",
+                            SecurityStamp = "2ce37c20-7c7b-4d6b-85df-453f4c5bc2df",
                             TwoFactorEnabled = false,
                             UserName = "guest@mail.com"
                         });
@@ -1046,7 +1048,7 @@ namespace MovieMania.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieMania.Infrastructure.Data.Models.Carts.CartItem", b =>
                 {
-                    b.HasOne("MovieMania.Infrastructure.Data.Models.Carts.Cart", "Cart")
+                    b.HasOne("MovieMania.Infrastructure.Data.Models.Carts.Cart", null)
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1057,8 +1059,6 @@ namespace MovieMania.Infrastructure.Migrations
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("Movie");
                 });

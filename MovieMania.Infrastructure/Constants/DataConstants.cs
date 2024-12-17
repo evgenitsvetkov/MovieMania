@@ -29,7 +29,7 @@
 
         public const int LastNameMaxLength = 50;
 
-        public const string DateTimeBirthdate = "dd/MM/yyyy";
+        public const string DateTimeFormat = "dd/MM/yyyy";
 
         public const int UserFirstNameMaxLength = 50;
         public const int UserFirstNameMinLength = 1;
@@ -40,20 +40,25 @@
         public const int UsernameMaxLength = 50;
         public const int UsernameMinLength = 10;
 
-        public const int UserAddressMaxLength = 150;
+        public const int UserAddressMaxLength = 95;
         public const int UserAddressMinLength = 10;
 
-        public const int UserCityMaxLength = 50;
+        public const int UserCityMaxLength = 35;
         public const int UserCityMinLength = 5;
 
         public const int UserCountryMaxLength = 50;
         public const int UserCountryMinLength = 2;
 
         public const int UserPhoneMaxLength = 20;
-        public const int UserPhoneMinLength = 20;
+        public const int UserPhoneMinLength = 10;
 
         public const int UserEmailMaxLength = 50;
         public const int UserEmailMinLength = 10;
 
+        public const int PostalCodeMaxLength = 10;
+        public const int PostalCodeMinLength = 4;
+
+        public const int StateMaxLength = 50;
+        public const int StateMinLength = 5;
     }
 }

@@ -2,7 +2,7 @@
 
 <div class="col-md-4"> 
     <div class="card mb-3"> 
-        <img class="card-img-top" src="@Model.ImageUrl" alt="Movie Image"> 
+        <img class="card-img-top" height="450rem" src="@Model.ImageUrl" alt="Movie Image">
         <div class="card-body text-center"> 
             <h4>@Model.Title</h4> 
             <h6>Genre: <b>@Model.Genre</b></h6>
@@ -12,7 +12,12 @@
                 <b>@String.Format("{0:f2}", Model.Price) BGN</b> 
             </h6>
             <br /> 
-            <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a> 
+            <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
+
+            <form method="post" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" class="d-inline">
+                <button type="submit" class="btn btn-success">Add To Cart</button>
+            </form>
+
             @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin()) 
             { 
                 <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>

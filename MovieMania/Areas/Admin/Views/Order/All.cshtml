@@ -1,0 +1,85 @@
+﻿@model IEnumerable<OrderServiceModel>
+
+@{
+    ViewBag.Title = "All Orders";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                <label>Order Id</label>
+            </th>
+            <th>
+                <label>First Name</label>
+            </th>
+            <th>
+                <label>Last Name</label>
+            </th>
+            <th>
+                <label>Phone</label>
+            </th>
+            <th>
+                <label>Email</label>
+            </th>
+            <th>
+                <label>Address</label>
+            </th>
+            <th>
+                <label>Country</label>
+            </th>
+            <th>
+                <label>PostalCode</label>
+            </th>
+            <th>
+                <label>State</label>
+            </th>
+            <th>
+                <label>Total Price</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>
+                    <label>@order.OrderId</label>
+                </td>               
+                <td>
+                    <label>@order.FirstName</label>
+                </td>
+                <td>
+                    <label>@order.LastName</label>
+                </td>
+                <td>
+                    <label>@order.Phone</label>
+                </td>
+                <td>
+                    <label>@order.Email</label>
+                </td>
+                <td>
+                    <label>@order.Address</label>
+                </td>
+                <td>
+                    <label>@order.Country</label>
+                </td>
+                <td>
+                    <label>@order.PostalCode</label>
+                </td>
+                <td>
+                    <label>@order.State</label>
+                </td>
+                <td>
+                    <label>@order.TotalAmount</label>
+                </td>                
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="text-center">
+    <a class="btn btn-primary btn-lg" asp-area="Admin" asp-controller="Home" asp-action="DashBoard" title="Dashboard">Back To Dashboard</a>
+</div>

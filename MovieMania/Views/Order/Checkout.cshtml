@@ -1,0 +1,13 @@
+﻿@model OrderFormModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h2 class="title-center">@ViewData["Title"]</h2>
+<hr />
+
+<partial name="_OrderFormPartial" model="@Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

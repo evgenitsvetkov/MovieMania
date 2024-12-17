@@ -45,7 +45,6 @@
     </div> 
 </form> 
 
-
 @{ 
     var previousPage = Model.CurrentPage - 1; 
     
@@ -68,8 +67,6 @@
         asp-route-searchTerm="@Model.SearchTerm" 
         asp-route-sorting="@((int)Model.Sorting)"><<</a>
     </div>
-
-
 
     @{ 
         var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Movies.Any(); 

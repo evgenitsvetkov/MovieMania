@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMania", "MovieMania\MovieMania.csproj", "{6B9AB096-0BB8-4984-B4DD-EE61816521B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieMania", "MovieMania\MovieMania.csproj", "{6B9AB096-0BB8-4984-B4DD-EE61816521B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMania.Core", "MovieMania.Core\MovieMania.Core.csproj", "{81E5664D-A90F-4342-9A90-7844EB8221C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieMania.Core", "MovieMania.Core\MovieMania.Core.csproj", "{81E5664D-A90F-4342-9A90-7844EB8221C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMania.Infrastructure", "MovieMania.Infrastructure\MovieMania.Infrastructure.csproj", "{3D474E49-7468-4A99-A972-AB1CE3A62EC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieMania.Infrastructure", "MovieMania.Infrastructure\MovieMania.Infrastructure.csproj", "{3D474E49-7468-4A99-A972-AB1CE3A62EC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMania.Tests", "MovieMania.Tests\MovieMania.Tests.csproj", "{4DCEA6D8-0583-4D2E-B3E0-511F6DE9E479}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{3D474E49-7468-4A99-A972-AB1CE3A62EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D474E49-7468-4A99-A972-AB1CE3A62EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D474E49-7468-4A99-A972-AB1CE3A62EC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DCEA6D8-0583-4D2E-B3E0-511F6DE9E479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DCEA6D8-0583-4D2E-B3E0-511F6DE9E479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DCEA6D8-0583-4D2E-B3E0-511F6DE9E479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DCEA6D8-0583-4D2E-B3E0-511F6DE9E479}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
