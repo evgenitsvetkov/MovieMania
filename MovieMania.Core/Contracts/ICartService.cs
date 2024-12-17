@@ -8,8 +8,6 @@ namespace MovieMania.Core.Contracts
     {
         Task<CartItemQueryServiceModel> AllAsync(int cartId);
 
-        Task IncreaseQuantity();
-
         Task<bool> ExistsCartItemByMovieId(int cartId, int movieId);
 
         Task<int> CreateCartAsync(string userId);
@@ -23,6 +21,7 @@ namespace MovieMania.Core.Contracts
         Task<bool> CartItemExistsByMovieIdAsync(int movieId, int cartId);
 
         Task<bool> CartItemExistsByIdAsync(int cartId, int cartItemId);
+
         Task UpdateCartItemQuantity(int cartId, int cartItemId);
 
         Task<CartItemServiceModel> GetCartItemServiceModelAsync(int cartId, int movieId);

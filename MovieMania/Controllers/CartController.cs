@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
-using MovieMania.Infrastructure.Data.Common;
 using System.Security.Claims;
 
 namespace MovieMania.Controllers
