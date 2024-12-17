@@ -67,11 +67,6 @@ namespace MovieMania.Core.Services
             };
         }
 
-        public Task IncreaseQuantity()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> ExistsCartItemByMovieId(int cartId, int movieId)
         {
             return await unitOfWork.AllReadOnly<CartItem>().AnyAsync(c => c.CartId == cartId && c.MovieId == movieId);
