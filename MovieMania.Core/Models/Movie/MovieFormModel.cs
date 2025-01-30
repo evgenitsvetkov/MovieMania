@@ -10,7 +10,7 @@ namespace MovieMania.Core.Models.Movie
         [StringLength(MovieTitleMaxLength,
             MinimumLength = MovieTitleMinLength,
             ErrorMessage = LengthMessage)]
-        public string Title { get; set; } = null!;
+        public string Title { get; set; } = string.Empty;
 
         [Display(Name = "Genre")]
         public int GenreId { get; set; }
@@ -19,9 +19,6 @@ namespace MovieMania.Core.Models.Movie
             = new List<MovieGenreServiceModel>();
 
         [Required(ErrorMessage = RequiredMessage)]
-        [Range(MovieReleaseDateMinLength,
-            MovieReleaseDateMaxLength,
-            ErrorMessage = LengthMessage)]
         [Display(Name = "Release date")]
         public int ReleaseDate { get; set; }
 
@@ -30,15 +27,14 @@ namespace MovieMania.Core.Models.Movie
             MoviePriceMinLength,
             MoviePriceMaxLength,
             ConvertValueInInvariantCulture = true,
-            ErrorMessage = "Price must be a positive number and less than {2} leva")]
+            ErrorMessage = PriceMustBePositiveMessage)]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(MovieDescriptionMaxLength,
             MinimumLength = MovieDescriptionMinLength,
             ErrorMessage = LengthMessage)]
-        public string Description { get; set; } = null!;
-
+        public string Description { get; set; } = string.Empty;
 
         [Display(Name = "Director")]
         public int DirectorId { get; set; }
@@ -48,7 +44,7 @@ namespace MovieMania.Core.Models.Movie
 
         [Required(ErrorMessage = RequiredMessage)]
         [Display(Name = "Image URL")]
-        public string ImageUrl { get; set; } = null!;
+        public string ImageUrl { get; set; } = string.Empty;
 
     }
 }

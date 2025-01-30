@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
 using System.Security.Claims;
 
@@ -15,6 +16,7 @@ namespace MovieMania.Controllers
             movieService = _movieService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> All()
         {
@@ -32,6 +34,7 @@ namespace MovieMania.Controllers
             return View(cartItems);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Add(int id)
         {
@@ -61,6 +64,7 @@ namespace MovieMania.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> ClearCart()
         {
@@ -78,6 +82,7 @@ namespace MovieMania.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> RemoveFromCart(int cartItemId)
         {

@@ -29,9 +29,9 @@ namespace MovieMania.Tests.UnitTests
 
         public ApplicationUser GuestUser { get; private set; }
 
-        public IdentityUserClaim<string> AdminUserClaim { get; set; }
+        public IdentityUserClaim<string> AdminUserClaim { get; set; } = null!;
 
-        public IdentityUserClaim<string> GuestUserClaim { get; set; }
+        public IdentityUserClaim<string> GuestUserClaim { get; set; } = null!;
 
         public Movie FirstMovie { get; private set; }
 
@@ -63,11 +63,11 @@ namespace MovieMania.Tests.UnitTests
 
         public Genre ThirdGenre { get; private set; }
 
-        public MovieActor FirstMovieActor { get; private set; }
+        public MovieActor FirstMovieActor { get; private set; } = null!;
 
-        public MovieActor SecondMovieActor { get; private set; }
+        public MovieActor SecondMovieActor { get; private set; } = null!;
 
-        public MovieActor ThirdMovieActor { get; private set; }
+        public MovieActor ThirdMovieActor { get; private set; } = null!;
 
         private void SeedDatabase()
         {

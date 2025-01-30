@@ -74,7 +74,7 @@ namespace MovieMania.Tests.UnitTests
             {
                 Name = "New Test Director Name",
                 Bio = "This is a description of the new director. This is a description of the new director. This is a description of the new director.",
-                BirthDate = DateTime.Now,
+                BirthDate = DateTime.ParseExact("20/10/1944", "20/10/1944", CultureInfo.InvariantCulture, DateTimeStyles.None),
                 ImageUrl = ""
             };
 

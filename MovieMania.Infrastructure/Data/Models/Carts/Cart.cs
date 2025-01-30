@@ -14,10 +14,10 @@ namespace MovieMania.Infrastructure.Data.Models.Carts
 
         [Required]
         [Comment("User's identifier")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; } = null!;
 
         [Required]
         [Comment("Total amount of all items in the cart")]

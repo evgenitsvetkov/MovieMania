@@ -16,7 +16,7 @@ namespace MovieMania.Infrastructure.Data.Models.Carts
         public int CartId { get; set; }
 
         [ForeignKey(nameof(CartId))]
-        public Cart Cart { get; set; }
+        public Cart Cart { get; set; } = null!;
 
         [Required]
         [Comment("Movie identifier")]

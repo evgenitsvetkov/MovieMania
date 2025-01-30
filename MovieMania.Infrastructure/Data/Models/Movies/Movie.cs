@@ -30,7 +30,6 @@ namespace MovieMania.Infrastructure.Data.Models.Movies
         public Genre Genre { get; set; } = null!;
 
         [Required]
-        [MaxLength(MovieReleaseDateMaxLength)]
         [Comment("Movie's release date")]
         public int ReleaseDate { get; set; }
 

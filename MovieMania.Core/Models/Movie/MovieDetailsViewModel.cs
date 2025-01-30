@@ -8,8 +8,6 @@
 
         public string Genre { get; set; } = null!;
 
-        public IEnumerable<string> Genres { get; set; } = null!;
-
         public string ImageURL { get; set; } = null!;
     }
 }

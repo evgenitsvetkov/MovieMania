@@ -2,7 +2,7 @@
 {
     public class DirectorDetailsServiceModel : DirectorServiceModel
     {
-        public string Bio { get; set; } = string.Empty;
+        public string Bio { get; set; } = null!;
 
         public DateTime BirthDate { get; set; }
     }

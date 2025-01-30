@@ -4,8 +4,8 @@
     {
         public int Id { get; set; }
 
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; set; } = null!;
 
-        public string ImageURL { get; set; } = string.Empty;
+        public string ImageURL { get; set; } = null!;
     }
 }
