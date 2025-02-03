@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
-using MovieMania.Core.Models.Cart;
 using MovieMania.Core.Models.Order;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Carts;
@@ -55,7 +54,7 @@ namespace MovieMania.Core.Services
                     ItemTotal = item.ItemTotal,
                     MovieId = item.MovieId,
                     Quantity = item.Quantity,
-                    OrderId = orderId,
+                    OrderId = orderId
                 };
                 await unitOfWork.AddAsync(model);
             }
@@ -92,7 +91,7 @@ namespace MovieMania.Core.Services
 
         public async Task<OrderServiceModel> GetOrderServiceModelAsync(int id, string userId)
         {
-            var order = await unitOfWork.AllReadOnly<Order>()
+            return await unitOfWork.AllReadOnly<Order>()
                 .Where(o => o.OrderId == id && o.UserId == userId)
                 .Select(o => new OrderServiceModel()
                 {
@@ -116,14 +115,7 @@ namespace MovieMania.Core.Services
                         Title = od.Movie.Title
                     })
                 })
-                .FirstOrDefaultAsync();
-
-            if (order == null)
-            {
-                return null;
-            }
-
-            return order;
+                .FirstAsync();
         }
     }
 }
