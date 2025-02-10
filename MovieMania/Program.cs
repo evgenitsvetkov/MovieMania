@@ -8,12 +8,6 @@ builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity(builder.Configuration);
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
-
-    options.Cookie.HttpOnly = true;
-});
 
 builder.Services.AddControllersWithViews(options =>
 {
@@ -38,7 +32,6 @@ else
     app.UseHsts();
 }
 
-app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

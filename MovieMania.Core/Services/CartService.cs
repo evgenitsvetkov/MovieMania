@@ -4,7 +4,6 @@ using MovieMania.Core.Models.Cart;
 using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Carts;
-using System.Linq;
 
 namespace MovieMania.Core.Services
 {
@@ -18,58 +17,39 @@ namespace MovieMania.Core.Services
             unitOfWork = _unitOfWork;
         }
 
-        public async Task AddToCartAsync(string userId, MovieDetailsServiceModel model)
+        public async Task CreateCartItemAsync(int cartId, MovieServiceModel model)
         {
-            var cart = await unitOfWork.AllReadOnly<Cart>()
-                 .Where(c => c.UserId == userId)
-                 .FirstOrDefaultAsync();
-
-            var cartItem = cart.CartItems.FirstOrDefault(c => c.MovieId == model.Id);
-
-            if (cartItem != null)
-            {
-                cartItem.Quantity++;
-                await unitOfWork.SaveChangesAsync();
-            }
-            else
-            {
-                var newItem = new CartItem()
-                {
-                    CartId = cart.CartId,
-                    MovieId = model.Id,
-                    ItemTotal = model.Price,
-                    Quantity = 0,
-                };
-                await unitOfWork.AddAsync(newItem);
-            }
-
+           var newItem = new CartItem()
+           {
+               CartId = cartId,
+               MovieId = model.Id,
+               ItemTotal = model.Price,
+               Quantity = 1,
+           };
+           
+            await unitOfWork.AddAsync(newItem);
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<CartItemQueryServiceModel> AllAsync(int cartId)
+        public async Task<CartServiceModel> AllAsync(int cartId)
         {
-            var cartItems = await unitOfWork.AllReadOnly<CartItem>()
+            return await unitOfWork.AllReadOnly<Cart>()
                 .Where(c => c.CartId == cartId)
-                .Select(c => new CartItemServiceModel()
+                .Select(c => new CartServiceModel()
                 {
-                    CartItemId = c.CartItemId,
-                    Title = c.Movie.Title,
-                    ImageUrl = c.Movie.ImageURL,
-                    Quantity = c.Quantity,
-                    ItemTotal = c.ItemTotal
+                    CartId = c.CartId,
+                    TotalPrice = c.TotalAmount,
+                    CartItems = c.CartItems.Select(ci => new CartItemServiceModel()
+                    {
+                        CartItemId = ci.CartItemId,
+                        Title = ci.Movie.Title,
+                        ImageUrl = ci.Movie.ImageURL,
+                        Quantity = ci.Quantity,
+                        ItemTotal = ci.ItemTotal
+                    })
+                    .ToList()
                 })
-                .ToListAsync();
-
-            return new CartItemQueryServiceModel()
-            {
-                TotalPrice = cartItems.Sum(ci => ci.Quantity * ci.ItemTotal),
-                CartItems = cartItems
-            };
-        }
-
-        public async Task<bool> ExistsCartItemByMovieId(int cartId, int movieId)
-        {
-            return await unitOfWork.AllReadOnly<CartItem>().AnyAsync(c => c.CartId == cartId && c.MovieId == movieId);
+                .FirstAsync();
         }
 
         public async Task<int> CreateCartAsync(string userId)
@@ -79,7 +59,6 @@ namespace MovieMania.Core.Services
                 CartItems = new List<CartItem>(),
                 UserId = userId,
                 TotalAmount = 0,
-                
             };
 
             await unitOfWork.AddAsync(newCart);
@@ -109,44 +88,61 @@ namespace MovieMania.Core.Services
                 .AnyAsync(ci => ci.MovieId == movieId && ci.CartId == cartId);
         }
 
-        public async Task UpdateCartItemQuantity(int cartId, int cartItemId)
+        public async Task IncreaseCartItemQuantityAsync(int cartId, int cartItemId)
         {
             var item = await unitOfWork.All<CartItem>()
-                .Where(c => c.CartItemId == cartItemId && c.CartId == cartId)
-                .FirstAsync();
+                .Include(ci => ci.Movie)
+                .Where(ci => ci.CartId == cartId && ci.CartItemId == cartItemId)
+                .FirstOrDefaultAsync();
 
-            item.Quantity += 1;
-            await unitOfWork.SaveChangesAsync();
+            if (item != null)
+            {
+                item.Quantity++;
+                item.ItemTotal = item.Quantity * item.Movie.Price;
+                await unitOfWork.SaveChangesAsync();
+            }
         }
 
-        public async Task<CartItemServiceModel> GetCartItemServiceModelAsync(int cartId, int movieId)
+        public async Task DecreaseCartItemQuantityAsync(int cartId, int cartItemId)
         {
-            return await unitOfWork.AllReadOnly<CartItem>()
-                .Where(ci => ci.CartId == cartId && ci.MovieId == movieId)
-                .Select(ci => new CartItemServiceModel()
-                {
-                    CartItemId = ci.CartItemId,
-                    ImageUrl = ci.Movie.ImageURL,
-                    Title = ci.Movie.Title,
-                    ItemTotal = ci.ItemTotal,
-                    Quantity = ci.Quantity
-                })
+            var item = await unitOfWork.All<CartItem>()
+                .Include(ci => ci.Movie)
+                .Where(ci => ci.CartId == cartId && ci.CartItemId == cartItemId)
                 .FirstAsync();
+            
+            if (item != null)
+            {
+                item.Quantity--;
+                item.ItemTotal = item.Quantity * item.Movie.Price;
+
+                if (item.Quantity <= 0)
+                {
+                    item.Quantity = 1;
+                }
+
+                await unitOfWork.SaveChangesAsync();
+            }
+            
         }
 
         public async Task ClearCartAsync(int cartId)
         {
             var cart = await unitOfWork.All<Cart>()
-                .Where(c => c.CartId == cartId)
                 .Include(ci => ci.CartItems)
+                .Where(c => c.CartId == cartId)
                 .FirstOrDefaultAsync();
 
-            foreach(var cartitem in cart.CartItems)
+            if (cart != null)
             {
-                await unitOfWork.DeleteAsync<CartItem>(cartitem.CartItemId);
-            }
+                cart.TotalAmount = 0;
 
-            await unitOfWork.SaveChangesAsync();
+                foreach (var cartitem in cart.CartItems)
+                {
+                    await unitOfWork.DeleteAsync<CartItem>(cartitem.CartItemId);
+                }
+
+                await unitOfWork.SaveChangesAsync();
+            }
         }
 
         public async Task RemoveFromCartAsync(int cartId, int cartItemId)
@@ -155,13 +151,7 @@ namespace MovieMania.Core.Services
                 .Where(c => c.CartItemId == cartItemId && c.CartId == cartId)
                 .FirstAsync();
 
-            if (cartItem.Quantity > 1)
-            {
-                cartItem.Quantity -= 1;
-                await unitOfWork.SaveChangesAsync();
-            }
-
-            await unitOfWork.DeleteAsync<CartItem>(cartItem);
+            await unitOfWork.DeleteAsync<CartItem>(cartItem.CartItemId);
             await unitOfWork.SaveChangesAsync();
         }
 
@@ -169,6 +159,62 @@ namespace MovieMania.Core.Services
         {
             return await unitOfWork.AllReadOnly<CartItem>()
                 .AnyAsync(ci => ci.CartItemId == cartItemId && ci.CartId == cartId);
+        }
+
+        public async Task<int> GetCartItemIdAsync(int cartId, int movieId)
+        {
+            var cartItem = await unitOfWork.AllReadOnly<CartItem>()
+                .Where(ci => ci.CartId == cartId && ci.MovieId == movieId)
+                .FirstAsync();
+
+            return cartItem.CartItemId;
+        }
+
+        public async Task<int> GetCartItemsCountAsync(int cartId)
+        {
+            return await unitOfWork.AllReadOnly<CartItem>()
+                .Where(ci => ci.CartId == cartId)
+                .SumAsync(ci => ci.Quantity);
+        }
+
+        public async Task SumCartTotalPriceAsync(int cartId)
+        {
+            var cart = await unitOfWork.All<Cart>()
+                .Include(c => c.CartItems)
+                .Where(c => c.CartId == cartId)
+                .FirstOrDefaultAsync();
+
+            if (cart != null)
+            {
+                var cartTotalPrice = cart.CartItems.Sum(c => c.ItemTotal);
+                cart.TotalAmount = cartTotalPrice;
+                
+                await unitOfWork.SaveChangesAsync();
+            }
+        }
+
+        public async Task<CartItemServiceModel> GetCartItemByIdAsync(int cartId, int cartItemId)
+        {
+            return await unitOfWork.AllReadOnly<CartItem>()
+                .Where(ci => ci.CartItemId == cartItemId && ci.CartId == cartId)
+                .Select(ci => new CartItemServiceModel()
+                {
+                    CartItemId = cartItemId,
+                    Title = ci.Movie.Title,
+                    Quantity = ci.Quantity,
+                    ImageUrl = ci.Movie.ImageURL,
+                    ItemTotal = ci.ItemTotal,
+                })
+                .FirstAsync();
+        }
+
+        public async Task<decimal> GetCartTotalAmountAsync(int cartId)
+        {
+            var cartTotalPrice = await unitOfWork.AllReadOnly<Cart>()
+                .Where(c => c.CartId == cartId)
+                .FirstAsync();
+
+            return cartTotalPrice.TotalAmount;
         }
     }
 }

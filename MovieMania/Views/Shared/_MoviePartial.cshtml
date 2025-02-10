@@ -1,9 +1,14 @@
-﻿@model MovieServiceModel 
+﻿@model MovieServiceModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
 
 <div class="col-md-4"> 
     <div class="card mb-3"> 
-        <img class="card-img-top" height="450rem" src="@Model.ImageUrl" alt="Movie Image">
-        <div class="card-body text-center"> 
+        <img class="card-img-top" style="height: 30rem" src="@Model.ImageUrl" alt="Movie Image">
+        <div id="cartBody" class="card-body text-center"> 
             <h4>@Model.Title</h4> 
             <h6>Genre: <b>@Model.Genre</b></h6>
             <h6>Release Date: <b>@Model.ReleaseDate</b></h6>
@@ -14,15 +19,13 @@
             <br /> 
             <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
 
-            <form method="post" asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" class="d-inline">
-                <button type="submit" class="btn btn-success">Add To Cart</button>
-            </form>
+            <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
+            <button class="btn btn-success add-to-cart" data-id="@Model.Id" data-title="@Model.Title">Add To Cart</button>          
 
             @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin()) 
             { 
                 <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
                 <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-                <p></p> 
             } 
         </div> 
     </div> 

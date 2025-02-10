@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
+using MovieMania.Core.Models.Cart;
 using System.Security.Claims;
+using static MovieMania.Core.Constants.MessageConstants;
 
 namespace MovieMania.Controllers
 {
@@ -16,10 +18,15 @@ namespace MovieMania.Controllers
             movieService = _movieService;
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> All()
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return Redirect(LoginUrl);
+            }
+
             var userId = User.Id();
 
             if (await cartService.CartExistsAsync(userId) == false)
@@ -28,21 +35,33 @@ namespace MovieMania.Controllers
             }
 
             var cartId = await cartService.GetCartIdAsync(userId);
+            await cartService.SumCartTotalPriceAsync(cartId);
 
             var cartItems = await cartService.AllAsync(cartId);
 
             return View(cartItems);
         }
 
-        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Add(int id)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToCart([FromBody]CartRequestModel model)
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = InvalidInputMessage });
+            }
+
             var userId = User.Id();
 
-            if (await movieService.ExistsAsync(id) == false)
+            if (await movieService.ExistsAsync(model.Id) == false)
             {
-                return BadRequest();
+                return NotFound(new { success = false, message = MovieNotFoundMessage });
             }
 
             if (await cartService.CartExistsAsync(userId) == false)
@@ -52,53 +71,151 @@ namespace MovieMania.Controllers
 
             var cartId = await cartService.GetCartIdAsync(userId);
 
-            if (await cartService.CartItemExistsByMovieIdAsync(id, cartId) == false)
+            if (await cartService.CartItemExistsByMovieIdAsync(model.Id, cartId) == false)
             {
-                var movieModel = await movieService.MoviesDetailsByIdAsync(id);
-                await cartService.AddToCartAsync(userId, movieModel);                
+                var movieModel = await movieService.MoviesDetailsByIdAsync(model.Id);
+                await cartService.CreateCartItemAsync(cartId, movieModel);      
+            } 
+            else
+            {
+                var cartItemId = await cartService.GetCartItemIdAsync(cartId, model.Id);
+                await cartService.IncreaseCartItemQuantityAsync(cartId, cartItemId);
             }
 
-            var cartItem = await cartService.GetCartItemServiceModelAsync(cartId, id);
-            await cartService.UpdateCartItemQuantity(cartId, cartItem.CartItemId);
+            await cartService.SumCartTotalPriceAsync(cartId);
 
-            return RedirectToAction(nameof(All));
+            return Json(new { success = true });
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ClearCart()
         {
-            var userId = User.Id();
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
 
-            var cartId = await cartService.GetCartIdAsync(userId);
+            var userId = User.Id();
 
             if (await cartService.CartExistsAsync(userId) == false)
             {
-                return BadRequest();
+                return NotFound();
             }
 
+            var cartId = await cartService.GetCartIdAsync(userId);
+
             await cartService.ClearCartAsync(cartId);
+
+            TempData[UserMessageSuccess] = ClearCartSuccessMessage;
 
             return RedirectToAction(nameof(All));
         }
 
-        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int cartItemId)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveFromCart([FromBody]CartRequestModel model) 
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = InvalidInputMessage });
+            }
+
             var userId = User.Id();
+
+            if (!await cartService.CartExistsAsync(userId))
+            {
+                return NotFound(new { success = false, message = CartNotFoundMessage });
+            }
 
             var cartId = await cartService.GetCartIdAsync(userId);
 
-            if (await cartService.CartItemExistsByIdAsync(cartId, cartItemId) == false)
+            if (await cartService.CartItemExistsByIdAsync(cartId, model.Id) == false)
             {
-                return BadRequest();
+                return NotFound(new { success = false, message = CartItemNotFoundMessage }); 
             }
 
-            await cartService.RemoveFromCartAsync(cartId, cartItemId);
+            await cartService.RemoveFromCartAsync(cartId, model.Id);
+            await cartService.SumCartTotalPriceAsync(cartId);
 
-            return RedirectToAction("All", "Cart");
+            decimal cartTotalAmount = await cartService.GetCartTotalAmountAsync(cartId);
+
+            return Json(new { success = true, newCartTotalAmount = cartTotalAmount });
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCartItemCount()
+        {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
+            }
+
+            var userId = User.Id();
+
+            if (await cartService.CartExistsAsync(userId) == false)
+            {
+                return NotFound(new { success = false, message = CartNotFoundMessage });
+            }
+
+            int cartId = await cartService.GetCartIdAsync(userId);
+
+            int count = await cartService.GetCartItemsCountAsync(cartId);
+
+            return Json(new { success = true, count });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateQuantity([FromBody]UpdateCartItemRequestModel model)
+        {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = InvalidInputMessage });
+            }
+
+            var userId = User.Id();
+
+            if (await cartService.CartExistsAsync(userId) == false)
+            {
+                return NotFound(new { sucess = false, message = CartNotFoundMessage });
+            }
+
+            var cartId = await cartService.GetCartIdAsync(userId);
+
+            if (await cartService.CartItemExistsByIdAsync(cartId, model.Id) == false)
+            {
+                return NotFound(new { success = false, message = CartItemNotFoundMessage });
+            }
+
+            if (model.IsIncrease)
+            {
+                await cartService.IncreaseCartItemQuantityAsync(cartId, model.Id);
+            } else
+            {
+                await cartService.DecreaseCartItemQuantityAsync(cartId, model.Id);
+            }
+
+            await cartService.SumCartTotalPriceAsync(cartId);           
+
+            var cartItem = await cartService.GetCartItemByIdAsync(cartId, model.Id);
+            var cartTotalAmount = await cartService.GetCartTotalAmountAsync(cartId);
+
+            return Json(new { success = true, newQuantity = cartItem.Quantity, itemPrice = cartItem.ItemTotal,  totalAmount = cartTotalAmount });
+        }
     }
 }
