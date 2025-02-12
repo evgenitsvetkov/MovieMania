@@ -6,7 +6,7 @@ namespace MovieMania.Core.Contracts
 {
     public interface ICartService
     {
-        Task<CartServiceModel> AllAsync(int cartId);
+        Task<CartServiceModel> GetCartServiceModelAsync(string userId);
 
         Task<int> CreateCartAsync(string userId);
 
@@ -32,9 +32,9 @@ namespace MovieMania.Core.Contracts
 
         Task<int> GetCartItemsCountAsync(int cartId);
 
-        Task SumCartTotalPriceAsync(int cartId);
+        Task SumCartTotalAmountAsync(int cartId);
 
-        Task<CartItemServiceModel> GetCartItemByIdAsync(int cartId, int cartItemId);
+        Task<CartItemServiceModel> GetCartItemServiceModelAsync(int cartId, int cartItemId);
 
         Task<decimal> GetCartTotalAmountAsync(int cartId);
     }

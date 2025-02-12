@@ -8,19 +8,27 @@
 
         public const string PriceMustBePositiveMessage = "Price must be a positive number and less than {2} leva";
 
-        public const string MovieNotFoundMessage = "Error while adding movie. The Movie was not found.";
+        public const string MovieNotFoundMessage = "Error while adding movie. Movie not found.";
 
         public const string UserUnauthorizedMessage = "You are not authenticated. Please log in.";
 
         public const string InvalidInputMessage = "Invalid input data. Please check your input data.";
 
-        public const string CartNotFoundMessage = "The cart was not found.";
+        public const string CartNotFoundMessage = "Cart not found.";
 
-        public const string CartItemNotFoundMessage = "The cart item was not found.";
+        public const string CartIsEmptyMessage = "Cart is empty.";
+
+        public const string CartItemNotFoundMessage = "Cart item not found.";
+
+        public const string ClearCartSuccessMessage = "Cart cleared successfully!";
 
         public const string LoginUrl = "/Identity/Account/Login";
 
-        public const string ClearCartSuccessMessage = "You have cleared your cart!";
+        public const string CartAllItemsUrl = "/Cart/All";
+
+        public const string OrderNotFoundMessage = "Order not found.";
+
+        public const string CheckoutSuccessMessage = "Checkout was successful.";
 
         public const string UserMessageSuccess = "UserMessageSuccess";
 

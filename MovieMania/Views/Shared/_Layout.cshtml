@@ -42,7 +42,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/jquery.cart-counter.js"></script>
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <script src="~/js/jquery.cart-counter.js"></script>
+    }
     @await RenderSectionAsync("Scripts", required: false)
     @if (TempData[MessageConstants.UserMessageSuccess] != null)
     {

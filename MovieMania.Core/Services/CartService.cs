@@ -31,14 +31,14 @@ namespace MovieMania.Core.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<CartServiceModel> AllAsync(int cartId)
+        public async Task<CartServiceModel> GetCartServiceModelAsync(string userId)
         {
             return await unitOfWork.AllReadOnly<Cart>()
-                .Where(c => c.CartId == cartId)
+                .Where(c => c.UserId == userId)
                 .Select(c => new CartServiceModel()
                 {
                     CartId = c.CartId,
-                    TotalPrice = c.TotalAmount,
+                    TotalAmount = c.TotalAmount,
                     CartItems = c.CartItems.Select(ci => new CartItemServiceModel()
                     {
                         CartItemId = ci.CartItemId,
@@ -177,7 +177,7 @@ namespace MovieMania.Core.Services
                 .SumAsync(ci => ci.Quantity);
         }
 
-        public async Task SumCartTotalPriceAsync(int cartId)
+        public async Task SumCartTotalAmountAsync(int cartId)
         {
             var cart = await unitOfWork.All<Cart>()
                 .Include(c => c.CartItems)
@@ -193,7 +193,7 @@ namespace MovieMania.Core.Services
             }
         }
 
-        public async Task<CartItemServiceModel> GetCartItemByIdAsync(int cartId, int cartItemId)
+        public async Task<CartItemServiceModel> GetCartItemServiceModelAsync(int cartId, int cartItemId)
         {
             return await unitOfWork.AllReadOnly<CartItem>()
                 .Where(ci => ci.CartItemId == cartItemId && ci.CartId == cartId)

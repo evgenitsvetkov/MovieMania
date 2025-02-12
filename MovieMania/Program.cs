@@ -15,6 +15,10 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 builder.WebHost.UseStaticWebAssets();
 builder.Services.AddApplicationServices();
 
