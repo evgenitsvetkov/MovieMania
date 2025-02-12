@@ -4,14 +4,14 @@ namespace MovieMania.Core.Contracts
 {
     public interface IOrderService
     {
-        Task<int> CreateAsync(OrderFormModel model, string userId);
+        Task<int> CreateAsync(OrderFormModel model, string userId, decimal cartTotalAmount);
 
-        Task<bool> ExistsAsync(int id);
+        Task<bool> ExistsAsync(int orderId);
 
         Task<IEnumerable<OrderServiceModel>> AllAsync();
 
         Task CreateOrderDetailsAsync(int cartId, int orderId);
 
-        Task<OrderServiceModel> GetOrderServiceModelAsync(int id, string userId);
+        Task<OrderServiceModel> GetOrderServiceModelAsync(int orderId, string userId);
     }
 }

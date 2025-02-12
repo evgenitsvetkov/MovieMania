@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static MovieMania.Core.Constants.MessageConstants;
 using static MovieMania.Infrastructure.Constants.DataConstants;
 
