@@ -26,7 +26,7 @@
 
         public const int LastNameMaxLength = 50;
 
-        public const string DateTimeFormat = "dd/MM/yyyy";
+        public const string DateTimeFormat = "dd.MM.yyyy";
 
         public const int UserFirstNameMaxLength = 50;
         public const int UserFirstNameMinLength = 2;

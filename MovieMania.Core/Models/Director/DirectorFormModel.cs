@@ -19,7 +19,8 @@ namespace MovieMania.Core.Models.Director
         public string Bio { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]
-        public DateTime BirthDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; } = DateTime.Now.Date;
 
         [Required(ErrorMessage = RequiredMessage)]
         public string ImageUrl { get; set; } = string.Empty;
