@@ -19,7 +19,7 @@
             <br /> 
             <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
 
-            <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
+            <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
             <button class="btn btn-success add-to-cart" data-id="@Model.Id" data-title="@Model.Title">Add To Cart</button>          
 
             @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin()) 

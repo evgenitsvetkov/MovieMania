@@ -14,7 +14,7 @@
         </div>
         <div class="card col-8 border-0">
             <p style="font-size:25px;"><u>@Model.Name</u></p>
-            <p>Birthdate: <b>@Model.BirthDate</b></p>
+            <p>Birthdate: <b>@Model.BirthDate.ToString("dd.MM.yyyy")</b></p>
             <p>Bio: <b>@Model.Bio</b></p>
             <div class="form-inline">
                 @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
@@ -27,3 +27,14 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+            });
+        </script>
+    }
+}

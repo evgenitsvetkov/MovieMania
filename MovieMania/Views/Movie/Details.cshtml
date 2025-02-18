@@ -30,7 +30,7 @@
                     <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
                     <a class="ml-2 btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a> 
                 }
-                <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
+                <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
                 <button class="btn btn-success add-to-cart" data-id="@Model.Id" data-title="@Model.Title">Add To Cart</button>
             </div> 
             <p></p>
@@ -41,61 +41,18 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-
-            function updateCartCount() {
-                $.ajax({
-                    url: "@Url.Action("GetCartItemCount", "Cart")",
-                    type: "GET",
-                    success: function (response) {
-                        $("#cartCount").text(response.count);
-                    },
-                    error: function () {
-                        console.error("Error fetching cart count");
-                    }
-                });
-            }
-
             $('.add-to-cart').on('click', function (e) {
                 e.preventDefault();
-
-                const data = {
-                    Id: $(this).data('id'),
-                }
-
-                const movieTitle = $(this).data('title')
-
-                $.ajax({
-                    url: "@Url.Action("AddToCart", "Cart")",
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    headers: {
-                        'RequestVerificationToken': $('input[id="RequestVerificationToken"]').val()
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            toastr.success(`You have added ${movieTitle} to your cart!`);
-
-                            updateCartCount();
-                        } else {
-                            toastr.error(response.message, 'Add To Cart Error');
-                        }
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 401) {
-                            window.location.href = "/Identity/Account/Login?ReturnUrl=" + encodeURIComponent(window.location.pathname);
-                        } else if (xhr.status === 404) {
-                            var response = JSON.parse(xhr.responseText);
-
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error(response.message, 'Add To Cart Error');
-                        } else {
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error('An unexpected error occurred while adding a movie to cart.', 'Add To Cart Error');
-                        }
-                    }
-                });
+                CartModule.addToCart($(this).data('id'), $(this).data('title'));
             });
         });
     </script>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.createCart();
+            });
+        </script>
+    }
 }

@@ -20,6 +20,25 @@ namespace MovieMania.Controllers
             logger = _logger;
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCart()
+        {
+            var userId = User.Id();
+            
+            if (await cartService.CartExistsAsync(userId) == false)
+            {
+                logger.LogInformation("Cart not exist for User {UserId}. Creating new cart...", userId);
+                await cartService.CreateCartAsync(userId);
+            }
+
+            var cartId = await cartService.GetCartIdAsync(userId);
+
+            logger.LogInformation("Cart is ready for User ${UserId}", userId);
+            return Json(new { success = true });
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> All()
@@ -35,7 +54,7 @@ namespace MovieMania.Controllers
             if (await cartService.CartExistsAsync(userId) == false)
             {
                 logger.LogInformation("Cart not exist for User {UserId}. Creating new cart...", userId);
-                await cartService.CreateCartAsync(userId);
+                return NotFound();
             }
 
             var cart = await cartService.GetCartServiceModelAsync(userId);
@@ -74,7 +93,7 @@ namespace MovieMania.Controllers
             if (await cartService.CartExistsAsync(userId) == false)
             {
                 logger.LogInformation("Cart not exist for User {UserId}. Creating new cart...", userId);
-                await cartService.CreateCartAsync(userId);
+                return NotFound(new { success = false, message = CartNotFoundMessage });
             }
 
             var cartId = await cartService.GetCartIdAsync(userId);

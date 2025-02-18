@@ -15,7 +15,7 @@
             <input asp-for="SearchTerm" class="form-control" placeholder="...">
         </div>
         <div class="col-md-3">
-            <div class="form-group mt-4 p-2">
+            <div class="form-group mt-3 p-2">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
         </div>
@@ -70,3 +70,14 @@
         <partial name="_DirectorPartial" model="@director" />
     }
 </div>
+
+@section Scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+            });
+        </script>
+    }
+}

@@ -32,13 +32,15 @@
                 <label asp-for="Sorting"></label> 
                 <select asp-for="Sorting" class="form-control"> 
                     <option value="0">Newest</option> 
-                    <option value="1">Lowest price first</option>
+                    <option value="1">Oldest</option>
+                    <option value="2">Highest Price</option>
+                    <option value="3">Lowest Price</option>
                 </select> 
             </div> 
         </div> 
 
         <div class="col-md-3"> 
-            <div class="form-group mt-4 p-2"> 
+            <div class="form-group mt-3 p-2"> 
                 <input type="submit" value="Search" class="btn btn-primary" /> 
             </div> 
         </div> 
@@ -100,75 +102,19 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            
-            function updateCartCount() {
-                $.ajax({
-                    url: "@Url.Action("GetCartItemCount", "Cart")",
-                    type: "GET",
-                    success: function (response) {
-                        if (response.success) {
-                            $("#cartCount").text(response.count);
-                        } else {
-                            console.log(response.message);
-                        }
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 401) {
-                            console.log('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                        } else if (xhr.status === 404) {
-                            console.log('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                        } else {
-                            console.log('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            console.log("An unexpected error occurred while fetching cart count.");
-                        }
-                    }
-                });
-            }
-
             $('.add-to-cart').on('click', function (e) {
                 e.preventDefault();
-
-                const data = {
-                    Id: $(this).data('id'),
-                }
-
-                const movieTitle = $(this).data('title')
-
-                $.ajax({
-                    url: "@Url.Action("AddToCart", "Cart")",
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    headers: {
-                        'RequestVerificationToken': $('input[id="RequestVerificationToken"]').val()
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            toastr.success(`You have added ${movieTitle} to your cart!`);
-
-                            updateCartCount();
-                        } else {
-                            toastr.error(response.message, 'Add To Cart Error');
-                        }
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 401) {
-                            var response = JSON.parse(xhr.responseText);
-                            window.location.href = "/Identity/Account/Login?ReturnUrl=" + encodeURIComponent(window.location.pathname);
-
-                            toastr.error(response.message, 'Add To Cart Error');
-                        } else if (xhr.status === 404) {
-                            var response = JSON.parse(xhr.responseText);
-
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error(response.message, 'Add To Cart Error');
-                        } else {
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error('An unexpected error occurred while adding a movie to cart.', 'Add To Cart Error');
-                        }
-                    }
-                });
+                CartModule.addToCart($(this).data('id'), $(this).data('title'));
             });
         });
     </script>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.createCart();
+            });
+        </script>
+    }
 }

@@ -27,6 +27,7 @@ else
                     <div id="qty buttons" class="mb-2">
                         <span>Quantity:</span>
                         <button class="btn btn-sm btn-outline-primary increase-qty me-2 ms-2" data-id="@item.CartItemId">+</button>
+                        <input class="quantity-input" type="number" min="1" max="24" value="@item.Quantity" step="1" readonly data-id="@item.CartItemId" style="display:none">
                         <span class="quantity-@item.CartItemId">@item.Quantity</span>
                         <button class="btn btn-sm btn-outline-secondary decrease-qty me-2 ms-2" data-id="@item.CartItemId">-</button>
                     </div>
@@ -34,7 +35,7 @@ else
                         Item Price:
                         <b class="itemPrice-@item.CartItemId">@String.Format("{0:f2}", item.ItemTotal) BGN</b>
                     </p>
-                    <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
+                    <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
                     <button class="btn btn-danger remove-item" type="submit" data-id="@item.CartItemId" data-title="@item.Title">Remove Item</button>
                     <p></p>
                 </div>
@@ -44,7 +45,7 @@ else
             <div class="form-inline mb-3">
                 <p><b class="cart-total-amount">Total Amount: @String.Format("{0:f2}", Model.TotalAmount) BGN</b></p>
                 <form asp-action="ClearCart" method="post">
-                    <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
+                    <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
                     <button class="btn btn-danger clear-cart" type="submit">Clear Cart</button>
                 </form>
             </div>
@@ -57,126 +58,48 @@ else
 }
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
 
-            function updateCartCount() {
-                $.ajax({
-                    url: "@Url.Action("GetCartItemCount", "Cart")",
-                    type: "GET",
-                    success: function (response) {
-                        if (response.success) {
-                            $("#cartCount").text(response.count);
-                        } else {
-                            console.log(response.message);
-                        }
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 401) {
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                        } else if (xhr.status === 404) {
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                        } else {
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            console.error("An unexpected error occurred while fetching cart count.");
-                        }
+                $(".increase-qty, .decrease-qty").click(function (e) {
+                    e.preventDefault();
+                    CartModule.updateQuantity($(this).data('id'), $(this).hasClass("increase-qty"));
+                });
+
+                $('.remove-item').on('click', function (e) {
+                    e.preventDefault();
+                    CartModule.removeItem($(this).data('id'), $(this).data('title'));
+                });
+
+                $(".quantity-input").each(function () {
+                    CartModule.updateButtons(this);
+                });
+
+                $(".increase-qty").click(function () {
+                    let input = $(this).siblings(".quantity-input");
+                    let newValue = parseInt(input.val()) + 1;
+
+                    if (newValue <= parseInt(input.attr("max"))) {
+                        input.val(newValue).change();
                     }
                 });
-            }
 
-            $(".increase-qty, .decrease-qty").click(function (e) {
-                e.preventDefault();
+                $(".decrease-qty").click(function () {
+                    let input = $(this).siblings(".quantity-input");
+                    let newValue = parseInt(input.val()) - 1;
 
-                const data = {
-                    Id: $(this).data('id'),
-                    IsIncrease: $(this).hasClass("increase-qty"),
-                };
-
-                $.ajax({
-                    url: "@Url.Action("UpdateQuantity", "Cart")",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(data),
-                    headers: {
-                        'RequestVerificationToken': $('input[id="RequestVerificationToken"]').val()
-                    },
-                    success: function (response) {
-                        if (response.success) {
-
-                            $('.quantity-' + data.Id).text(response.newQuantity);
-                            $('.itemPrice-' + data.Id).text((response.itemPrice).toFixed(2) + " BGN");
-                            $('.cart-total-amount').text("Total Amount: " + response.totalAmount.toFixed(2) + " BGN")
-
-                            updateCartCount();
-                        } else {
-                            toastr.error(response.message, 'Update Quantity Error');
-                        }
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 401) {
-                            window.location.href = "/Identity/Account/Login?ReturnUrl=" + encodeURIComponent(window.location.pathname);
-                        } else if (xhr.status === 404) {
-                            var response = JSON.parse(xhr.responseText);
-
-                            console.log('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error(response.message, 'Update Quantity Error');
-                        } else {
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error('An unexpected error occurred while updating quantity.', 'Update Quantity Error');
-                        }
+                    if (newValue >= parseInt(input.attr("min"))) {
+                        input.val(newValue).change();
                     }
+                });
+
+                $(".quantity-input").on("change", function () {
+                    CartModule.updateButtons(this);
                 });
             });
-
-            $('.remove-item').on('click', function (e) {
-                e.preventDefault();
-
-                const data = {
-                    Id: $(this).data('id'),
-                };
-
-                const movieTitle = $(this).data('title');
-                               
-                $.ajax({
-                    url: "@Url.Action("RemoveFromCart", "Cart")",
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    headers: {
-                        'RequestVerificationToken': $('input[id="RequestVerificationToken"]').val()
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            updateCartCount();
-
-                            $("#cart-item-" + data.Id).fadeOut();
-                            $('.cart-total-amount').text("Total Amount: " + response.newCartTotalAmount.toFixed(2) + " BGN");
-
-                            toastr.success(`You have removed ${movieTitle} from your cart!`);
-
-                            if ($('#cart-items').children(':visible').length <= 1) {
-                                $('.cart-container').fadeOut();
-                                $('main').append('<h2 class="text-center mt-5">Your cart is empty!</h2>');
-                            }
-                        } else {
-                            toastr.error(response.message, 'Remove Item From Cart Error');
-                        }
-                    },
-                    error: function (xhr) {
-                        if (xhr.status === 401) {
-                            window.location.href = "/Identity/Account/Login?ReturnUrl=" + encodeURIComponent(window.location.pathname);
-                        } else if (xhr.status === 404) {
-                            var response = JSON.parse(xhr.responseText);
-                            console.log(xhr.responseText);
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error(response.message, 'Remove Item From Cart Error');
-                        } else {
-                            console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                            toastr.error('An unexpected error occurred while removing an item from cart.', 'Remove Item From Cart Error');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
+        </script>
+    }
 }

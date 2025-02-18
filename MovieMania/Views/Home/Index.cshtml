@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<MovieIndexServiceModel>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
 @{
     ViewData["Title"] = "Home Page";
     var movies = Model.ToList();
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <div class="mb-5"></div>
@@ -31,4 +34,16 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
+    <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
 </div>
+
+@section Scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.createCart();
+            });
+        </script>
+    }
+}
