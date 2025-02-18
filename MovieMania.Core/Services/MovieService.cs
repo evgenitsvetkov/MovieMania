@@ -43,7 +43,9 @@ namespace MovieMania.Core.Services
 
             moviesToShow = sorting switch
             { 
-                MovieSorting.Price => moviesToShow.OrderBy(m => m.Price),
+                MovieSorting.LowestPrice => moviesToShow.OrderBy(m => m.Price),
+                MovieSorting.HighestPrice => moviesToShow.OrderByDescending(m => m.Price),
+                MovieSorting.Oldest => moviesToShow.OrderBy(m => m.Id),
                 _ => moviesToShow.OrderByDescending(m => m.Id),
             };
 
