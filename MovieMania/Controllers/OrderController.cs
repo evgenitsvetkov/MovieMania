@@ -4,6 +4,7 @@ using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Order;
 using System.Security.Claims;
 using static MovieMania.Core.Constants.MessageConstants;
+using static MovieMania.Core.Constants.LogMessageConstants;
 
 namespace MovieMania.Controllers
 {
@@ -27,8 +28,9 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning("Unauthorized access attempt to Checkout.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(Checkout));
                 TempData[UserMessageError] = UserUnauthorizedMessage;
+
                 return Unauthorized();
             }
 
@@ -36,8 +38,9 @@ namespace MovieMania.Controllers
 
             if (!await cartService.CartExistsAsync(userId))
             {
-                logger.LogWarning("Cart not exist for User {UserId}.", userId);
+                logger.LogWarning(CartNotExistLogMessage, userId);
                 TempData[UserMessageError] = CartNotFoundMessage;
+
                 return NotFound();
             }
 
@@ -45,8 +48,9 @@ namespace MovieMania.Controllers
 
             if (await cartService.GetCartItemsCountAsync(cartId) <= 0)
             {
-                logger.LogWarning("Cart is empty for User {UserId}.", userId);
+                logger.LogWarning(CartIsEmptyLogMessage, userId);
                 TempData[UserMessageError] = CartIsEmptyMessage;
+
                 return Redirect(CartAllItemsUrl);
             }
 
@@ -62,8 +66,9 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning("Unauthorized access attempt to Checkout.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(Checkout));
                 TempData[UserMessageError] = UserUnauthorizedMessage;
+
                 return Unauthorized();
             }
 
@@ -71,30 +76,33 @@ namespace MovieMania.Controllers
 
             if (!ModelState.IsValid)
             {
-                logger.LogWarning("Invalid model state in Checkout. Model: {@Model}", model);
+                logger.LogInformation(InvalidModelStateLogMessage, nameof(Checkout), model);
                 TempData[UserMessageError] = InvalidInputMessage;
+
                 return View(model);
             }
 
             if (!await cartService.CartExistsAsync(userId))
             {
-                logger.LogWarning("Cart not exist for User {UserId}.", userId);
+                logger.LogWarning(CartNotExistLogMessage, userId);
                 TempData[UserMessageError] = CartNotFoundMessage;
+
                 return NotFound();
             }
 
             var cart = await cartService.GetCartServiceModelAsync(userId);
 
             int newOrderId = await orderService.CreateAsync(model, userId, cart.TotalAmount);
-            logger.LogInformation("Order {OrderId} created for User {UserId}.", newOrderId, userId);
+            logger.LogInformation(OrderCreatedLogMessage, newOrderId, userId);
 
             await orderService.CreateOrderDetailsAsync(cart.CartId, newOrderId);
-            logger.LogInformation("Order Details created for User {UserId} with Order {OrderId}.", userId, newOrderId);
+            logger.LogInformation(OrderDetailsCreatedLogMessage, userId, newOrderId);
 
             await cartService.ClearCartAsync(cart.CartId);
-            logger.LogInformation("Cart {CartId} cleared", cart.CartId);
 
+            logger.LogInformation(CartClearedLogMessage, cart.CartId, userId);
             TempData[UserMessageSuccess] = CheckoutSuccessMessage;
+
             return RedirectToAction(nameof(Details), new { id = newOrderId });
         }
 
@@ -104,8 +112,9 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning("Unauthorized access attempt to Checkout.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(Details));
                 TempData[UserMessageError] = UserUnauthorizedMessage;
+
                 return Unauthorized();
             }
 
@@ -113,9 +122,10 @@ namespace MovieMania.Controllers
 
             if (!await orderService.ExistsAsync(id))
             {
-                logger.LogWarning("Order not exist for User {UserId}.", userId);
+                logger.LogWarning(OrderNotExistLogMessage, userId);
                 TempData[UserMessageError] = OrderNotFoundMessage;
-                return BadRequest();
+
+                return NotFound();
             }
 
             var order = await orderService.GetOrderServiceModelAsync(id, userId);

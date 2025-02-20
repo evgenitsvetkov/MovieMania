@@ -4,6 +4,7 @@ using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Cart;
 using System.Security.Claims;
 using static MovieMania.Core.Constants.MessageConstants;
+using static MovieMania.Core.Constants.LogMessageConstants;
 
 namespace MovieMania.Controllers
 {
@@ -29,13 +30,12 @@ namespace MovieMania.Controllers
             
             if (await cartService.CartExistsAsync(userId) == false)
             {
-                logger.LogInformation("Cart not exist for User {UserId}. Creating new cart...", userId);
-                await cartService.CreateCartAsync(userId);
+                logger.LogInformation(CartNotExistCreatingLogMessage, userId);
+                var cartId = await cartService.CreateCartAsync(userId);
+
+                logger.LogInformation(CartCreatedLogMessage, cartId);
             }
 
-            var cartId = await cartService.GetCartIdAsync(userId);
-
-            logger.LogInformation("Cart is ready for User ${UserId}", userId);
             return Json(new { success = true });
         }
 
@@ -45,7 +45,9 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning("Unauthorized access attempt to AddToCart. Redirect to login.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(AddToCart));
+                TempData[UserMessageError] = UserUnauthorizedMessage;
+
                 return Redirect(LoginUrl);
             }
 
@@ -53,7 +55,9 @@ namespace MovieMania.Controllers
 
             if (await cartService.CartExistsAsync(userId) == false)
             {
-                logger.LogInformation("Cart not exist for User {UserId}. Creating new cart...", userId);
+                logger.LogWarning(CartNotExistLogMessage, userId);
+                TempData[UserMessageError] = CartNotFoundMessage;
+
                 return NotFound();
             }
 
@@ -71,28 +75,28 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning("Unauthorized access attempt to AddToCart.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(AddToCart));
                 return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
             }
 
             if (!ModelState.IsValid)
             {
-                logger.LogWarning("Invalid model state in AddToCart. Model: {@Model}", model);
+                logger.LogWarning(InvalidModelStateLogMessage, nameof(AddToCart), model);
                 return Json(new { success = false, message = InvalidInputMessage });
             }
 
             var userId = User.Id();
-            logger.LogInformation("User {UserId} is adding Movie {MovieId} to cart.", userId, model.Id);
+            logger.LogInformation(AddingMovieToCartLogMessage, userId, model.Id);
 
             if (await movieService.ExistsAsync(model.Id) == false)
             {
-                logger.LogWarning("Movie {MovieId} not found while adding to cart.", model.Id);
-                return NotFound(new { success = false, message = MovieNotFoundMessage });
+                logger.LogWarning(MovieNotFoundLogMessage, model.Id);
+                return NotFound(new { success = false, message = AddingMovieNotFoundMessage });
             }
 
             if (await cartService.CartExistsAsync(userId) == false)
             {
-                logger.LogInformation("Cart not exist for User {UserId}. Creating new cart...", userId);
+                logger.LogWarning(CartNotExistLogMessage, userId);
                 return NotFound(new { success = false, message = CartNotFoundMessage });
             }
 
@@ -102,13 +106,13 @@ namespace MovieMania.Controllers
             {
                 var movieModel = await movieService.MoviesDetailsByIdAsync(model.Id);
                 await cartService.CreateCartItemAsync(cartId, movieModel);
-                logger.LogInformation("Cart item created and added to cart {CartId}. Movie: {MovieId}", cartId, model.Id);
+                logger.LogInformation(CartItemCreatedLogMessage, cartId, model.Id);
             } 
             else
             {
                 var cartItemId = await cartService.GetCartItemIdAsync(cartId, model.Id);
                 await cartService.IncreaseCartItemQuantityAsync(cartId, cartItemId);
-                logger.LogInformation("Increased quantity for Cart item {CartItemId} in Cart {CartId}.", cartItemId, cartId);
+                logger.LogInformation(CartItemQuantityIncreasedLogMessage, cartItemId, cartId);
             }
 
             await cartService.SumCartTotalAmountAsync(cartId);
@@ -123,8 +127,9 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning($"Unauthorized access attempt to ClearCart.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(ClearCart));
                 TempData[UserMessageError] = UserUnauthorizedMessage;
+
                 return Unauthorized();
             }
 
@@ -132,8 +137,8 @@ namespace MovieMania.Controllers
 
             if (await cartService.CartExistsAsync(userId) == false)
             {
-                logger.LogWarning("Cart not exist for User {UserId}.", userId);
-                TempData[UserMessageSuccess] = CartNotFoundMessage;
+                logger.LogWarning(CartNotExistLogMessage, userId);
+                TempData[UserMessageError] = CartNotFoundMessage;
 
                 return NotFound();
             }
@@ -141,7 +146,7 @@ namespace MovieMania.Controllers
             var cartId = await cartService.GetCartIdAsync(userId);
 
             await cartService.ClearCartAsync(cartId);
-            logger.LogInformation("Cart {CartId} cleared successfully for User {UserId}.", cartId, userId);
+            logger.LogInformation(CartClearedLogMessage, cartId, userId);
 
             TempData[UserMessageSuccess] = ClearCartSuccessMessage;
 
@@ -155,13 +160,13 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning($"Unauthorized access attempt to RemoveFromCart.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(RemoveFromCart));
                 return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
             }
 
             if (!ModelState.IsValid)
             {
-                logger.LogWarning("Invalid model state in RemoveFromCart. Model: {@Model}", model);
+                logger.LogWarning(InvalidModelStateLogMessage, nameof(RemoveFromCart), model);
                 return Json(new { success = false, message = InvalidInputMessage });
             }
 
@@ -169,7 +174,7 @@ namespace MovieMania.Controllers
 
             if (!await cartService.CartExistsAsync(userId))
             {
-                logger.LogWarning("Cart not exist for User {UserId}.", userId);
+                logger.LogWarning(CartNotExistLogMessage, userId);
                 return NotFound(new { success = false, message = CartNotFoundMessage });
             }
 
@@ -177,12 +182,12 @@ namespace MovieMania.Controllers
 
             if (await cartService.CartItemExistsByIdAsync(cartId, model.Id) == false)
             {
-                logger.LogWarning("Cart item {CartItemId} not found in Cart {CartId} for User {UserId}.", model.Id, cartId, userId);
+                logger.LogWarning(CartItemNotFoundLogMessage, model.Id, cartId);
                 return NotFound(new { success = false, message = CartItemNotFoundMessage }); 
             }
 
             await cartService.RemoveFromCartAsync(cartId, model.Id);
-            logger.LogInformation("Cart item {CartItemId} successfully removed from Cart {CartId} for User {UserId}.", model.Id, cartId, userId);
+            logger.LogInformation(CartItemRemovedLogMessage, model.Id, cartId);
 
             await cartService.SumCartTotalAmountAsync(cartId);
             decimal cartTotalAmount = await cartService.GetCartTotalAmountAsync(cartId);
@@ -196,7 +201,7 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning($"Unauthorized access attempt to GetCartItemCount.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(GetCartItemCount));
                 return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
             }
 
@@ -204,7 +209,7 @@ namespace MovieMania.Controllers
 
             if (await cartService.CartExistsAsync(userId) == false)
             {
-                logger.LogWarning("Cart not exist for User {UserId}.", userId);
+                logger.LogWarning(CartNotExistLogMessage, userId);
                 return NotFound(new { success = false, message = CartNotFoundMessage });
             }
 
@@ -222,13 +227,13 @@ namespace MovieMania.Controllers
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning($"Unauthorized access attempt to UpdateQuantity.");
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(UpdateQuantity));
                 return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
             }
 
             if (!ModelState.IsValid)
             {
-                logger.LogWarning("Invalid model state in UpdateQuantity. Model: {@Model}", model);
+                logger.LogWarning(InvalidModelStateLogMessage, nameof(UpdateQuantity), model);
                 return Json(new { success = false, message = InvalidInputMessage });
             }
 
@@ -236,7 +241,7 @@ namespace MovieMania.Controllers
 
             if (await cartService.CartExistsAsync(userId) == false)
             {
-                logger.LogWarning("Cart not exist for User {UserId}.", userId);
+                logger.LogWarning(CartNotExistLogMessage, userId);
                 return NotFound(new { sucess = false, message = CartNotFoundMessage });
             }
 
@@ -244,18 +249,18 @@ namespace MovieMania.Controllers
 
             if (await cartService.CartItemExistsByIdAsync(cartId, model.Id) == false)
             {
-                logger.LogWarning("Cart item {CartItemId} not found in Cart {CartId} for User {UserId}.", model.Id, cartId, userId);
+                logger.LogWarning(CartItemNotFoundLogMessage, model.Id, cartId);
                 return NotFound(new { success = false, message = CartItemNotFoundMessage });
             }
 
             if (model.IsIncrease)
             {
                 await cartService.IncreaseCartItemQuantityAsync(cartId, model.Id);
-                logger.LogInformation("Increased quantity of CartItem {CartItemId} in Cart {CartId} for User {UserId}.", model.Id, cartId, userId);
+                logger.LogInformation(CartItemQuantityIncreasedLogMessage, model.Id, cartId);
             } else
             {
                 await cartService.DecreaseCartItemQuantityAsync(cartId, model.Id);
-                logger.LogInformation("Decreased quantity of CartItem {CartItemId} in Cart {CartId} for User {UserId}.", model.Id, cartId, userId);
+                logger.LogInformation(CartItemQuantityDecreasedLogMessage, model.Id, cartId);
             }
 
             await cartService.SumCartTotalAmountAsync(cartId);

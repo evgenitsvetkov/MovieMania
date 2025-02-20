@@ -2,16 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Director;
+using static MovieMania.Core.Constants.MessageConstants;
+using static MovieMania.Core.Constants.LogMessageConstants;
 
 namespace MovieMania.Controllers
 {
     public class DirectorController : BaseController
     {
         private readonly IDirectorService directorService;
+        private readonly ILogger<DirectorController> logger;
 
-        public DirectorController(IDirectorService _directorService)
+        public DirectorController(IDirectorService _directorService, ILogger<DirectorController> _logger)
         {
             directorService = _directorService;
+            logger = _logger;
         }
 
         [AllowAnonymous]
@@ -35,7 +39,10 @@ namespace MovieMania.Controllers
         {
             if (await directorService.ExistsAsync(id) == false)
             {
-                return BadRequest();
+                logger.LogWarning(DirectorNotFoundLogMessage, id);
+                TempData[UserMessageError] = DirectorNotFoundUserMessage;
+
+                return NotFound();
             }
 
             var model = await directorService.DirectorsDetailsByIdAsync(id);
@@ -56,10 +63,16 @@ namespace MovieMania.Controllers
         {
             if (ModelState.IsValid == false)
             {
+                logger.LogInformation(InvalidModelStateLogMessage, nameof(All), model);
+                TempData[UserMessageError] = InvalidInputMessage;
+
                 return View(model);
             }
 
             int newDirectorId = await directorService.CreateAsync(model);
+
+            logger.LogInformation(DirectorCreatedLogMessage, newDirectorId);
+            TempData[UserMessageSuccess] = DirectorAddedUserMessage;
 
             return RedirectToAction(nameof(Details), new { id = newDirectorId });
         }
@@ -69,7 +82,10 @@ namespace MovieMania.Controllers
         {
             if (await directorService.ExistsAsync(id) == false)
             {
-                return BadRequest();
+                logger.LogWarning(DirectorNotFoundLogMessage, id);
+                TempData[UserMessageError] = DirectorNotFoundUserMessage;
+
+                return NotFound();
             }
 
             var model = await directorService.GetDirectorFormModelByIdAsync(id);
@@ -82,15 +98,24 @@ namespace MovieMania.Controllers
         {
             if (await directorService.ExistsAsync(id) == false)
             {
-                return BadRequest();
+                logger.LogWarning(DirectorNotFoundLogMessage, id);
+                TempData[UserMessageError] = DirectorNotFoundUserMessage;
+
+                return NotFound();
             }
 
             if (ModelState.IsValid == false)
             {
+                logger.LogInformation(InvalidModelStateLogMessage, nameof(Edit), id);
+                TempData[UserMessageError] = InvalidInputMessage;
+
                 return View(model);
             }
 
             await directorService.EditAsync(id, model);
+
+            logger.LogInformation(DirectorEditedLogMessage, id);
+            TempData[UserMessageSuccess] = DirectorEditedUserMessage;
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -100,7 +125,10 @@ namespace MovieMania.Controllers
         {
             if (await directorService.ExistsAsync(id) == false)
             {
-                return BadRequest();
+                logger.LogWarning(DirectorNotFoundLogMessage, id);
+                TempData[UserMessageError] = DirectorNotFoundUserMessage;
+
+                return NotFound();
             }
 
             var director = await directorService.DirectorsDetailsByIdAsync(id);
@@ -120,10 +148,16 @@ namespace MovieMania.Controllers
         {
             if (await directorService.ExistsAsync(model.Id) == false)
             {
-                return BadRequest();
+                logger.LogWarning(DirectorNotFoundLogMessage, model.Id);
+                TempData[UserMessageError] = DirectorNotFoundUserMessage;
+
+                return NotFound();
             }
 
             await directorService.DeleteAsync(model.Id);
+
+            logger.LogInformation(DirectorDeletedLogMessage, model.Id);
+            TempData[UserMessageSuccess] = DirectorDeletedUserMessage;
 
             return RedirectToAction(nameof(All));
         }

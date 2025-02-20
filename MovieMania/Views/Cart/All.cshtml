@@ -45,7 +45,6 @@ else
             <div class="form-inline mb-3">
                 <p><b class="cart-total-amount">Total Amount: @String.Format("{0:f2}", Model.TotalAmount) BGN</b></p>
                 <form asp-action="ClearCart" method="post">
-                    <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
                     <button class="btn btn-danger clear-cart" type="submit">Clear Cart</button>
                 </form>
             </div>

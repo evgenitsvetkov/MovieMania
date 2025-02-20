@@ -78,7 +78,6 @@
             },
             success: function (response) {
                 if (response.success) {
-                    console.log('You have created shopping cart!');
                     updateCartCount();
                 } else {
                     console.log(response.message);
@@ -143,12 +142,10 @@
         });
     }
 
-    function removeItem(cartItemId) {
+    function removeItem(cartItemId, movieTitle) {
         const data = {
             Id: cartItemId,
         };
-
-        const movieTitle = $(this).data('title');
 
         $.ajax({
             url: "/Cart/RemoveFromCart",
