@@ -26,6 +26,12 @@ namespace MovieMania.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCart()
         {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(CreateCart));
+                return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
+            }
+
             var userId = User.Id();
             
             if (await cartService.CartExistsAsync(userId) == false)

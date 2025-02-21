@@ -5,6 +5,7 @@ using System.Globalization;
 
 namespace MovieMania.Tests.UnitTests
 {
+    [TestFixture]
     public class DirectorServiceTests : UnitTestsBase
     {
         private IDirectorService directorService;

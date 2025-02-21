@@ -2,6 +2,7 @@
 using MovieMania.Infrastructure.Data;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Actors;
+using MovieMania.Infrastructure.Data.Models.Carts;
 using MovieMania.Infrastructure.Data.Models.CustomUser;
 using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Mappings;
@@ -68,6 +69,12 @@ namespace MovieMania.Tests.UnitTests
         public MovieActor SecondMovieActor { get; private set; } = null!;
 
         public MovieActor ThirdMovieActor { get; private set; } = null!;
+
+        public Cart FirstCart { get; private set; } = null!;
+
+        public CartItem FirstCartItem { get; private set; } = null!;
+
+        public CartItem SecondCartItem { get; private set; } = null!;
 
         private void SeedDatabase()
         {
@@ -251,8 +258,40 @@ namespace MovieMania.Tests.UnitTests
             };
 
             data.Genres.Add(ThirdGenre);
-            data.SaveChanges();
 
+            FirstCart = new Cart()
+            {
+                CartId = 2,
+                UserId = GuestUser.Id,
+                CartItems = new List<CartItem>(),
+                TotalAmount = 0,
+            };
+
+            data.Carts.Add(FirstCart);
+
+            FirstCartItem = new CartItem()
+            {
+                CartItemId = 1,
+                CartId = 2,
+                Quantity = 1,
+                MovieId = FirstMovie.Id,
+                ItemTotal = FirstMovie.Price,
+            };
+
+            data.CartItems.Add(FirstCartItem);
+
+            SecondCartItem = new CartItem()
+            {
+                CartItemId = 2,
+                CartId = 2,
+                Quantity = 1,
+                MovieId = SecondMovie.Id,
+                ItemTotal = SecondMovie.Price,
+            };
+
+            data.CartItems.Add(SecondCartItem);
+
+            data.SaveChanges();
         }
 
         [OneTimeTearDown]

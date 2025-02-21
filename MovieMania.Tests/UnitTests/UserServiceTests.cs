@@ -3,6 +3,7 @@ using MovieMania.Core.Services;
 
 namespace MovieMania.Tests.UnitTests
 {
+    [TestFixture]
     public class UserServiceTests : UnitTestsBase
     {
         private IUserService userService;
