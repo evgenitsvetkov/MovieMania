@@ -36,14 +36,3 @@
     </button>
     <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
 </div>
-
-@section Scripts {
-    @if (User.Identity.IsAuthenticated)
-    {
-        <script>
-            $(document).ready(function () {
-                CartModule.createCart();
-            });
-        </script>
-    }
-}

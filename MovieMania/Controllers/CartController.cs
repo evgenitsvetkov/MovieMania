@@ -21,37 +21,13 @@ namespace MovieMania.Controllers
             logger = _logger;
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCart()
-        {
-            if (!this.User.Identity.IsAuthenticated)
-            {
-                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(CreateCart));
-                return Unauthorized(new { success = false, message = UserUnauthorizedMessage });
-            }
-
-            var userId = User.Id();
-            
-            if (await cartService.CartExistsAsync(userId) == false)
-            {
-                logger.LogInformation(CartNotExistCreatingLogMessage, userId);
-                var cartId = await cartService.CreateCartAsync(userId);
-
-                logger.LogInformation(CartCreatedLogMessage, cartId);
-            }
-
-            return Json(new { success = true });
-        }
-
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Items()
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(AddToCart));
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(Items));
                 TempData[UserMessageError] = UserUnauthorizedMessage;
 
                 return Redirect(LoginUrl);
@@ -59,16 +35,9 @@ namespace MovieMania.Controllers
 
             var userId = User.Id();
 
-            if (await cartService.CartExistsAsync(userId) == false)
-            {
-                logger.LogWarning(CartNotExistLogMessage, userId);
-                TempData[UserMessageError] = CartNotFoundMessage;
-
-                return NotFound();
-            }
+            await CreateCart(userId);
 
             var cart = await cartService.GetCartServiceModelAsync(userId);
-
             await cartService.SumCartTotalAmountAsync(cart.CartId);
 
             return View(cart);
@@ -100,13 +69,7 @@ namespace MovieMania.Controllers
                 return NotFound(new { success = false, message = AddingMovieNotFoundMessage });
             }
 
-            if (await cartService.CartExistsAsync(userId) == false)
-            {
-                logger.LogWarning(CartNotExistLogMessage, userId);
-                return NotFound(new { success = false, message = CartNotFoundMessage });
-            }
-
-            var cartId = await cartService.GetCartIdAsync(userId);
+            var cartId = await CreateCart(userId);
 
             if (await cartService.CartItemExistsByMovieIdAsync(model.Id, cartId) == false)
             {
@@ -126,38 +89,38 @@ namespace MovieMania.Controllers
             return Json(new { success = true });
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ClearCart()
-        {
-            if (!this.User.Identity.IsAuthenticated)
-            {
-                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(ClearCart));
-                TempData[UserMessageError] = UserUnauthorizedMessage;
-
-                return Unauthorized();
-            }
-
-            var userId = User.Id();
-
-            if (await cartService.CartExistsAsync(userId) == false)
-            {
-                logger.LogWarning(CartNotExistLogMessage, userId);
-                TempData[UserMessageError] = CartNotFoundMessage;
-
-                return NotFound();
-            }
-
-            var cartId = await cartService.GetCartIdAsync(userId);
-
-            await cartService.ClearCartAsync(cartId);
-            logger.LogInformation(CartClearedLogMessage, cartId, userId);
-
-            TempData[UserMessageSuccess] = ClearCartSuccessMessage;
-
-            return RedirectToAction(nameof(All));
-        }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ClearCart()
+        //{
+        //    if (!this.User.Identity.IsAuthenticated)
+        //    {
+        //        logger.LogWarning(UnauthorizedAccessLogMessage, nameof(ClearCart));
+        //        TempData[UserMessageError] = UserUnauthorizedMessage;
+        //
+        //        return Unauthorized();
+        //    }
+        //
+        //    var userId = User.Id();
+        //
+        //    if (await cartService.CartExistsAsync(userId) == false)
+        //    {
+        //        logger.LogWarning(CartNotExistLogMessage, userId);
+        //        TempData[UserMessageError] = CartNotFoundMessage;
+        //
+        //        return NotFound();
+        //    }
+        //
+        //    var cartId = await cartService.GetCartIdAsync(userId);
+        //
+        //    await cartService.ClearCartAsync(cartId);
+        //    logger.LogInformation(CartClearedLogMessage, cartId, userId);
+        //
+        //    TempData[UserMessageSuccess] = ClearCartSuccessMessage;
+        //
+        //    return RedirectToAction(nameof(Items));
+        //}
 
         [HttpPost]
         [AllowAnonymous]
@@ -275,6 +238,23 @@ namespace MovieMania.Controllers
             var totalAmount = await cartService.GetCartTotalAmountAsync(cartId);
 
             return Json(new { success = true, newQuantity = cartItem.Quantity, itemPrice = cartItem.ItemTotal, totalAmount });
+        }
+
+        private async Task<int> CreateCart(string userId)
+        {
+            if (await cartService.CartExistsAsync(userId) == false)
+            {
+                logger.LogInformation(CartNotExistCreatingLogMessage, userId);
+
+                var newCartId = await cartService.CreateCartAsync(userId);
+                logger.LogInformation(CartCreatedLogMessage, newCartId);      
+                return newCartId;
+            }
+
+            var cartId = await cartService.GetCartIdAsync(userId);
+            logger.LogInformation("CartAlreadyExist with ID: {CartId}", cartId);
+
+            return cartId;
         }
     }
 }

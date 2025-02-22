@@ -68,38 +68,6 @@
         })
     }
 
-    function createCart() {
-        $.ajax({
-            url: "/Cart/CreateCart",
-            type: "POST",
-            contentType: 'application/json',
-            headers: {
-                'RequestVerificationToken': $('input[id="__RequestVerificationToken"]').val()
-            },
-            success: function (response) {
-                if (response.success) {
-                    updateCartCount();
-                } else {
-                    console.log(response.message);
-                }
-            },
-            error: function (xhr) {
-                if (xhr.status === 401) {
-                    var response = JSON.parse(xhr.responseText);
-                    window.location.href = "/Identity/Account/Login?ReturnUrl=" + encodeURIComponent(window.location.pathname);
-
-                    console.error(response.message);
-                } else if (xhr.status === 404) {
-                    var response = JSON.parse(xhr.responseText);
-
-                    console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                } else {
-                    console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
-                }
-            }
-        })
-    }
-
     function updateQuantity(cartItemId, isIncrease) {
         const data = {
             Id: cartItemId,
@@ -204,7 +172,6 @@
     return {
         updateCartCount,
         addToCart,
-        createCart,
         updateQuantity,
         removeItem,
         updateButtons
