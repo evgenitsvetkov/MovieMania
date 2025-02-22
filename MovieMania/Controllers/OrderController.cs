@@ -24,6 +24,25 @@ namespace MovieMania.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public async Task<IActionResult> MyOrders()
+        {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                logger.LogWarning(UnauthorizedAccessLogMessage, nameof(Details));
+                TempData[UserMessageError] = UserUnauthorizedMessage;
+
+                return Unauthorized();
+            }
+
+            string userId = User.Id();
+
+            var allOrders = await orderService.AllUserOrdersAsync(userId);
+
+            return View(allOrders);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Checkout()
         {
             if (!this.User.Identity.IsAuthenticated)
@@ -103,12 +122,12 @@ namespace MovieMania.Controllers
             logger.LogInformation(CartClearedLogMessage, cart.CartId, userId);
             TempData[UserMessageSuccess] = CheckoutSuccessMessage;
 
-            return RedirectToAction(nameof(Details), new { id = newOrderId });
+            return RedirectToAction(nameof(Details), new { orderId = newOrderId });
         }
 
-        [HttpGet]
+        [HttpGet("Order/Details/{orderId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int orderId)
         {
             if (!this.User.Identity.IsAuthenticated)
             {
@@ -120,7 +139,7 @@ namespace MovieMania.Controllers
 
             string userId = User.Id();
 
-            if (!await orderService.ExistsAsync(id))
+            if (!await orderService.ExistsAsync(orderId))
             {
                 logger.LogWarning(OrderNotExistLogMessage, userId);
                 TempData[UserMessageError] = OrderNotFoundMessage;
@@ -128,7 +147,7 @@ namespace MovieMania.Controllers
                 return NotFound();
             }
 
-            var order = await orderService.GetOrderServiceModelAsync(id, userId);
+            var order = await orderService.GetOrderServiceModelAsync(orderId, userId);
 
             return View(order);
         }

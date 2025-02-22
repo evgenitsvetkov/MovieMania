@@ -88,6 +88,28 @@ namespace MovieMania.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<OrderServiceModel>> AllUserOrdersAsync(string userId)
+        {
+            return await unitOfWork.AllReadOnly<Order>()
+                .Where(o => o.UserId == userId)
+                .Select(o => new OrderServiceModel()
+                {
+                    OrderId = o.OrderId,
+                    UserId = o.UserId,
+                    Email = o.Email,
+                    Address = o.Address,
+                    City = o.City,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    State = o.State,
+                    Country = o.Country,
+                    Phone = o.Phone,
+                    PostalCode = o.PostalCode,
+                    TotalAmount = o.TotalAmount,
+                })
+                .ToListAsync();
+        }
+
         public async Task<OrderServiceModel> GetOrderServiceModelAsync(int orderId, string userId)
         {
             return await unitOfWork.AllReadOnly<Order>()

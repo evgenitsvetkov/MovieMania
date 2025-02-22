@@ -1,0 +1,92 @@
+﻿@model IEnumerable<OrderServiceModel>
+
+@{
+    ViewBag.Title = "My Orders";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <h2 class="text-center mt-5">You have no orders placed!</h2>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <label>Order Id</label>
+                </th>
+                <th>
+                    <label>First Name</label>
+                </th>
+                <th>
+                    <label>Last Name</label>
+                </th>
+                <th>
+                    <label>Phone</label>
+                </th>
+                <th>
+                    <label>Email</label>
+                </th>
+                <th>
+                    <label>Address</label>
+                </th>
+                <th>
+                    <label>Country</label>
+                </th>
+                <th>
+                    <label>PostalCode</label>
+                </th>
+                <th>
+                    <label>State</label>
+                </th>
+                <th>
+                    <label>Total Price</label>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>
+                        <label>@order.OrderId</label>
+                    </td>
+                    <td>
+                        <label>@order.FirstName</label>
+                    </td>
+                    <td>
+                        <label>@order.LastName</label>
+                    </td>
+                    <td>
+                        <label>@order.Phone</label>
+                    </td>
+                    <td>
+                        <label>@order.Email</label>
+                    </td>
+                    <td>
+                        <label>@order.Address</label>
+                    </td>
+                    <td>
+                        <label>@order.Country</label>
+                    </td>
+                    <td>
+                        <label>@order.PostalCode</label>
+                    </td>
+                    <td>
+                        <label>@order.State</label>
+                    </td>
+                    <td>
+                        <label>@order.TotalAmount</label>
+                    </td>
+                    <td>
+                        <label><a asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId" class="btn btn-success">Details</a></label>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

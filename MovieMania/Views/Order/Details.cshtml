@@ -24,7 +24,7 @@
         {
             <div class="card col-3 border-0">
                 <div class="col-4">
-                    <img class="card-img-top" style="width: 20rem;" src="@item.ImageUrl" alt="Item Image">
+                    <img class="card-img-top" style="width: 20rem; height: 25rem" src="@item.ImageUrl" alt="Item Image">
                 </div>
                 <p style="font-size:25px;"><u>@item.Title</u></p>
                 <p>Quantity: <b>@item.Quantity</b></p>
@@ -40,4 +40,5 @@
 <div class="form-inline mb-3">
     <p><b>Total Price: @String.Format("{0:f2}", Model.TotalAmount) BGN</b></p>
     <a class="btn btn-primary" asp-controller="Movie" asp-action="All">Back to movies</a>
+    <a class="btn btn-primary" asp-controller="Order" asp-action="MyOrders">Back to my orders</a>
 </div>
