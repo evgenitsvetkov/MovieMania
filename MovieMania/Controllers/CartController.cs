@@ -89,39 +89,6 @@ namespace MovieMania.Controllers
             return Json(new { success = true });
         }
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> ClearCart()
-        //{
-        //    if (!this.User.Identity.IsAuthenticated)
-        //    {
-        //        logger.LogWarning(UnauthorizedAccessLogMessage, nameof(ClearCart));
-        //        TempData[UserMessageError] = UserUnauthorizedMessage;
-        //
-        //        return Unauthorized();
-        //    }
-        //
-        //    var userId = User.Id();
-        //
-        //    if (await cartService.CartExistsAsync(userId) == false)
-        //    {
-        //        logger.LogWarning(CartNotExistLogMessage, userId);
-        //        TempData[UserMessageError] = CartNotFoundMessage;
-        //
-        //        return NotFound();
-        //    }
-        //
-        //    var cartId = await cartService.GetCartIdAsync(userId);
-        //
-        //    await cartService.ClearCartAsync(cartId);
-        //    logger.LogInformation(CartClearedLogMessage, cartId, userId);
-        //
-        //    TempData[UserMessageSuccess] = ClearCartSuccessMessage;
-        //
-        //    return RedirectToAction(nameof(Items));
-        //}
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
