@@ -26,7 +26,7 @@ namespace MovieMania.Core.Contracts
 
         Task DecreaseCartItemQuantityAsync(int cartId, int cartItemId);
 
-        Task ClearCartAsync(int cartId);
+        Task DeleteCartAsync(int cartId, string userId);
 
         Task RemoveFromCartAsync(int cartId, int cartItemId);
 

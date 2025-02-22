@@ -107,17 +107,17 @@ namespace MovieMania.Tests.UnitTests
             var userId = AdminUser.Id;
             var movieModel = await movieService.MoviesDetailsByIdAsync(ThirdMovie.Id);
             var newCartId = await cartService.CreateCartAsync(userId);
-            var IsExistBefore = await cartService.CartItemExistsByMovieIdAsync(movieModel.Id, newCartId);
+            var isExistBefore = await cartService.CartItemExistsByMovieIdAsync(movieModel.Id, newCartId);
             
             // Act
             await cartService.CreateCartItemAsync(newCartId, movieModel);
-            var IsExistAfter = await cartService.CartItemExistsByMovieIdAsync(movieModel.Id, newCartId);
+            var isExistAfter = await cartService.CartItemExistsByMovieIdAsync(movieModel.Id, newCartId);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(IsExistBefore, Is.False);
-                Assert.That(IsExistAfter, Is.True);
+                Assert.That(isExistBefore, Is.False);
+                Assert.That(isExistAfter, Is.True);
             });
         }
 
@@ -258,10 +258,10 @@ namespace MovieMania.Tests.UnitTests
         }
 
         [Test]
-        public async Task ClearCartAsync_ShouldDeleteAllCartItems()
+        public async Task DeleteCartAsync_ShouldDeleteUserCart()
         {
             // Arrange
-            var userId = AdminUser.Id;
+            var userId = "AdminUserId";
             var newCartId = await cartService.CreateCartAsync(userId);
             var thirdMovie = await movieService.MoviesDetailsByIdAsync(ThirdMovie.Id);
             var fifthMovie = await movieService.MoviesDetailsByIdAsync(FifthMovie.Id);
@@ -272,23 +272,20 @@ namespace MovieMania.Tests.UnitTests
             var firstCartItemId = await cartService.GetCartItemIdAsync(newCartId, thirdMovie.Id);
             var secondCartItemId = await cartService.GetCartItemIdAsync(newCartId, fifthMovie.Id);
 
-            var cartCountBefore = await cartService.GetCartItemsCountAsync(newCartId);
-
             // Act
-            await cartService.ClearCartAsync(newCartId);
+            await cartService.DeleteCartAsync(newCartId, userId);
 
-            var cartCountAfter = await cartService.GetCartItemsCountAsync(newCartId);
-
-            var IsExistFirstCartItem = await cartService.CartItemExistsByIdAsync(newCartId, firstCartItemId);
-            var IsExistSecondCartItem = await cartService.CartItemExistsByIdAsync(newCartId, secondCartItemId);
+            var isExist = await cartService.CartExistsAsync(userId);
+            
+            var isExistFirstCartItem = await cartService.CartItemExistsByIdAsync(newCartId, firstCartItemId);
+            var isExistSecondCartItem = await cartService.CartItemExistsByIdAsync(newCartId, secondCartItemId);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(IsExistFirstCartItem, Is.False);
-                Assert.That(IsExistSecondCartItem, Is.False);
-                Assert.That(cartCountBefore, Is.EqualTo(2));
-                Assert.That(cartCountAfter, Is.EqualTo(0));
+                Assert.That(isExist, Is.False);
+                Assert.That(isExistFirstCartItem, Is.False);
+                Assert.That(isExistSecondCartItem, Is.False);
             });
         }
         
@@ -314,14 +311,14 @@ namespace MovieMania.Tests.UnitTests
 
             var cartCountAfter = await cartService.GetCartItemsCountAsync(newCartId);
 
-            var IsExistFirstCartItem = await cartService.CartItemExistsByIdAsync(newCartId, firstCartItemId);
-            var IsExistSecondCartItem = await cartService.CartItemExistsByIdAsync(newCartId, secondCartItemId);
+            var isExistFirstCartItem = await cartService.CartItemExistsByIdAsync(newCartId, firstCartItemId);
+            var isExistSecondCartItem = await cartService.CartItemExistsByIdAsync(newCartId, secondCartItemId);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(IsExistFirstCartItem, Is.False);
-                Assert.That(IsExistSecondCartItem, Is.True);
+                Assert.That(isExistFirstCartItem, Is.False);
+                Assert.That(isExistSecondCartItem, Is.True);
                 Assert.That(cartCountBefore, Is.EqualTo(2));
                 Assert.That(cartCountAfter, Is.EqualTo(1));
             });

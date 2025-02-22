@@ -98,7 +98,7 @@ namespace MovieMania.Controllers
             await orderService.CreateOrderDetailsAsync(cart.CartId, newOrderId);
             logger.LogInformation(OrderDetailsCreatedLogMessage, userId, newOrderId);
 
-            await cartService.ClearCartAsync(cart.CartId);
+            await cartService.DeleteCartAsync(cart.CartId, userId);
 
             logger.LogInformation(CartClearedLogMessage, cart.CartId, userId);
             TempData[UserMessageSuccess] = CheckoutSuccessMessage;

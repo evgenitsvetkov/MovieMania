@@ -125,23 +125,17 @@ namespace MovieMania.Core.Services
             
         }
 
-        public async Task ClearCartAsync(int cartId)
+        public async Task DeleteCartAsync(int cartId, string userId)
         {
             var cart = await unitOfWork.All<Cart>()
                 .Include(ci => ci.CartItems)
-                .Where(c => c.CartId == cartId)
+                .Where(c => c.CartId == cartId && c.UserId == userId)
                 .FirstOrDefaultAsync();
 
             if (cart != null)
             {
-                cart.TotalAmount = 0;
-
-                foreach (var cartitem in cart.CartItems)
-                {
-                    await unitOfWork.DeleteAsync<CartItem>(cartitem.CartItemId);
-                }
-
-                await unitOfWork.SaveChangesAsync();
+               await unitOfWork.DeleteAsync<Cart>(cart.CartId);
+               await unitOfWork.SaveChangesAsync();
             }
         }
 
