@@ -17,13 +17,16 @@ else
         <thead>
             <tr>
                 <th>
-                    <label>Order Id</label>
+                    <label>#</label>
                 </th>
                 <th>
                     <label>First Name</label>
                 </th>
                 <th>
                     <label>Last Name</label>
+                </th>
+                <th>
+                    <label>Order Date</label>
                 </th>
                 <th>
                     <label>Phone</label>
@@ -65,6 +68,9 @@ else
                         <label>@order.LastName</label>
                     </td>
                     <td>
+                        <label>@order.OrderDate.ToString("dd.MM.yyyy")</label>
+                    </td>
+                    <td>
                         <label>@order.Phone</label>
                     </td>
                     <td>
@@ -83,10 +89,10 @@ else
                         <label>@order.State</label>
                     </td>
                     <td>
-                        <label>@order.TotalAmount</label>
+                        <label>@order.TotalAmount BGN</label>
                     </td>
                     <td>
-                        <label><a asp-controller="Order" asp-action="Details" asp-route-orderId="@order.OrderId" class="btn btn-success">Details</a></label>
+                        <label><a asp-controller="Order" asp-action="Details" asp-route-Id="@order.OrderId" class="btn btn-success">Details</a></label>
                     </td>
                 </tr>
             }

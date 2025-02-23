@@ -24,6 +24,9 @@ namespace MovieMania.Core.Models.Order
         public string UserId { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredMessage)]
+        public DateTime OrderDate { get; set; }
+
+        [Required(ErrorMessage = RequiredMessage)]
         [StringLength(UserAddressMaxLength,
             MinimumLength = UserAddressMinLength,
             ErrorMessage = LengthMessage)]
