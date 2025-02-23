@@ -20,7 +20,9 @@
 
         public const string ModelNotValidLogMessage = "Model validation failed. Returning view with validation errors.";
 
-        public const string CartCreatedLogMessage = "Cart successfully created with ID: {CartID}";
+        public const string CartCreatedLogMessage = "Cart successfully created with ID: {CartId}";
+
+        public const string CartAlreadyExistLogMessage = "CartAlreadyExist with ID: {CartId}";
 
         public const string CartNotExistCreatingLogMessage = "Cart not exist for user {UserId}. Creating new cart...";
 

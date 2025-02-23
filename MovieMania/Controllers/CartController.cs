@@ -219,7 +219,7 @@ namespace MovieMania.Controllers
             }
 
             var cartId = await cartService.GetCartIdAsync(userId);
-            logger.LogInformation("CartAlreadyExist with ID: {CartId}", cartId);
+            logger.LogInformation(CartAlreadyExistLogMessage, cartId);
 
             return cartId;
         }
