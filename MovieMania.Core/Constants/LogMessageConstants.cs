@@ -71,5 +71,7 @@
         public const string OrderDetailsCreatedLogMessage = "Order Details created for User {UserId} with Order {OrderId}.";
 
         public const string OrderNotExistLogMessage = "Order not exist for User {UserId}.";
+
+        public const string AdminOrderNotExistLogMessage = "Order not exist with ID: {OrderId}";
     }
 }

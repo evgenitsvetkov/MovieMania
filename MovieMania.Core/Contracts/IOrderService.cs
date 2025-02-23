@@ -14,6 +14,8 @@ namespace MovieMania.Core.Contracts
 
         Task CreateOrderDetailsAsync(int cartId, int orderId);
 
-        Task<OrderServiceModel> GetOrderServiceModelAsync(int orderId, string userId);
+        Task<OrderServiceModel> GetOrderServiceModelByUserIdAsync(int orderId, string userId);
+
+        Task<OrderServiceModel> GetOrderServiceModelAsync(int orderId);
     }
 }
