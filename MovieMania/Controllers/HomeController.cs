@@ -17,6 +17,7 @@ namespace MovieMania.Controllers
             movieService = _movieService;
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {

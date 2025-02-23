@@ -188,6 +188,7 @@ namespace MovieMania.Core.Services
                 .Take(5)
                 .Select(m => new MovieIndexServiceModel()
                 {
+                    Id = m.Id,
                     Title = m.Title,
                     ImageURL = m.ImageURL
                 })
