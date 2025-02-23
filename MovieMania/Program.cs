@@ -57,6 +57,12 @@ app.UseEndpoints(endpoints =>
         defaults: new { Controller = "Movie", Action = "Details"}
     );
 
+    endpoints.MapControllerRoute(
+        name: "Order Details",
+        pattern: "/Order/Details/{id}/{information}",
+        defaults: new { Controller = "Order", Action = "Details" }
+    );
+
     endpoints.MapDefaultControllerRoute();
     endpoints.MapRazorPages();
 
