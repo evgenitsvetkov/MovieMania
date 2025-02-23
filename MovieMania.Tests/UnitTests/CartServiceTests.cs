@@ -261,7 +261,7 @@ namespace MovieMania.Tests.UnitTests
         public async Task DeleteCartAsync_ShouldDeleteUserCart()
         {
             // Arrange
-            var userId = "AdminUserId";
+            var userId = "AdminUserId7";
             var newCartId = await cartService.CreateCartAsync(userId);
             var thirdMovie = await movieService.MoviesDetailsByIdAsync(ThirdMovie.Id);
             var fifthMovie = await movieService.MoviesDetailsByIdAsync(FifthMovie.Id);

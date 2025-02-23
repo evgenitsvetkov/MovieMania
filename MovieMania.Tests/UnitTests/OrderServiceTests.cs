@@ -176,5 +176,31 @@ namespace MovieMania.Tests.UnitTests
             });
         }
 
+        [Test]
+        public async Task AllAsync_ShouldReturnAllOrders()
+        {
+            // Arrange
+
+            // Act 
+            var orders = await orderService.AllAsync();
+
+            // Assert
+            Assert.That(orders, Is.InstanceOf<IEnumerable<OrderServiceModel>>());
+            Assert.That(orders, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task AllUserOrdersAsync_ShouldReturnUserOrders()
+        {
+            // Arrange
+            string userId = GuestUser.Id;
+
+            // Act 
+            var orders = await orderService.AllUserOrdersAsync(userId);
+
+            // Assert
+            Assert.That(orders, Is.InstanceOf<IEnumerable<OrderServiceModel>>());
+            Assert.That(orders, Is.Not.Null);
+        }
     }
 }
