@@ -89,7 +89,7 @@ namespace MovieMania.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<OrderServiceModel>> AllUserOrdersAsync(string userId)
+        public async Task<IEnumerable<OrderServiceModel>> AllOrdersByUserIdAsync(string userId)
         {
             return await unitOfWork.AllReadOnly<Order>()
                 .Where(o => o.UserId == userId)
@@ -143,7 +143,7 @@ namespace MovieMania.Core.Services
                 .FirstAsync();
         }
 
-        public async Task<OrderServiceModel> GetOrderServiceModelAsync(int orderId)
+        public async Task<OrderServiceModel> GetOrderServiceModelByOrderIdAsync(int orderId)
         {
             return await unitOfWork.AllReadOnly<Order>()
                 .Where(o => o.OrderId == orderId)

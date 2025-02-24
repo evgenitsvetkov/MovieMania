@@ -36,7 +36,7 @@ namespace MovieMania.Controllers
 
             string userId = User.Id();
 
-            var allOrders = await orderService.AllUserOrdersAsync(userId);
+            var allOrders = await orderService.AllOrdersByUserIdAsync(userId);
 
             return View(allOrders);
         }

@@ -74,7 +74,7 @@ namespace MovieMania.Tests.UnitTests
             };
 
             var orderId = await orderService.CreateAsync(orderModel, userId, totalCartAmount);
-            var order = await orderService.GetOrderServiceModelAsync(orderId, userId);
+            var order = await orderService.GetOrderServiceModelByUserIdAsync(orderId, userId);
 
             // Act
             var isExist = await orderService.ExistsAsync(orderId);
@@ -128,7 +128,7 @@ namespace MovieMania.Tests.UnitTests
             // Act
             await orderService.CreateOrderDetailsAsync(cartId, orderId);
 
-            var order = await orderService.GetOrderServiceModelAsync(orderId, userId);
+            var order = await orderService.GetOrderServiceModelByUserIdAsync(orderId, userId);
 
             var firstOrderDetail = order.OrderDetails.Where(od => od.Title == FirstMovie.Title).FirstOrDefault();
             var secondOrderDetail = order.OrderDetails.Where(od => od.Title == SecondMovie.Title).FirstOrDefault();
@@ -142,7 +142,7 @@ namespace MovieMania.Tests.UnitTests
         }
 
         [Test]
-        public async Task GetOrderServiceModelAsync_ShouldReturnOrderServiceModel()
+        public async Task GetOrderServiceModelByUserIdAsync_ShouldReturnOrderServiceModel_ByUserId()
         {
             // Arrange
             var userId = GuestUser.Id;
@@ -166,11 +166,13 @@ namespace MovieMania.Tests.UnitTests
             var orderId = await orderService.CreateAsync(orderModel, userId, cartTotalAmount);
 
             // Act
-            var order = await orderService.GetOrderServiceModelAsync(orderId, userId);
+            var order = await orderService.GetOrderServiceModelByUserIdAsync(orderId, userId);
 
             // Assert
             Assert.Multiple(() =>
             {
+                Assert.That(order.OrderId, Is.EqualTo(orderId));
+                Assert.That(order.UserId, Is.EqualTo(GuestUser.Id));
                 Assert.That(order, Is.InstanceOf<OrderServiceModel>());
                 Assert.That(order, Is.Not.Null);
             });
@@ -185,22 +187,64 @@ namespace MovieMania.Tests.UnitTests
             var orders = await orderService.AllAsync();
 
             // Assert
-            Assert.That(orders, Is.InstanceOf<IEnumerable<OrderServiceModel>>());
-            Assert.That(orders, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(orders, Is.InstanceOf<IEnumerable<OrderServiceModel>>());
+                Assert.That(orders, Is.Not.Null);
+            });
         }
 
         [Test]
-        public async Task AllUserOrdersAsync_ShouldReturnUserOrders()
+        public async Task AllOrdersByUserIdAsync_ShouldReturnUserOrders()
         {
             // Arrange
             string userId = GuestUser.Id;
 
             // Act 
-            var orders = await orderService.AllUserOrdersAsync(userId);
+            var orders = await orderService.AllOrdersByUserIdAsync(userId);
 
             // Assert
-            Assert.That(orders, Is.InstanceOf<IEnumerable<OrderServiceModel>>());
-            Assert.That(orders, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(orders, Is.InstanceOf<IEnumerable<OrderServiceModel>>());
+                Assert.That(orders, Is.Not.Null);
+            });
+        }
+
+        [Test]
+        public async Task GetOrderServiceModelByOrderIdAsync_ShouldReturnOrderServiceModel_ByOrderId()
+        {
+            // Arrange
+            var userId = GuestUser.Id;
+            var cartId = await cartService.GetCartIdAsync(userId);
+            var cartTotalAmount = await cartService.GetCartTotalAmountAsync(cartId);
+
+            var orderModel = new OrderFormModel()
+            {
+                FirstName = GuestUser.FirstName,
+                LastName = GuestUser.LastName,
+                UserId = userId,
+                Email = GuestUser.Email,
+                Address = "UserAddressTest",
+                City = "UserCityTest",
+                Country = "UserCountryTest",
+                Phone = "089654321",
+                PostalCode = "2000",
+                State = "UserStateTest",
+            };
+
+            var orderId = await orderService.CreateAsync(orderModel, userId, cartTotalAmount);
+
+            // Act
+            var order = await orderService.GetOrderServiceModelByOrderIdAsync(orderId);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(order.OrderId, Is.EqualTo(orderId));
+                Assert.That(order, Is.InstanceOf<OrderServiceModel>());
+                Assert.That(order, Is.Not.Null);
+            });
         }
     }
 }

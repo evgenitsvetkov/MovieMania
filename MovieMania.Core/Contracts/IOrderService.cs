@@ -10,12 +10,12 @@ namespace MovieMania.Core.Contracts
 
         Task<IEnumerable<OrderServiceModel>> AllAsync();
 
-        Task<IEnumerable<OrderServiceModel>> AllUserOrdersAsync(string userId);
+        Task<IEnumerable<OrderServiceModel>> AllOrdersByUserIdAsync(string userId);
 
         Task CreateOrderDetailsAsync(int cartId, int orderId);
 
         Task<OrderServiceModel> GetOrderServiceModelByUserIdAsync(int orderId, string userId);
 
-        Task<OrderServiceModel> GetOrderServiceModelAsync(int orderId);
+        Task<OrderServiceModel> GetOrderServiceModelByOrderIdAsync(int orderId);
     }
 }
