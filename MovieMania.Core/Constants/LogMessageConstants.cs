@@ -22,7 +22,7 @@
 
         public const string CartCreatedLogMessage = "Cart successfully created with ID: {CartId}";
 
-        public const string CartAlreadyExistLogMessage = "CartAlreadyExist with ID: {CartId}";
+        public const string CartAlreadyExistLogMessage = "Cart already exist with ID: {CartId}";
 
         public const string CartNotExistCreatingLogMessage = "Cart not exist for user {UserId}. Creating new cart...";
 
