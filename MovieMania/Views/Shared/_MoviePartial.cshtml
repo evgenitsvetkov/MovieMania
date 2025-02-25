@@ -5,28 +5,28 @@
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
-<div class="col-md-4"> 
-    <div class="card mb-3"> 
-        <img class="card-img-top" style="height: 30rem" src="@Model.ImageUrl" alt="Movie Image">
-        <div id="cartBody" class="card-body text-center"> 
-            <h4>@Model.Title</h4> 
+<div class="col-12 col-md-6 col-lg-4 mb-4">
+    <div class="card mb-3">
+        <img class="card-img-top" style="height: 30rem;" src="@Model.ImageUrl" alt="Movie Image">
+        <div id="cartBody" class="card-body text-center">
+            <h4>@Model.Title</h4>
             <h6>Genre: <b>@Model.Genre</b></h6>
             <h6>Release Date: <b>@Model.ReleaseDate</b></h6>
-            <h6> 
-                Price: 
-                <b>@String.Format("{0:f2}", Model.Price) BGN</b> 
+            <h6>
+                Price:
+                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
             </h6>
-            <br /> 
-            <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
+            <br />
+            <div class="d-flex flex-wrap justify-content-center">
+                <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success m-1 w-sm-auto">Details</a>
+                <button class="btn btn-success add-to-cart m-1 w-sm-auto" data-id="@Model.Id" data-title="@Model.Title">Add To Cart</button>
 
-            <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
-            <button class="btn btn-success add-to-cart" data-id="@Model.Id" data-title="@Model.Title">Add To Cart</button>          
-
-            @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin()) 
-            { 
-                <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-            } 
-        </div> 
-    </div> 
+                @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
+                {
+                    <a asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning m-1 w-sm-auto">Edit</a>
+                    <a asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger m-1 w-sm-auto">Delete</a>
+                }
+            </div>
+        </div>
+    </div>
 </div>
