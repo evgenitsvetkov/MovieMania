@@ -7,91 +7,47 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<table class="table table-striped" style="text-align: center">
-    <thead>
-        <tr>
-            <th>
-                <label>#</label>
-            </th>
-            <th>
-                <label>First Name</label>
-            </th>
-            <th>
-                <label>Last Name</label>
-            </th>
-            <th>
-                <label>Order Date</label>
-            </th>
-            <th>
-                <label>Phone</label>
-            </th>
-            <th>
-                <label>Email</label>
-            </th>
-            <th>
-                <label>Address</label>
-            </th>
-            <th>
-                <label>Country</label>
-            </th>
-            <th>
-                <label>PostalCode</label>
-            </th>
-            <th>
-                <label>State</label>
-            </th>
-            <th>
-                <label>Total Price</label>
-            </th>
-            <th>
-                <label>Details</label>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-striped" style="text-align: center">
+        <thead class="table-dark">
             <tr>
-                <td>
-                    <label>@order.OrderId</label>
-                </td>               
-                <td>
-                    <label>@order.FirstName</label>
-                </td>
-                <td>
-                    <label>@order.LastName</label>
-                </td>
-                <td>
-                    <label>@order.OrderDate.ToString("dd.MM.yyyy")</label>
-                </td>
-                <td>
-                    <label>@order.Phone</label>
-                </td>
-                <td>
-                    <label>@order.Email</label>
-                </td>
-                <td>
-                    <label>@order.Address</label>
-                </td>
-                <td>
-                    <label>@order.Country</label>
-                </td>
-                <td>
-                    <label>@order.PostalCode</label>
-                </td>
-                <td>
-                    <label>@order.State</label>
-                </td>
-                <td>
-                    <label>@order.TotalAmount BGN</label>
-                </td>
-                <td>
-                    <label><a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-Id="@order.OrderId" class="btn btn-success">Details</a></label>
-                </td>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Order Date</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Country</th>
+                <th>PostalCode</th>
+                <th>State</th>
+                <th>Total Price</th>
+                <th>Details</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.FirstName</td>
+                    <td>@order.LastName</td>
+                    <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
+                    <td>@order.Phone</td>
+                    <td>@order.Email</td>
+                    <td>@order.Address</td>
+                    <td>@order.Country</td>
+                    <td>@order.PostalCode</td>
+                    <td>@order.State</td>
+                    <td>@order.TotalAmount BGN</td>
+                    <td>
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-Id="@order.OrderId" class="btn btn-success">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <div class="text-center">
     <a class="btn btn-primary btn-lg" asp-area="Admin" asp-controller="Home" asp-action="DashBoard" title="Dashboard">Back To Dashboard</a>
 </div>
