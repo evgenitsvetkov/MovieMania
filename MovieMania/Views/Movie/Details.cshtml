@@ -39,12 +39,19 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            CartModule.updateCartCount();
-
             $('.add-to-cart').on('click', function (e) {
                 e.preventDefault();
                 CartModule.addToCart($(this).data('id'), $(this).data('title'));
             });
         });
     </script>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+            });
+        </script>
+    }
 }
