@@ -19,6 +19,8 @@
             <br />
             <div class="d-flex flex-wrap justify-content-center">
                 <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success m-1 w-sm-auto">Details</a>
+
+                <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
                 <button class="btn btn-success add-to-cart m-1 w-sm-auto" data-id="@Model.Id" data-title="@Model.Title">Add To Cart</button>
 
                 @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
