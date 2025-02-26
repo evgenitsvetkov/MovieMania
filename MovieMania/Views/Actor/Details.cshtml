@@ -7,23 +7,24 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="container" style="display:inline">
+<div class="container">
     <div class="row">
-        <div class="col-4">
-            <img class="card-img-top" style="width: 20rem;" src="@Model.ImageUrl" alt="Actor Image">
+        <div class="col-lg-3 col-md-4 col-12 mb-3">
+            <img class="card-img-top img-fluid h-100" src="@Model.ImageUrl" alt="Actor Image">
         </div>
-        <div class="card col-8 border-0">
-            <p style="font-size:25px;"><u>@Model.Name</u></p>
-            <p>Birthdate: <b>@Model.BirthDate.ToString("dd.MM.yyyy")</b></p>
-            <p>Bio: <b>@Model.Bio</b></p>
-            <div class="form-inline">
-                @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
-                {
-                    <a class="btn btn-warning" asp-controller="Actor" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                    <a class="ml-2 btn btn-danger" asp-controller="Actor" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-                }
+        <div class="col-lg-9 col-md-8 col-12 mb-3">
+            <div class="card border-0">
+                <p class="fs-3"><u>@Model.Name</u></p>
+                <p>Birthdate: <b>@Model.BirthDate.ToString("dd.MM.yyyy")</b></p>
+                <p>Bio: <b>@Model.Bio</b></p>
             </div>
-            <p></p>
+        </div>
+        <div class="form-inline text-center">
+            @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
+            {
+                <a class="btn btn-warning mb-1" asp-controller="Actor" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                <a class="ml-2 btn btn-danger mb-1" asp-controller="Actor" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+            }
         </div>
     </div>
 </div>
