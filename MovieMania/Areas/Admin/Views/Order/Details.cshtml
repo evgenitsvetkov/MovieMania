@@ -8,8 +8,8 @@
 <hr />
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-4 col-sm-12 mb-4 d-flex align-items-stretch">
+    <div class="row justify-content-start">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex align-items-stretch">
             <div class="card p-3 border-0 w-100 h-100">
                 <p>First Name: <b>@Model.FirstName</b></p>
                 <p>Last Name: <b>@Model.LastName</b></p>
@@ -25,14 +25,13 @@
 
         @foreach (var item in Model.OrderDetails)
         {
-            <div class="col-md-4 col-sm-12 mb-4 d-flex align-items-stretch">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex align-items-stretch">
                 <div class="card p-3 border-0 text-center w-100 h-100 d-flex flex-column">
                     <img class="card-img-top img-fluid h-100" src="@item.ImageUrl" alt="Item Image">
                     <div class="flex-grow-1">
-                        <p class="h5 mt-2"><u>@item.Title</u></p>
+                        <p class="fs-4 mt-2"><u>@item.Title</u></p>
                         <p>Quantity: <b>@item.Quantity</b></p>
                         <p>
-                            Item Price:
                             <b>@String.Format("{0:f2}", item.ItemTotal) BGN</b>
                         </p>
                     </div>
