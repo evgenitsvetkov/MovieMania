@@ -55,3 +55,14 @@ else
         </table>
     </div>
 }
+
+@section Scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+            });
+        </script>
+    }
+}

@@ -122,12 +122,12 @@ namespace MovieMania.Controllers
             logger.LogInformation(CartClearedLogMessage, cart.CartId, userId);
             TempData[UserMessageSuccess] = CheckoutSuccessMessage;
 
-            return RedirectToAction(nameof(Details), new { orderId = newOrderId });
+            return RedirectToAction(nameof(Details), new { id = newOrderId });
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int Id)
+        public async Task<IActionResult> Details(int id)
         {
             if (!this.User.Identity.IsAuthenticated)
             {
@@ -139,7 +139,7 @@ namespace MovieMania.Controllers
 
             string userId = User.Id();
 
-            if (!await orderService.ExistsAsync(Id))
+            if (!await orderService.ExistsAsync(id))
             {
                 logger.LogWarning(OrderNotExistLogMessage, userId);
                 TempData[UserMessageError] = OrderNotFoundMessage;
@@ -147,7 +147,7 @@ namespace MovieMania.Controllers
                 return NotFound();
             }
 
-            var order = await orderService.GetOrderServiceModelByUserIdAsync(Id, userId);
+            var order = await orderService.GetOrderServiceModelByUserIdAsync(id, userId);
 
             return View(order);
         }

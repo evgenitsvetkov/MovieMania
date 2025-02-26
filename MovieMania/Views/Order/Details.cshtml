@@ -7,38 +7,55 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="container" style="display:inline">
-    <div class="row">
-        <div class="card col-3 border-0">
-            <p>First Name: <b>@Model.FirstName</b></p>
-            <p>Last Name: <b>@Model.LastName</b></p>
-            <p>Country: <b>@Model.Country</b></p>
-            <p>Address: <b>@Model.Address</b></p>
-            <p>City: <b>@Model.City</b></p>
-            <p>Phone: <b>@Model.Phone</b></p>
-            <p>State: <b>@Model.State</b></p>
-            <p>Email: <b>@Model.Email</b></p>
-            <p>Postal Code: <b>@Model.PostalCode</b></p>
+<div class="container">
+    <div class="row justify-content-start">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex align-items-stretch">
+            <div class="card p-3 border-0 w-100 h-100">
+                <p>First Name: <b>@Model.FirstName</b></p>
+                <p>Last Name: <b>@Model.LastName</b></p>
+                <p>Country: <b>@Model.Country</b></p>
+                <p>Address: <b>@Model.Address</b></p>
+                <p>City: <b>@Model.City</b></p>
+                <p>Phone: <b>@Model.Phone</b></p>
+                <p>State: <b>@Model.State</b></p>
+                <p>Email: <b>@Model.Email</b></p>
+                <p>Postal Code: <b>@Model.PostalCode</b></p>
+            </div>
         </div>
+
         @foreach (var item in Model.OrderDetails)
         {
-            <div class="card col-3 border-0">
-                <div class="col-4">
-                    <img class="card-img-top" style="width: 20rem; height: 25rem" src="@item.ImageUrl" alt="Item Image">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex align-items-stretch">
+                <div class="card p-3 border-0 text-center w-100 h-100 d-flex flex-column">
+                    <img class="card-img-top img-fluid h-100" src="@item.ImageUrl" alt="Item Image">
+                    <div class="flex-grow-1">
+                        <p class="fs-4 mt-2"><u>@item.Title</u></p>
+                        <p>Quantity: <b>@item.Quantity</b></p>
+                        <p>
+                            <b>@String.Format("{0:f2}", item.ItemTotal) BGN</b>
+                        </p>
+                    </div>
                 </div>
-                <p style="font-size:25px;"><u>@item.Title</u></p>
-                <p>Quantity: <b>@item.Quantity</b></p>
-                <p>
-                    Unit Price:
-                    <b>@String.Format("{0:f2}", item.ItemTotal) BGN</b>
-                </p>
-                <p></p>
             </div>
         }
     </div>
 </div>
-<div class="form-inline mb-3">
-    <p><b>Total Price: @String.Format("{0:f2}", Model.TotalAmount) BGN</b></p>
-    <a class="btn btn-primary" asp-controller="Movie" asp-action="All">Back To Movies</a>
-    <a class="btn btn-primary" asp-controller="Order" asp-action="MyOrders">Back To My Orders</a>
+
+<div class="container text-center">
+    <p class="fs-5"><b>Total Price: @String.Format("{0:f2}", Model.TotalAmount) BGN</b></p>
+    <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-3">
+        <a class="btn btn-primary" asp-controller="Movie" asp-action="All">Back To Movies</a>
+        <a class="btn btn-primary" asp-controller="Order" asp-action="MyOrders">Back To My Orders</a>
+    </div>
 </div>
+
+@section Scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+            });
+        </script>
+    }
+}
