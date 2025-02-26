@@ -137,7 +137,9 @@ namespace MovieMania.Controllers
             {
                 Id = id,
                 Name = director.Name,
-                ImageUrl = director.ImageUrl
+                ImageUrl = director.ImageUrl,
+                Bio = director.Bio,
+                BirthDate = director.BirthDate,
             };
 
             return View(model);
