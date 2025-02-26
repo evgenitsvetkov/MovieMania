@@ -1,17 +1,19 @@
 ﻿@model DirectorServiceModel
 
-<div class="col-md-4">
+<div class="col-12 col-md-6 col-lg-4 mb-4">
     <div class="card mb-3">
-        <img class="card-img-top" style="height: 30rem" src="@Model.ImageUrl" alt="Director Image">
+        <img class="card-img-top img-fluid" style="height: 30rem" src="@Model.ImageUrl" alt="Director Image">
         <div class="card-body text-center">
             <h4>@Model.Name</h4>
             <br />
-            <a asp-controller="Director" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success">Details</a>
-            @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
-            {
-                <a asp-controller="Director" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                <a asp-controller="Director" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
-            }
+            <div class="d-flex flex-wrap justify-content-center">
+                <a asp-controller="Director" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-success m-1 w-sm-auto">Details</a>
+                @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
+                {
+                    <a asp-controller="Director" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning m-1 w-sm-auto">Edit</a>
+                    <a asp-controller="Director" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger m-1 w-sm-auto">Delete</a>
+                }
+            </div>
         </div>
     </div>
 </div>
