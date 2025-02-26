@@ -20,6 +20,7 @@ namespace MovieMania.Core.Models.Director
 
         [Required(ErrorMessage = RequiredMessage)]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; } = DateTime.Now.Date;
 
         [Required(ErrorMessage = RequiredMessage)]

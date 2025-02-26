@@ -35,7 +35,7 @@ namespace MovieMania.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var order = await orderService.GetOrderServiceModelAsync(Id);
+            var order = await orderService.GetOrderServiceModelByOrderIdAsync(Id);
 
             return View(order);
         }
