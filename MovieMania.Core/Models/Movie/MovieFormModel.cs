@@ -18,6 +18,13 @@ namespace MovieMania.Core.Models.Movie
         public IEnumerable<MovieGenreServiceModel> Genres { get; set; } 
             = new List<MovieGenreServiceModel>();
 
+        [Display(Name = "Actors")]
+        public IEnumerable<int> ActorIds { get; set; } = new List<int>();
+
+        public IEnumerable<MovieActorServiceModel> Actors { get; set; } 
+            = new List<MovieActorServiceModel>();
+
+
         [Required(ErrorMessage = RequiredMessage)]
         [Display(Name = "Release date")]
         public int ReleaseDate { get; set; }

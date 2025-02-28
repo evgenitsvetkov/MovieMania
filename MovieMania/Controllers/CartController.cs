@@ -14,7 +14,10 @@ namespace MovieMania.Controllers
         private readonly IMovieService movieService;
         private readonly ILogger<CartController> logger;
 
-        public CartController(ICartService _cartService, IMovieService _movieService, ILogger<CartController> _logger)
+        public CartController(
+            ICartService _cartService, 
+            IMovieService _movieService, 
+            ILogger<CartController> _logger)
         {
             cartService = _cartService;
             movieService = _movieService;

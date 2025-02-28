@@ -1,5 +1,6 @@
 ﻿using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Actor;
+using MovieMania.Core.Models.Movie;
 using MovieMania.Core.Services;
 using System.Globalization;
 
@@ -147,6 +148,51 @@ namespace MovieMania.Tests.UnitTests
 
             // Assert
             Assert.IsFalse(actor);
+        }
+
+        [Test]
+        public async Task ActorsExistsAsync_ShouldReturnTrue_WithValidIds()
+        {
+            // Arrange
+            var actorIds = FirstMovie.MoviesActors.Select(ma => ma.ActorId).ToList();
+
+            // Act
+            var isExist = await actorService.ActorsExistsAsync(actorIds);
+
+            // Assert
+            Assert.That(isExist, Is.True);
+        }
+
+        [Test]
+        public async Task ActorsExistsAsync_ShouldReturnFalse_WithInvalidIds()
+        {
+            // Arrange
+            var invalidIds = new List<int>()
+            {
+                22,
+                33,
+                44,
+                55
+            };
+
+            // Act
+            var isExist = await actorService.ActorsExistsAsync(invalidIds);
+
+            // Assert
+            Assert.That(isExist, Is.False);
+        }
+
+        [Test]
+        public async Task AllActorsAsync_ShouldReturnIEnumerableWithActors()
+        {
+            // Arrange
+
+            // Act
+            var actors = await actorService.AllActorsAsync();
+
+            // Assert
+            Assert.That(actors, Is.InstanceOf<IEnumerable<MovieActorServiceModel>>());
+            Assert.That(actors, Is.Not.Null);
         }
     }
 }

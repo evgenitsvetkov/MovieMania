@@ -19,9 +19,18 @@
                 <p class="fs-3"><u>@Model.Title</u></p>
                 <p>Genre: <b>@Model.Genre</b></p>
                 <p>Release date: <b>@Model.ReleaseDate</b></p>
+                <p>Director: <b>@Model.Director</b></p>
                 <p>Price: <b>@String.Format("{0:f2}", Model.Price) BGN</b></p>
                 <p>@Model.Description</p>
-                <p>Director: <b>@Model.Director</b></p>
+                <p class="mb-0"><strong>Cast:</strong></p>
+                <ul class="list-inline">
+                    @foreach (var actor in Model.Actors)
+                    {
+                        <li class="list-inline-item">
+                            <b>@actor.Name</b>
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
         <div class="form-inline text-center">

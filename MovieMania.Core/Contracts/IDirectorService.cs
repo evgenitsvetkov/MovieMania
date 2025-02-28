@@ -1,4 +1,5 @@
 ﻿using MovieMania.Core.Models.Director;
+using MovieMania.Core.Models.Movie;
 
 namespace MovieMania.Core.Contracts
 {
@@ -9,7 +10,7 @@ namespace MovieMania.Core.Contracts
             int currentPage = 1,
             int directorsPerPage = 1);
 
-        Task<bool> ExistsAsync(int id);
+        Task<bool> DirectorExistsAsync(int directorId);
 
         Task<DirectorDetailsServiceModel> DirectorsDetailsByIdAsync(int id);
 
@@ -20,5 +21,7 @@ namespace MovieMania.Core.Contracts
         Task EditAsync(int directorId, DirectorFormModel model);
 
         Task DeleteAsync(int directorId);
+
+        Task<IEnumerable<MovieDirectorServiceModel>> AllDirectorsAsync();
     }
 }

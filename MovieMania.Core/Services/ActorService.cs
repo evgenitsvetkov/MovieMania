@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Actor;
+using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Actors;
 
@@ -118,6 +119,30 @@ namespace MovieMania.Core.Services
                 .FirstOrDefaultAsync();
 
             return actor;
+        }
+
+        public async Task<bool> ActorsExistsAsync(IEnumerable<int> actorIds)
+        {
+            var check = false;
+
+            foreach (var actorId in actorIds)
+            {
+                check = await unitOfWork.AllReadOnly<Actor>()
+                    .AnyAsync(a => a.Id == actorId);
+            }
+
+            return check;
+        }
+
+        public async Task<IEnumerable<MovieActorServiceModel>> AllActorsAsync()
+        {
+            return await unitOfWork.AllReadOnly<Actor>()
+                .Select(d => new MovieActorServiceModel()
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                })
+                .ToListAsync();
         }
 
     }

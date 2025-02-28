@@ -9,12 +9,16 @@ namespace MovieMania.Tests.UnitTests
     {
         private ICartService cartService;
         private IMovieService movieService;
+        private IActorService actorService;
+        private IDirectorService directorService;
 
         [OneTimeSetUp]
         public void SetUp()
         {
             cartService = new CartService(unitOfWork);
-            movieService = new MovieService(unitOfWork);
+            actorService = new ActorService(unitOfWork);
+            directorService = new DirectorService(unitOfWork);
+            movieService = new MovieService(unitOfWork, actorService, directorService);
         }
              
         [Test]

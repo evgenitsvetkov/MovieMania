@@ -108,7 +108,27 @@ namespace MovieMania.Tests.UnitTests
                 Price = 29.99M,
                 Description = "This is a test description. This is a test description. This is a test description.",
                 DirectorId = 1,
-                ImageURL = "https://upload.wikimedia.org/wikipedia/en/b/b8/Just_Go_with_It_Poster.jpg"
+                ImageURL = "https://upload.wikimedia.org/wikipedia/en/b/b8/Just_Go_with_It_Poster.jpg",
+                MoviesActors = new List<MovieActor>()
+                {
+                    new MovieActor()
+                    {
+                        ActorId = 1,
+                        MovieId = 1,
+                    },
+
+                    new MovieActor()
+                    {
+                        ActorId = 2,
+                        MovieId = 1,
+                    },
+
+                    new MovieActor()
+                    {
+                        ActorId = 3,
+                        MovieId = 1,
+                    }
+                }
             };
 
             data.Movies.Add(FirstMovie);

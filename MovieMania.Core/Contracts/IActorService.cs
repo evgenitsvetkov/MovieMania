@@ -1,4 +1,5 @@
 ﻿using MovieMania.Core.Models.Actor;
+using MovieMania.Core.Models.Movie;
 
 namespace MovieMania.Core.Contracts
 {
@@ -20,5 +21,9 @@ namespace MovieMania.Core.Contracts
         Task EditAsync(int actorId, ActorFormModel model);
 
         Task DeleteAsync(int actorId);
+
+        Task<IEnumerable<MovieActorServiceModel>> AllActorsAsync();
+
+        Task<bool> ActorsExistsAsync(IEnumerable<int> actorIds);
     }
 }

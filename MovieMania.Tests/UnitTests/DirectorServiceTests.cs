@@ -1,5 +1,6 @@
 ﻿using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Director;
+using MovieMania.Core.Models.Movie;
 using MovieMania.Core.Services;
 using System.Globalization;
 
@@ -28,29 +29,42 @@ namespace MovieMania.Tests.UnitTests
         }
 
         [Test]
-        public async Task ExistsAsync_ShouldReturnTrue_WithValidId()
+        public async Task DirectorExistsAsync_ShouldReturnTrue_WithValidId()
         {
             // Arrange
             var directorId = FirstDirector.Id;
 
             // Act
-            var director = await directorService.ExistsAsync(directorId);
+            var director = await directorService.DirectorExistsAsync(directorId);
 
             // Assert
             Assert.IsTrue(director);
         }
 
         [Test]
-        public async Task ExistsAsync_ShouldReturnFalse_WithInvalidId()
+        public async Task DirectorExistsAsync_ShouldReturnFalse_WithInvalidId()
         {
             // Arrange
             var invalidId = 400;
 
             // Act
-            var director = await directorService.ExistsAsync(invalidId);
+            var director = await directorService.DirectorExistsAsync(invalidId);
 
             // Assert
             Assert.IsFalse(director);
+        }
+
+        [Test]
+        public async Task AllDirectorsAsync_ShouldReturnAllDirectors()
+        {
+            // Arrange
+
+            // Act
+            var directors = await directorService.AllDirectorsAsync();
+
+            // Assert
+            Assert.That(directors, Is.Not.Null);
+            Assert.That(directors, Is.InstanceOf<IEnumerable<MovieDirectorServiceModel>>());
         }
 
         [Test]
@@ -81,7 +95,7 @@ namespace MovieMania.Tests.UnitTests
 
             // Act
             var directorId = await directorService.CreateAsync(directorFormModel);
-            var director = await directorService.ExistsAsync(directorId);
+            var director = await directorService.DirectorExistsAsync(directorId);
 
             // Assert
             Assert.IsTrue(director);
@@ -145,7 +159,7 @@ namespace MovieMania.Tests.UnitTests
 
             // Act
             await directorService.DeleteAsync(directorId);
-            var director = await directorService.ExistsAsync(directorId);
+            var director = await directorService.DirectorExistsAsync(directorId);
 
             // Assert
             Assert.IsFalse(director);

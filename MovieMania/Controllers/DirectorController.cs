@@ -37,7 +37,7 @@ namespace MovieMania.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (await directorService.ExistsAsync(id) == false)
+            if (await directorService.DirectorExistsAsync(id) == false)
             {
                 logger.LogWarning(DirectorNotFoundLogMessage, id);
                 TempData[UserMessageError] = DirectorNotFoundUserMessage;
@@ -80,7 +80,7 @@ namespace MovieMania.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            if (await directorService.ExistsAsync(id) == false)
+            if (await directorService.DirectorExistsAsync(id) == false)
             {
                 logger.LogWarning(DirectorNotFoundLogMessage, id);
                 TempData[UserMessageError] = DirectorNotFoundUserMessage;
@@ -96,7 +96,7 @@ namespace MovieMania.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, DirectorFormModel model)
         {
-            if (await directorService.ExistsAsync(id) == false)
+            if (await directorService.DirectorExistsAsync(id) == false)
             {
                 logger.LogWarning(DirectorNotFoundLogMessage, id);
                 TempData[UserMessageError] = DirectorNotFoundUserMessage;
@@ -123,7 +123,7 @@ namespace MovieMania.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            if (await directorService.ExistsAsync(id) == false)
+            if (await directorService.DirectorExistsAsync(id) == false)
             {
                 logger.LogWarning(DirectorNotFoundLogMessage, id);
                 TempData[UserMessageError] = DirectorNotFoundUserMessage;
@@ -148,7 +148,7 @@ namespace MovieMania.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(DirectorDetailsViewModel model)
         {
-            if (await directorService.ExistsAsync(model.Id) == false)
+            if (await directorService.DirectorExistsAsync(model.Id) == false)
             {
                 logger.LogWarning(DirectorNotFoundLogMessage, model.Id);
                 TempData[UserMessageError] = DirectorNotFoundUserMessage;

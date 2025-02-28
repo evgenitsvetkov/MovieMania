@@ -10,11 +10,19 @@ namespace MovieMania.Controllers
     public class MovieController : BaseController
     {
         private readonly IMovieService movieService;
+        private readonly IActorService actorService;
+        private readonly IDirectorService directorService;
         private readonly ILogger<MovieController> logger;
 
-        public MovieController(IMovieService _movieService, ILogger<MovieController> _logger)
+        public MovieController(
+            IMovieService _movieService, 
+            IActorService _actorService, 
+            IDirectorService _directorService, 
+            ILogger<MovieController> _logger)
         {
             movieService = _movieService;
+            actorService = _actorService;
+            directorService = _directorService;
             logger = _logger;
         }
 
@@ -59,7 +67,8 @@ namespace MovieMania.Controllers
             var model = new MovieFormModel()
             {
                 Genres = await movieService.AllGenresAsync(),
-                Directors = await movieService.AllDirectorsAsync()
+                Directors = await directorService.AllDirectorsAsync(),
+                Actors = await actorService.AllActorsAsync(),
             };
 
             return View(model);
@@ -68,13 +77,19 @@ namespace MovieMania.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(MovieFormModel model)
         {
+            if (await actorService.ActorsExistsAsync(model.ActorIds) == false)
+            {
+                logger.LogWarning(ActorNotFoundLogMessage, model.ActorIds);
+                ModelState.AddModelError(nameof(model.ActorIds), ActorNotFoundUserMessage);
+            }
+
             if (await movieService.GenreExistsAsync(model.GenreId) == false)
             {
                 logger.LogWarning(AddGenreNotExistLogMessage, model.GenreId);
                 ModelState.AddModelError(nameof(model.GenreId), GenreNotFoundUserMessage);
             }
 
-            if (await movieService.DirectorExistsAsync(model.DirectorId) == false)
+            if (await directorService.DirectorExistsAsync(model.DirectorId) == false)
             {
                 logger.LogWarning(AddDirectorNotExistLogMessage, model.DirectorId);
                 ModelState.AddModelError(nameof(model.DirectorId), DirectorNotFoundUserMessage);
@@ -85,7 +100,8 @@ namespace MovieMania.Controllers
                 logger.LogInformation(ModelNotValidLogMessage);
 
                 model.Genres = await movieService.AllGenresAsync();
-                model.Directors = await movieService.AllDirectorsAsync();
+                model.Directors = await directorService.AllDirectorsAsync();
+                model.Actors = await actorService.AllActorsAsync();
 
                 TempData[UserMessageError] = InvalidInputMessage;
 
@@ -127,13 +143,19 @@ namespace MovieMania.Controllers
                 return NotFound();
             }
 
+            if (await actorService.ActorsExistsAsync(model.ActorIds) == false)
+            {
+                logger.LogWarning(ActorNotFoundLogMessage, model.ActorIds);
+                ModelState.AddModelError(nameof(model.ActorIds), ActorNotFoundUserMessage);
+            }
+
             if (await movieService.GenreExistsAsync(model.GenreId) == false)
             {
                 logger.LogWarning(EditGenreNotExistLogMessage, model.GenreId);
                 ModelState.AddModelError(nameof(model.GenreId), GenreNotFoundUserMessage);
             }
 
-            if (await movieService.DirectorExistsAsync(model.DirectorId) == false)
+            if (await directorService.DirectorExistsAsync(model.DirectorId) == false)
             {
                 logger.LogWarning(EditDirectorNotExistLogMessage, model.DirectorId);
                 ModelState.AddModelError(nameof(model.DirectorId), DirectorNotFoundUserMessage);
@@ -145,7 +167,8 @@ namespace MovieMania.Controllers
                 TempData[UserMessageError] = InvalidInputMessage;
 
                 model.Genres = await movieService.AllGenresAsync();
-                model.Directors = await movieService.AllDirectorsAsync();
+                model.Directors = await directorService.AllDirectorsAsync();
+                model.Actors = await actorService.AllActorsAsync();
                 
                 return View(model);
             }
