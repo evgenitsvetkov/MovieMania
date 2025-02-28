@@ -24,6 +24,7 @@ namespace MovieMania.Controllers
         {
             var model = await actorService.AllAsync(
                 query.SearchTerm,
+                query.Sorting,
                 query.CurrentPage,
                 query.ActorsPerPage);
 

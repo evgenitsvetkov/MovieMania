@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MovieMania.Core.Enumerations;
+using System.ComponentModel.DataAnnotations;
 
 namespace MovieMania.Core.Models.Director
 {
@@ -8,6 +9,8 @@ namespace MovieMania.Core.Models.Director
 
         [Display(Name = "Search")]
         public string SearchTerm { get; set; } = null!;
+
+        public DirectorSorting Sorting { get; set; }
 
         public int CurrentPage { get; set; } = 1;
 

@@ -10,6 +10,8 @@ namespace MovieMania.Core.Models.Actor
         [Display(Name = "Search")]
         public string SearchTerm { get; set; } = null!;
 
+        public ActorSorting Sorting { get; set; }
+
         public int CurrentPage { get; set; } = 1;
 
         public int TotalActorsCount { get; set; }

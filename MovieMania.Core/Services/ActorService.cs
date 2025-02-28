@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
+using MovieMania.Core.Enumerations;
 using MovieMania.Core.Models.Actor;
 using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
@@ -33,6 +34,7 @@ namespace MovieMania.Core.Services
 
         public async Task<ActorQueryServiceModel> AllAsync(
             string? searchTerm = null,
+            ActorSorting sorting = ActorSorting.Recently,
             int currentPage = 1,
             int actorsPerPage = 1)
         {
@@ -45,6 +47,12 @@ namespace MovieMania.Core.Services
                     .Where(m => (m.Name.ToLower().Contains(normalizedSearchTerm) ||
                                 m.Bio.ToLower().Contains(normalizedSearchTerm)));
             }
+
+            actorsToShow = sorting switch
+            {
+                ActorSorting.Oldest => actorsToShow.OrderBy(m => m.Id),
+                _ => actorsToShow.OrderByDescending(m => m.Id),
+            };
 
             var actors = await actorsToShow
                 .Skip((currentPage - 1) * actorsPerPage)

@@ -1,4 +1,5 @@
-﻿using MovieMania.Core.Models.Director;
+﻿using MovieMania.Core.Enumerations;
+using MovieMania.Core.Models.Director;
 using MovieMania.Core.Models.Movie;
 
 namespace MovieMania.Core.Contracts
@@ -7,6 +8,7 @@ namespace MovieMania.Core.Contracts
     {
         Task<DirectorQueryServiceModel> AllAsync(
             string? searchTerm = null,
+            DirectorSorting sorting = DirectorSorting.Recently,
             int currentPage = 1,
             int directorsPerPage = 1);
 
