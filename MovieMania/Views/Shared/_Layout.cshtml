@@ -8,6 +8,7 @@
     <title>@ViewData["Title"] - Movie Mania</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MovieMania.styles.css" asp-append-version="true" />
 </head>
@@ -22,39 +23,25 @@
                 </button>
                 <div class="navbar-collapse collapse d-xl-inline-flex justify-content-between">
                     @await Component.InvokeAsync(nameof(MainMenuComponent))
-                    <partial name="_LoginPartial" />
+                    <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 min-vh-100">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; @DateTime.Today.Year - MovieMania
-        </div>
-    </footer>
+    <partial name="_FooterPartial"/>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery.cart-module-object.js"></script>    
     @await RenderSectionAsync("Scripts", required: false)
-    @if (TempData[MessageConstants.UserMessageSuccess] != null)
-    {
-        <script defer>
-            message.showSuccess('@TempData[MessageConstants.UserMessageSuccess]');
-        </script>
-    }
-    @if (TempData[MessageConstants.UserMessageError] != null)
-    {
-        <script defer>
-            message.showError('@TempData[MessageConstants.UserMessageError]');
-        </script>
-    }
+    <partial name="_ToastrMessage"/>
 </body>
 </html>

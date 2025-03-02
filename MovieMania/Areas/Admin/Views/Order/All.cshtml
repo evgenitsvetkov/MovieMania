@@ -7,47 +7,54 @@
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="table-responsive">
-    <table class="table table-striped" style="text-align: center">
-        <thead class="table-dark">
-            <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Order Date</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Country</th>
-                <th>PostalCode</th>
-                <th>State</th>
-                <th>Total Price</th>
-                <th>Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var order in Model)
-            {
+@if (!Model.Any())
+{
+    <h2 class="text-center mt-5">There are no orders placed!</h2>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped" style="text-align: center">
+            <thead class="table-dark">
                 <tr>
-                    <td>@order.OrderId</td>
-                    <td>@order.FirstName</td>
-                    <td>@order.LastName</td>
-                    <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
-                    <td>@order.Phone</td>
-                    <td>@order.Email</td>
-                    <td>@order.Address</td>
-                    <td>@order.Country</td>
-                    <td>@order.PostalCode</td>
-                    <td>@order.State</td>
-                    <td>@order.TotalAmount BGN</td>
-                    <td>
-                        <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-Id="@order.OrderId" class="btn btn-success">Details</a>
-                    </td>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Order Date</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Country</th>
+                    <th>PostalCode</th>
+                    <th>State</th>
+                    <th>Total Price</th>
+                    <th>Details</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<div class="text-center">
-    <a class="btn btn-primary btn-lg" asp-area="Admin" asp-controller="Home" asp-action="DashBoard" title="Dashboard">Back To Dashboard</a>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.FirstName</td>
+                        <td>@order.LastName</td>
+                        <td>@order.OrderDate.ToString("dd.MM.yyyy")</td>
+                        <td>@order.Phone</td>
+                        <td>@order.Email</td>
+                        <td>@order.Address</td>
+                        <td>@order.Country</td>
+                        <td>@order.PostalCode</td>
+                        <td>@order.State</td>
+                        <td>@order.TotalAmount BGN</td>
+                        <td>
+                            <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-Id="@order.OrderId" class="btn btn-success">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <a class="btn btn-primary btn-lg" asp-area="Admin" asp-controller="Home" asp-action="DashBoard" title="Dashboard">Back To Dashboard</a>
+    </div>
+}

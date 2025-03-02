@@ -13,6 +13,34 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+footer {
+    padding-top: 65px;
+    padding-bottom: 30px;
+}
+
+footer ul > li > a {
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+footer ul > li > a:hover {
+    text-decoration: underline;
+}
+
+footer .socials > a > i {
+    transition: color 0.3s ease-in-out;
+}
+
+footer .socials > a > i:hover {
+    color: grey;
 }
