@@ -258,7 +258,7 @@ namespace MovieMania.Infrastructure.Data.SeedDb
                 Name = "Anna Boden",
                 Bio = "Anna Boden is an American film director, cinematographer, editor, andscreenwriter best known as the co-writer of the 2006 film Half Nelson.She is known for her collaborations with fellow filmmaker Ryan Fleck.",
                 BirthDate = DateTime.ParseExact("20.10.1979", DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None),
-                ImageUrl = "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/8/8f/Anna_Boden.jpg/revision/latest?cb=20190305123354"
+                ImageUrl = "https://assets.fxnetworks.com/cms-next/production/cms/2020/03/10/web_crew_annaboden_mrs-america_570x698.jpg?imwidth=605"
             };
 
             SecondDirector = new Director()

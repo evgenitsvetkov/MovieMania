@@ -23,7 +23,6 @@ html, body {
     flex: 1;
 }
 
-
 .navbar .navbar-nav .nav-link:hover {
     background-color: #0d6efd;
     color: #fff !important;
@@ -44,19 +43,28 @@ footer {
     padding-bottom: 30px;
 }
 
-footer ul > li > a {
-    text-decoration: none;
-    transition: color 0.3s ease-in-out;
+footer .contact-us > p.email {
+    color: #d6d6d6;
 }
 
-footer ul > li > a:hover {
+footer .contact-us > p.phone {
+    color: #d6d6d6;
+}
+
+footer .useful-links a {
+    color: #d6d6d6;
+    text-decoration: none;
+}
+
+footer .useful-links a:hover {
+    color: grey;
     text-decoration: underline;
 }
 
 footer .socials > a > i {
-    transition: color 0.3s ease-in-out;
+    color: #d6d6d6;
 }
 
 footer .socials > a > i:hover {
-    color: grey;
+    color: white;
 }
