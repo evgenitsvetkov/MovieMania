@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
 
 namespace MovieMania.Core.Models.Admin.User
 {
     public class UserServiceModel
     {
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; } = null!;
         
         [Display(Name = "Full name")]
-        public string FullName { get; set; } = string.Empty;
+        public string FullName { get; set; } = null!;
 
     }
 }

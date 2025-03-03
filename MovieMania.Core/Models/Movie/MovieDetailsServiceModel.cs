@@ -1,4 +1,6 @@
-﻿namespace MovieMania.Core.Models.Movie
+﻿using MovieMania.Infrastructure.Data.Models.Mappings;
+
+namespace MovieMania.Core.Models.Movie
 {
     public class MovieDetailsServiceModel : MovieServiceModel
     {
@@ -6,6 +8,6 @@
 
         public string Director { get; set; } = null!;
 
-        public IEnumerable<string> Directors { get; set; } = null!;
+        public IEnumerable<MovieActorServiceModel> Actors { get; set; } = new List<MovieActorServiceModel>();
     }
 }

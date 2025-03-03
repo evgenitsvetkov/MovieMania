@@ -1,34 +1,54 @@
 ﻿@model IEnumerable<MovieIndexServiceModel>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
 @{
     ViewData["Title"] = "Home Page";
     var movies = Model.ToList();
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
-<div class="mb-5"></div>
-
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        @for (int i = 0; i < movies.Count(); i++)
-        {
-            var movie = movies[i];
-            <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
-                <img class="d-block w-100" style="height:600px"
-                src="@movie.ImageURL" alt="@movie.Title">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>
-                        <a class="btn btn-primary" asp-controller="Movie" asp-action="Details"
-                        asp-route-id ="@movie.Id">@movie.Title</a>
-                    </h5>
-                </div>
-            </div>
-        }
+<div class="row d-flex align-items-center mt-5">
+    <div class="col-md-6 text-center mt-5 mt-md-0 ">
+        <h1>Welcome to Movie Mania</h1>
+        <p>Discover & Purchase Your Favorite Movies</p>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+
+    <div class="col-md-6 text-center mt-5 mt-md-0">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < movies.Count(); i++)
+                {
+                    var movie = movies[i];
+                    <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                        <img class="d-block w-100" style="height:40rem;" src="@movie.ImageURL" alt="@movie.Title">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>
+                                <a class="btn btn-primary" asp-controller="Movie" asp-action="Details" asp-route-id="@movie.Id">@movie.Title</a>
+                            </h5>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+            });
+        </script>
+    }
+}

@@ -17,6 +17,7 @@ namespace MovieMania.Controllers
             movieService = _movieService;
         }
 
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
@@ -37,6 +38,11 @@ namespace MovieMania.Controllers
             if (statusCode == 401)
             {
                 return View("Error401");
+            }
+
+            if (statusCode == 404)
+            {
+                return View("Error404");
             }
 
             return View();

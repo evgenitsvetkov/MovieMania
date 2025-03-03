@@ -21,7 +21,9 @@ namespace MovieMania.Core.Models.Actor
         public string Bio { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]
-        public DateTime BirthDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime BirthDate { get; set; } = DateTime.Now.Date;
 
         [Required(ErrorMessage = RequiredMessage)]
         public string ImageUrl { get; set; } = string.Empty;

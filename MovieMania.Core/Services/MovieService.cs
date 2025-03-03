@@ -4,18 +4,27 @@ using MovieMania.Core.Enumerations;
 using MovieMania.Core.Models.Home;
 using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
+using MovieMania.Infrastructure.Data.Models.Actors;
 using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Movies;
+using MovieMania.Infrastructure.Data.Models.Mappings;
 
 namespace MovieMania.Core.Services
 {
     public class MovieService : IMovieService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IActorService actorService;
+        private readonly IDirectorService directorService;
 
-        public MovieService(IUnitOfWork _unitOfWork)
+        public MovieService(
+            IUnitOfWork _unitOfWork, 
+            IActorService _actorService, 
+            IDirectorService _directorService)
         {
             unitOfWork = _unitOfWork;
+            actorService = _actorService;
+            directorService = _directorService;
         }
 
         public async Task<MovieQueryServiceModel> AllAsync(
@@ -43,7 +52,9 @@ namespace MovieMania.Core.Services
 
             moviesToShow = sorting switch
             { 
-                MovieSorting.Price => moviesToShow.OrderBy(m => m.Price),
+                MovieSorting.LowestPrice => moviesToShow.OrderBy(m => m.Price),
+                MovieSorting.HighestPrice => moviesToShow.OrderByDescending(m => m.Price),
+                MovieSorting.Oldest => moviesToShow.OrderBy(m => m.Id),
                 _ => moviesToShow.OrderByDescending(m => m.Id),
             };
 
@@ -61,17 +72,6 @@ namespace MovieMania.Core.Services
                 TotalMoviesCount = totalMovies,
             };
 
-        }
-
-        public async Task<IEnumerable<MovieDirectorServiceModel>> AllDirectorsAsync()
-        {
-            return await unitOfWork.AllReadOnly<Director>()
-                .Select(d => new MovieDirectorServiceModel()
-                {
-                    Id = d.Id,
-                    Name = d.Name
-                })
-                .ToListAsync();
         }
 
         public async Task<IEnumerable<MovieGenreServiceModel>> AllGenresAsync()
@@ -103,7 +103,12 @@ namespace MovieMania.Core.Services
                 Price = model.Price,
                 Description = model.Description,
                 DirectorId = model.DirectorId,
-                ImageURL = model.ImageUrl
+                ImageURL = model.ImageUrl,
+                MoviesActors = model.ActorIds.Select(id => new MovieActor()
+                {
+                    ActorId = id,
+                })
+                .ToList(),
             };
 
             await unitOfWork.AddAsync(movie);
@@ -116,18 +121,13 @@ namespace MovieMania.Core.Services
         {
             await unitOfWork.DeleteAsync<Movie>(movieId);
             await unitOfWork.SaveChangesAsync();
-
-        }
-
-        public async Task<bool> DirectorExistsAsync(int directorId)
-        {
-            return await unitOfWork.AllReadOnly<Director>()
-                .AnyAsync(d => d.Id == directorId);
         }
 
         public async Task EditAsync(int movieId, MovieFormModel model)
         {
-            var movie = await unitOfWork.GetByIdAsync<Movie>(movieId);
+            var movie = await unitOfWork.All<Movie>()
+               .Include(m => m.MoviesActors)
+               .FirstOrDefaultAsync(m => m.Id == movieId);
 
             if (movie != null)
             {
@@ -138,6 +138,12 @@ namespace MovieMania.Core.Services
                 movie.Description = model.Description;
                 movie.DirectorId = model.DirectorId;
                 movie.ImageURL = model.ImageUrl;
+
+                movie.MoviesActors = model.ActorIds.Select(a => new MovieActor()
+                {
+                    ActorId = a,
+                    MovieId = movie.Id,
+                }).ToList();
 
                 await unitOfWork.SaveChangesAsync();
             }         
@@ -158,6 +164,7 @@ namespace MovieMania.Core.Services
         public async Task<MovieFormModel?> GetMovieFormModelByIdAsync(int id)
         {
             var movie = await unitOfWork.AllReadOnly<Movie>()
+                .Include(m => m.MoviesActors)
                 .Where(m => m.Id == id)
                 .Select(m => new MovieFormModel()
                 {
@@ -167,14 +174,16 @@ namespace MovieMania.Core.Services
                     Price = m.Price,
                     Description = m.Description,
                     DirectorId = m.DirectorId,
-                    ImageUrl = m.ImageURL
+                    ImageUrl = m.ImageURL,
+                    ActorIds = m.MoviesActors.Select(ma => ma.ActorId).ToList(),
                 })
                 .FirstOrDefaultAsync();
 
             if (movie != null)
             {
                 movie.Genres = await AllGenresAsync();
-                movie.Directors = await AllDirectorsAsync();
+                movie.Directors = await directorService.AllDirectorsAsync();
+                movie.Actors = await actorService.AllActorsAsync();
             }
 
             return movie;
@@ -187,6 +196,7 @@ namespace MovieMania.Core.Services
                 .Take(5)
                 .Select(m => new MovieIndexServiceModel()
                 {
+                    Id = m.Id,
                     Title = m.Title,
                     ImageURL = m.ImageURL
                 })
@@ -196,6 +206,8 @@ namespace MovieMania.Core.Services
         public async Task<MovieDetailsServiceModel> MoviesDetailsByIdAsync(int id)
         {
             return await unitOfWork.AllReadOnly<Movie>()
+                .Include(m => m.MoviesActors)
+                .ThenInclude(ma => ma.Actor)
                 .Where(m => m.Id == id)
                 .Select(m => new MovieDetailsServiceModel()
                 {
@@ -206,7 +218,12 @@ namespace MovieMania.Core.Services
                     ImageUrl = m.ImageURL,
                     Price = m.Price,
                     Description = m.Description,
-                    Director = m.Director.Name
+                    Director = m.Director.Name,
+                    Actors = m.MoviesActors.Select(m => new MovieActorServiceModel()
+                    {
+                        Name = m.Actor.Name,
+                    })
+                    .ToList(),
                 })
                 .FirstAsync();
         }

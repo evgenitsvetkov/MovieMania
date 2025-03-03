@@ -418,7 +418,7 @@ namespace MovieMania.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f926a30-8ef9-42e2-8e02-5723c98c8e26",
+                            ConcurrencyStamp = "d06d9ef3-bd69-4b32-8ec0-72f8ac2555b5",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Evgeni",
@@ -426,9 +426,9 @@ namespace MovieMania.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@mail.com",
                             NormalizedUserName = "admin@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEElJ95Ujks5U9lmJHp88qr3i+rPDz+CDNK8lJi+k6gEfrspG5lD++ENZjWKTm2NDLg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEasMGtoDk/fYtoAyn28jhuW4SpJWF8YVW1/2IOHOBVcLpTyabBwQXmAcW7eHSjAow==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9adf27ca-75de-41e4-9efe-94dc9dfdc79b",
+                            SecurityStamp = "d5a0c8b0-6a94-42b2-aedc-92d7f3f7fc42",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         },
@@ -436,7 +436,7 @@ namespace MovieMania.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "307551c5-be6a-48f6-9fce-22d1046700fe",
+                            ConcurrencyStamp = "43d80038-8ce8-4408-878b-47008ba9d184",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Guest",
@@ -444,9 +444,9 @@ namespace MovieMania.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "guest@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAHe6Bc09LYBL+MSBdIcVwuMMgMyX24hTBtFaV4u+4f0sucuVY+IV9IP9flvmmq82w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFUinOOFPkYgcP1ySvMW443h6o5gNEJYHnW1sNbuPdEri8JZtkTaGk+b3Kb+qw7Q8Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3a9cb536-1ce4-4a3f-8738-9df9347b0a2a",
+                            SecurityStamp = "015b9e92-8eab-4f62-bf3d-48a460c43f06",
                             TwoFactorEnabled = false,
                             UserName = "guest@mail.com"
                         });
@@ -749,9 +749,8 @@ namespace MovieMania.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasComment("Price for single movie");
 
-                    b.Property<int>("ReleaseDate")
-                        .HasMaxLength(2024)
-                        .HasColumnType("int")
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2")
                         .HasComment("Movie's release date");
 
                     b.Property<string>("Title")
@@ -779,7 +778,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 3,
                             ImageURL = "https://upload.wikimedia.org/wikipedia/en/b/b8/Just_Go_with_It_Poster.jpg",
                             Price = 29.99m,
-                            ReleaseDate = 2011,
+                            ReleaseDate = new DateTime(2011, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Just Go with It"
                         },
                         new
@@ -790,7 +789,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 6,
                             ImageURL = "https://moviesfilmsandflix.files.wordpress.com/2013/12/wolf-of-wall-street.jpg",
                             Price = 35.99m,
-                            ReleaseDate = 2013,
+                            ReleaseDate = new DateTime(2013, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "The Wolf of Wall Street"
                         },
                         new
@@ -801,7 +800,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 3,
                             ImageURL = "https://upload.wikimedia.org/wikipedia/en/7/71/Murder_Mystery_2_poster.png",
                             Price = 59.99m,
-                            ReleaseDate = 2023,
+                            ReleaseDate = new DateTime(2023, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Murder Mystery 2"
                         },
                         new
@@ -812,7 +811,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 1,
                             ImageURL = "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_%282010%29_theatrical_poster.jpg",
                             Price = 25.99m,
-                            ReleaseDate = 2010,
+                            ReleaseDate = new DateTime(2010, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Inception"
                         },
                         new
@@ -823,7 +822,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 3,
                             ImageURL = "https://upload.wikimedia.org/wikipedia/en/2/26/PosterFunnyPeople.jpg",
                             Price = 19.99m,
-                            ReleaseDate = 2009,
+                            ReleaseDate = new DateTime(2009, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Funny People"
                         },
                         new
@@ -834,7 +833,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 2,
                             ImageURL = "https://upload.wikimedia.org/wikipedia/en/4/4e/Captain_Marvel_%28film%29_poster.jpg",
                             Price = 49.99m,
-                            ReleaseDate = 2019,
+                            ReleaseDate = new DateTime(2019, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Captain Marvel"
                         },
                         new
@@ -845,7 +844,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 4,
                             ImageURL = "https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg",
                             Price = 69.99m,
-                            ReleaseDate = 2023,
+                            ReleaseDate = new DateTime(2023, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Oppenheimer"
                         },
                         new
@@ -856,7 +855,7 @@ namespace MovieMania.Infrastructure.Migrations
                             GenreId = 1,
                             ImageURL = "https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg",
                             Price = 65.99m,
-                            ReleaseDate = 2019,
+                            ReleaseDate = new DateTime(2019, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Avengers: Endgame"
                         });
                 });

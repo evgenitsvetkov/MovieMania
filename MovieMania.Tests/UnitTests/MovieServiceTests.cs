@@ -9,10 +9,16 @@ namespace MovieMania.Tests.UnitTests
     public class MovieServiceTests : UnitTestsBase
     {
         private IMovieService movieService;
+        private IActorService actorService;
+        private IDirectorService directorService;
 
         [OneTimeSetUp]
         public void SetUp()
-            => movieService = new MovieService(unitOfWork);
+        {
+            actorService = new ActorService(unitOfWork);
+            directorService = new DirectorService(unitOfWork);
+            movieService = new MovieService(unitOfWork, actorService, directorService);
+        }
 
         [Test]
         public async Task ExistsAsync_ShouldReturnTrue_WithValidId()
@@ -53,18 +59,6 @@ namespace MovieMania.Tests.UnitTests
         }
 
         [Test]
-        public async Task AllDirectorsAsync_ShouldReturnAllDirectors()
-        {
-            // Arrange
-
-            // Act
-            var directors = await movieService.AllDirectorsAsync();
-
-            // Assert
-            Assert.IsTrue(directors.Any());
-        }
-
-        [Test]
         public async Task GenreExistsAsync_ShouldReturnTrue_WithValidId()
         {
             // Arrange 
@@ -88,32 +82,6 @@ namespace MovieMania.Tests.UnitTests
 
             // Assert
             Assert.IsFalse(genre);
-        }
-
-        [Test]
-        public async Task DirectorExistsAsync_ShouldReturnTrue_WithValidId()
-        {
-            // Arrange
-            var directorId = FirstDirector.Id;
-
-            // Act
-            var director = await movieService.DirectorExistsAsync(directorId);
-
-            // Assert
-            Assert.IsTrue(director);
-        }
-
-        [Test]
-        public async Task DirectorExistsAsync_ShouldReturnFalse_WithInvalidId()
-        {
-            // Arrange
-            var invalidId = 300;
-
-            // Act
-            var director = await movieService.DirectorExistsAsync(invalidId);
-
-            // Assert
-            Assert.IsFalse(director);
         }
 
         [Test]
@@ -141,31 +109,22 @@ namespace MovieMania.Tests.UnitTests
         }
 
         [Test]
-        public async Task AllAsync_ShouldReturnAllMovies()
-        {
-            // Arrange
-
-            // Act
-            var movies = await movieService.AllAsync();
-
-            // Assert
-            Assert.IsInstanceOf<MovieQueryServiceModel>(movies);
-            Assert.That(movies.TotalMoviesCount, Is.EqualTo(6));
-        }
-
-        [Test]
-        public async Task AllAsync_ShouldReturnAllMovies_WithCorrectGenre()
+        public async Task AllAsync_ShouldReturnAllMovies_WithValidGenre()
         {
             // Arrange
             string firstGenreName = FirstGenre.Name;
 
             // Act
             var movies = await movieService.AllAsync(firstGenreName);
-            var movieGenre = movies.Movies.FirstOrDefault(c => c.Genre == firstGenreName);
+            var movieGenre = movies.Movies.First(c => c.Genre == firstGenreName);
 
             // Assert
-            Assert.That(movies.TotalMoviesCount, Is.EqualTo(2));
-            Assert.That(movieGenre.Genre, Is.EqualTo(firstGenreName));
+            Assert.Multiple(() =>
+            {
+                Assert.That(movies.TotalMoviesCount, Is.EqualTo(2));
+                Assert.That(movieGenre.Genre, Is.EqualTo(firstGenreName));
+                Assert.That(movies, Is.InstanceOf<MovieQueryServiceModel>());
+            });
         }
 
         [Test]

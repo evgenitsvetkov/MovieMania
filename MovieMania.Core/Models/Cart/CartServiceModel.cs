@@ -1,8 +1,10 @@
 ﻿namespace MovieMania.Core.Models.Cart
 {
-    public class CartItemQueryServiceModel
+    public class CartServiceModel
     {
-        public decimal TotalPrice { get; set; }
+        public int CartId { get; set; }
+
+        public decimal TotalAmount { get; set; }
 
         public IEnumerable<CartItemServiceModel> CartItems { get; set; } = new List<CartItemServiceModel>();
     }

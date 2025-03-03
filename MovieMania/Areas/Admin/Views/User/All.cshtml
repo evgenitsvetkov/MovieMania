@@ -7,31 +7,25 @@
 <h2 class="text-center">@ViewBag.Title</h2> 
 <hr /> 
 
-<table class="table table-striped"> 
-    <thead> 
-        <tr> 
-            <th>
-                <label>Email</label>
-            </th>
-            <th>
-                <label>Full Name</label>
-            </th>
-        </tr> 
-        </thead> 
-        <tbody> 
-            @foreach (var user in Model) 
-            { 
-                <tr> 
-                    <td>
-                        <label>@user.Email</label>
-                    </td> 
-                    <td>
-                        <label>@user.FullName</label>
-                    </td>
-                </tr> 
-            }
-    </tbody> 
-</table>
+<div class="table-responsive">
+    <table class="table table-striped"> 
+        <thead class="table-dark"> 
+            <tr> 
+                <th>Email</th>
+                <th>Full Name</th>
+            </tr> 
+            </thead> 
+            <tbody> 
+                @foreach (var user in Model) 
+                { 
+                    <tr>
+                    <td>@user.Email</td>
+                    <td>@user.FullName</td>
+                    </tr> 
+                }
+        </tbody> 
+    </table>
+</div>
 <div class="text-center">
-    <a class="btn btn-primary btn-lg" asp-area="Admin" asp-controller="Home" asp-action="DashBoard" title="Dashboard">Back To Dashboard</a>
+    <a class="btn btn-primary btn-lg mt-5" asp-area="Admin" asp-controller="Home" asp-action="DashBoard" title="Dashboard">Back To Dashboard</a>
 </div>

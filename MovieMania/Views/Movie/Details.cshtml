@@ -1,35 +1,66 @@
 ﻿@model MovieDetailsServiceModel 
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{ 
-    ViewBag.Title = "Movie Details"; 
+    ViewBag.Title = "Movie Details";
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
-<hr /> 
+<hr />
 
-<div class="container" style="display:inline">
-    <div class="row"> 
-        <div class="col-4"> 
-            <img class="card-img-top" style="width: 20rem;" src="@Model.ImageUrl" alt="Movie Image">
-        </div> 
-        <div class="card col-8 border-0"> 
-            <p style="font-size:25px;"><u>@Model.Title</u></p> 
-            <p>Genre: <b>@Model.Genre</b></p>
-            <p>Release date: <b>@Model.ReleaseDate</b></p>
-            <p>
-                Price:
-                <b>@String.Format("{0:f2}", Model.Price) BGN</b>
-            </p>
-            <p>@Model.Description</p>
-            <p>Director: <b>@Model.Director</b></p>
-            <div class="form-inline"> 
-                @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin()) 
-                { 
-                    <a class="btn btn-warning" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
-                    <a class="ml-2 btn btn-danger" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a> 
-                } 
-            </div> 
-            <p></p>
-        </div> 
+<div class="container">
+    <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3">
+            <img class="card-img-top img-fluid h-100" src="@Model.ImageUrl" alt="Movie Image">
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-6 col-12">
+            <div class="card border-0">
+                <p class="fs-3"><u>@Model.Title</u></p>
+                <p>Genre: <b>@Model.Genre</b></p>
+                <p>Release date: <b>@Model.ReleaseDate</b></p>
+                <p>Director: <b>@Model.Director</b></p>
+                <p>Price: <b>@String.Format("{0:f2}", Model.Price) BGN</b></p>
+                <p>@Model.Description</p>
+                <p class="mb-0"><strong>Cast:</strong></p>
+                <ul class="list-inline">
+                    @foreach (var actor in Model.Actors)
+                    {
+                        <li class="list-inline-item">
+                            <b>@actor.Name</b>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="form-inline text-center">
+            @if (this.User.Identity.IsAuthenticated && this.User.IsAdmin())
+            {
+                <a class="btn btn-warning mb-1" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                <a class="btn btn-danger mb-1" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+            }
+            <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
+            <button class="btn btn-primary add-to-cart mb-1" data-id="@Model.Id" data-title="@Model.Title">Add To Cart</button>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.add-to-cart').on('click', function (e) {
+                e.preventDefault();
+                CartModule.addToCart($(this).data('id'), $(this).data('title'));
+            });
+        });
+    </script>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+            });
+        </script>
+    }
+}

@@ -13,10 +13,10 @@ namespace MovieMania.Core.Models.Director
             MinimumLength = NameMinLength,
             ErrorMessage = LengthMessage)]
         [Display(Name = "Full name")]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredMessage)]
         [Display(Name = "Image URL")]
-        public string ImageUrl { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = null!;
     }
 }

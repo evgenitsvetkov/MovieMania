@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
+using MovieMania.Core.Enumerations;
 using MovieMania.Core.Models.Director;
+using MovieMania.Core.Models.Movie;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Directors;
 
@@ -17,6 +19,7 @@ namespace MovieMania.Core.Services
 
         public async Task<DirectorQueryServiceModel> AllAsync(
             string? searchTerm = null,
+            DirectorSorting sorting = DirectorSorting.Recently,
             int currentPage = 1, 
             int directorsPerPage = 1)
         {
@@ -29,6 +32,12 @@ namespace MovieMania.Core.Services
                     .Where(m => (m.Name.ToLower().Contains(normalizedSearchTerm) ||
                                 m.Bio.ToLower().Contains(normalizedSearchTerm)));
             }
+
+            directorsToShow = sorting switch
+            {
+                DirectorSorting.Oldest => directorsToShow.OrderBy(m => m.Id),
+                _ => directorsToShow.OrderByDescending(m => m.Id),
+            };
 
             var directors = await directorsToShow
                 .Skip((currentPage - 1) * directorsPerPage)
@@ -97,10 +106,10 @@ namespace MovieMania.Core.Services
             }
         }
 
-        public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> DirectorExistsAsync(int directorId)
         {
             return await unitOfWork.AllReadOnly<Director>()
-                .AnyAsync(d => d.Id == id);
+                .AnyAsync(d => d.Id == directorId);
         }
 
         public async Task<DirectorFormModel?> GetDirectorFormModelByIdAsync(int id)
@@ -117,6 +126,17 @@ namespace MovieMania.Core.Services
                 .FirstOrDefaultAsync();
 
             return director;
+        }
+
+        public async Task<IEnumerable<MovieDirectorServiceModel>> AllDirectorsAsync()
+        {
+            return await unitOfWork.AllReadOnly<Director>()
+                .Select(d => new MovieDirectorServiceModel()
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                })
+                .ToListAsync();
         }
     }
 }

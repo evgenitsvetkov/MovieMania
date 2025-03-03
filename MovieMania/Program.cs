@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieMania.ModelBinders;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -8,18 +9,16 @@ builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity(builder.Configuration);
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
-
-    options.Cookie.HttpOnly = true;
-});
 
 builder.Services.AddControllersWithViews(options =>
 {
     options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 builder.WebHost.UseStaticWebAssets();
 builder.Services.AddApplicationServices();
@@ -38,7 +37,6 @@ else
     app.UseHsts();
 }
 
-app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -58,6 +56,12 @@ app.UseEndpoints(endpoints =>
         name: "Movie Details",
         pattern: "/Movie/Details/{id}/{information}",
         defaults: new { Controller = "Movie", Action = "Details"}
+    );
+
+    endpoints.MapControllerRoute(
+        name: "Order Details",
+        pattern: "/Order/Details/{id}/{information}",
+        defaults: new { Controller = "Order", Action = "Details" }
     );
 
     endpoints.MapDefaultControllerRoute();

@@ -1,0 +1,98 @@
+﻿@model CartServiceModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    ViewBag.Title = "Shopping Cart";
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
+<hr />
+
+@if (!Model.CartItems.Any())
+{
+    <h2 class="text-center mt-5">Your cart is empty!</h2>
+}
+else
+{
+    <div class="cart-container">
+        <div id="cart-items" class="row justify-content-start">
+            @foreach (var item in Model.CartItems)
+            {
+                <div id="cart-item-@item.CartItemId" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card border-0 p-3 h-100 d-flex flex-column align-items-center">
+                        <img class="card-img-top img-fluid object-fit-cover w-100" style="height: 25rem;" src="@item.ImageUrl" alt="Item Image">
+                        <p class="h5 mt-2 text-center"><u>@item.Title</u></p>
+                        <div class="mb-2 d-flex align-items-center">
+                            <span>Quantity:</span>
+                            <button class="btn btn-sm btn-outline-primary increase-qty me-2 ms-2" data-id="@item.CartItemId">+</button>
+                            <input class="quantity-input" type="number" min="1" max="24" value="@item.Quantity" step="1" readonly data-id="@item.CartItemId" style="display:none">
+                            <span class="quantity-@item.CartItemId">@item.Quantity</span>
+                            <button class="btn btn-sm btn-outline-secondary decrease-qty me-2 ms-2" data-id="@item.CartItemId">-</button>
+                        </div>
+                        <p class="text-center">
+                            <b class="itemPrice-@item.CartItemId">@String.Format("{0:f2}", item.ItemTotal) BGN</b>
+                        </p>
+                        <input id="__RequestVerificationToken" type="hidden" value="@requestToken" />
+                        <button class="btn btn-danger remove-item w-100" type="submit" data-id="@item.CartItemId">Remove Item</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4 mb-4">
+            <p class="fs-5"><b class="cart-total-amount">Total Amount: @String.Format("{0:f2}", Model.TotalAmount) BGN</b></p>
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                <a class="btn btn-primary" asp-controller="Movie" asp-action="All">Back to Movies</a>
+                <a class="btn btn-primary" asp-controller="Order" asp-action="Checkout">Checkout</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <script>
+            $(document).ready(function () {
+                CartModule.updateCartCount();
+
+                $(".increase-qty, .decrease-qty").click(function (e) {
+                    e.preventDefault();
+                    CartModule.updateQuantity($(this).data('id'), $(this).hasClass("increase-qty"));
+                });
+
+                $('.remove-item').on('click', function (e) {
+                    e.preventDefault();
+                    CartModule.removeItem($(this).data('id'), $(this).data('title'));
+                });
+
+                $(".quantity-input").each(function () {
+                    CartModule.updateButtons(this);
+                });
+
+                $(".increase-qty").click(function () {
+                    let input = $(this).siblings(".quantity-input");
+                    let newValue = parseInt(input.val()) + 1;
+
+                    if (newValue <= parseInt(input.attr("max"))) {
+                        input.val(newValue).change();
+                    }
+                });
+
+                $(".decrease-qty").click(function () {
+                    let input = $(this).siblings(".quantity-input");
+                    let newValue = parseInt(input.val()) - 1;
+
+                    if (newValue >= parseInt(input.attr("min"))) {
+                        input.val(newValue).change();
+                    }
+                });
+
+                $(".quantity-input").on("change", function () {
+                    CartModule.updateButtons(this);
+                });
+            });
+        </script>
+    }
+}

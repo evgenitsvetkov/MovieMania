@@ -2,6 +2,7 @@
 using MovieMania.Infrastructure.Data;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Actors;
+using MovieMania.Infrastructure.Data.Models.Carts;
 using MovieMania.Infrastructure.Data.Models.CustomUser;
 using MovieMania.Infrastructure.Data.Models.Directors;
 using MovieMania.Infrastructure.Data.Models.Mappings;
@@ -29,9 +30,9 @@ namespace MovieMania.Tests.UnitTests
 
         public ApplicationUser GuestUser { get; private set; }
 
-        public IdentityUserClaim<string> AdminUserClaim { get; set; }
+        public IdentityUserClaim<string> AdminUserClaim { get; set; } = null!;
 
-        public IdentityUserClaim<string> GuestUserClaim { get; set; }
+        public IdentityUserClaim<string> GuestUserClaim { get; set; } = null!;
 
         public Movie FirstMovie { get; private set; }
 
@@ -63,11 +64,17 @@ namespace MovieMania.Tests.UnitTests
 
         public Genre ThirdGenre { get; private set; }
 
-        public MovieActor FirstMovieActor { get; private set; }
+        public MovieActor FirstMovieActor { get; private set; } = null!;
 
-        public MovieActor SecondMovieActor { get; private set; }
+        public MovieActor SecondMovieActor { get; private set; } = null!;
 
-        public MovieActor ThirdMovieActor { get; private set; }
+        public MovieActor ThirdMovieActor { get; private set; } = null!;
+
+        public Cart FirstCart { get; private set; } = null!;
+
+        public CartItem FirstCartItem { get; private set; } = null!;
+
+        public CartItem SecondCartItem { get; private set; } = null!;
 
         private void SeedDatabase()
         {
@@ -101,7 +108,27 @@ namespace MovieMania.Tests.UnitTests
                 Price = 29.99M,
                 Description = "This is a test description. This is a test description. This is a test description.",
                 DirectorId = 1,
-                ImageURL = "https://upload.wikimedia.org/wikipedia/en/b/b8/Just_Go_with_It_Poster.jpg"
+                ImageURL = "https://upload.wikimedia.org/wikipedia/en/b/b8/Just_Go_with_It_Poster.jpg",
+                MoviesActors = new List<MovieActor>()
+                {
+                    new MovieActor()
+                    {
+                        ActorId = 1,
+                        MovieId = 1,
+                    },
+
+                    new MovieActor()
+                    {
+                        ActorId = 2,
+                        MovieId = 1,
+                    },
+
+                    new MovieActor()
+                    {
+                        ActorId = 3,
+                        MovieId = 1,
+                    }
+                }
             };
 
             data.Movies.Add(FirstMovie);
@@ -251,8 +278,40 @@ namespace MovieMania.Tests.UnitTests
             };
 
             data.Genres.Add(ThirdGenre);
-            data.SaveChanges();
 
+            FirstCart = new Cart()
+            {
+                CartId = 2,
+                UserId = GuestUser.Id,
+                CartItems = new List<CartItem>(),
+                TotalAmount = 0,
+            };
+
+            data.Carts.Add(FirstCart);
+
+            FirstCartItem = new CartItem()
+            {
+                CartItemId = 1,
+                CartId = 2,
+                Quantity = 1,
+                MovieId = FirstMovie.Id,
+                ItemTotal = FirstMovie.Price,
+            };
+
+            data.CartItems.Add(FirstCartItem);
+
+            SecondCartItem = new CartItem()
+            {
+                CartItemId = 2,
+                CartId = 2,
+                Quantity = 1,
+                MovieId = SecondMovie.Id,
+                ItemTotal = SecondMovie.Price,
+            };
+
+            data.CartItems.Add(SecondCartItem);
+
+            data.SaveChanges();
         }
 
         [OneTimeTearDown]

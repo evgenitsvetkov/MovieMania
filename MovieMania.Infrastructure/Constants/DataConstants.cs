@@ -5,14 +5,14 @@
         public const int MovieTitleMaxLength = 100;
         public const int MovieTitleMinLength = 4;
 
-        public const int MovieReleaseDateMaxLength = 2024;
-        public const int MovieReleaseDateMinLength = 1;
-
         public const string MoviePriceMaxLength = "1000";
         public const string MoviePriceMinLength = "0";
 
         public const int MovieDescriptionMaxLength = 300;
         public const int MovieDescriptionMinLength = 10;
+
+        public const string MovieReleaseDateMinYear = "1900";
+        public const string MovieReleaseDateMaxYear = "2025";
 
         public const int BioMaxLength = 400;
         public const int BioMinLength = 10;
@@ -29,13 +29,13 @@
 
         public const int LastNameMaxLength = 50;
 
-        public const string DateTimeFormat = "dd/MM/yyyy";
+        public const string DateTimeFormat = "dd.MM.yyyy";
 
         public const int UserFirstNameMaxLength = 50;
-        public const int UserFirstNameMinLength = 1;
+        public const int UserFirstNameMinLength = 2;
 
         public const int UserLastNameMaxLength = 50;
-        public const int UserLastNameMinLength = 1;
+        public const int UserLastNameMinLength = 2;
 
         public const int UsernameMaxLength = 50;
         public const int UsernameMinLength = 10;

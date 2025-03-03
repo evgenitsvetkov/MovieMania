@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Infrastructure.Data.Models.Mappings;
+using System;
 using System.ComponentModel.DataAnnotations;
 using static MovieMania.Infrastructure.Constants.DataConstants;
 
@@ -23,7 +24,7 @@ namespace MovieMania.Infrastructure.Data.Models.Actors
         public string Bio { get; set; } = string.Empty;
 
         [Required]
-        [Comment("Actor's birthdate")]
+        [Comment("Actor's birthdate")] 
         public DateTime BirthDate { get; set; }
 
         [Required]

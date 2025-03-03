@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieMania.Core.Contracts;
-using MovieMania.Core.Models.Cart;
 using MovieMania.Core.Models.Order;
 using MovieMania.Infrastructure.Data.Common;
 using MovieMania.Infrastructure.Data.Models.Carts;
@@ -17,14 +16,14 @@ namespace MovieMania.Core.Services
             unitOfWork = _unitofWork;
         }
 
-        public async Task<int> CreateAsync(OrderFormModel model, string userId)
+        public async Task<int> CreateAsync(OrderFormModel model, string userId, decimal cartTotalAmount)
         {
             Order order = new Order()
             {
                 Email = model.Email,
                 Address = model.Address,
                 OrderDate = DateTime.Now,
-                TotalAmount = 0,
+                TotalAmount = cartTotalAmount,
                 City = model.City,
                 Country = model.Country,
                 FirstName = model.FirstName,
@@ -44,7 +43,7 @@ namespace MovieMania.Core.Services
 
         public async Task CreateOrderDetailsAsync(int cartId, int orderId)
         {
-            var cartItems = await unitOfWork.All<CartItem>()
+            var cartItems = await unitOfWork.AllReadOnly<CartItem>()
                 .Where(ci => ci.CartId == cartId)
                 .ToListAsync();
 
@@ -55,7 +54,7 @@ namespace MovieMania.Core.Services
                     ItemTotal = item.ItemTotal,
                     MovieId = item.MovieId,
                     Quantity = item.Quantity,
-                    OrderId = orderId,
+                    OrderId = orderId
                 };
                 await unitOfWork.AddAsync(model);
             }
@@ -63,12 +62,11 @@ namespace MovieMania.Core.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsync(int orderId)
         {
             return await unitOfWork.AllReadOnly<Order>()
-                .AnyAsync(o => o.OrderId == id);
+                .AnyAsync(o => o.OrderId == orderId);
         }
-
         public async Task<IEnumerable<OrderServiceModel>> AllAsync()
         {
             return await unitOfWork.AllReadOnly<Order>()
@@ -77,6 +75,7 @@ namespace MovieMania.Core.Services
                     OrderId = o.OrderId,
                     UserId = o.UserId,
                     Email = o.Email,
+                    OrderDate = o.OrderDate,
                     Address = o.Address,
                     City = o.City,
                     FirstName = o.FirstName,
@@ -90,15 +89,16 @@ namespace MovieMania.Core.Services
                 .ToListAsync();
         }
 
-        public async Task<OrderServiceModel> GetOrderServiceModelAsync(int id, string userId)
+        public async Task<IEnumerable<OrderServiceModel>> AllOrdersByUserIdAsync(string userId)
         {
-            var order = await unitOfWork.AllReadOnly<Order>()
-                .Where(o => o.OrderId == id && o.UserId == userId)
+            return await unitOfWork.AllReadOnly<Order>()
+                .Where(o => o.UserId == userId)
                 .Select(o => new OrderServiceModel()
                 {
                     OrderId = o.OrderId,
-                    UserId = userId,
+                    UserId = o.UserId,
                     Email = o.Email,
+                    OrderDate = o.OrderDate,
                     Address = o.Address,
                     City = o.City,
                     FirstName = o.FirstName,
@@ -107,7 +107,30 @@ namespace MovieMania.Core.Services
                     Country = o.Country,
                     Phone = o.Phone,
                     PostalCode = o.PostalCode,
-                    TotalAmount = o.OrderDetails.Sum(od => od.Quantity * od.ItemTotal),
+                    TotalAmount = o.TotalAmount,
+                })
+                .ToListAsync();
+        }
+
+        public async Task<OrderServiceModel> GetOrderServiceModelByUserIdAsync(int orderId, string userId)
+        {
+            return await unitOfWork.AllReadOnly<Order>()
+                .Where(o => o.OrderId == orderId && o.UserId == userId)
+                .Select(o => new OrderServiceModel()
+                {
+                    OrderId = o.OrderId,
+                    UserId = userId,
+                    Email = o.Email,
+                    OrderDate = o.OrderDate,
+                    Address = o.Address,
+                    City = o.City,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    State = o.State,
+                    Country = o.Country,
+                    Phone = o.Phone,
+                    PostalCode = o.PostalCode,
+                    TotalAmount = o.TotalAmount,
                     OrderDetails = o.OrderDetails.Select(od => new OrderDetailServiceModel()
                     {
                         ImageUrl = od.Movie.ImageURL,
@@ -115,15 +138,40 @@ namespace MovieMania.Core.Services
                         Quantity = od.Quantity,
                         Title = od.Movie.Title
                     })
+                    .ToList(),
                 })
-                .FirstOrDefaultAsync();
+                .FirstAsync();
+        }
 
-            if (order == null)
-            {
-                return null;
-            }
-
-            return order;
+        public async Task<OrderServiceModel> GetOrderServiceModelByOrderIdAsync(int orderId)
+        {
+            return await unitOfWork.AllReadOnly<Order>()
+                .Where(o => o.OrderId == orderId)
+                .Select(o => new OrderServiceModel()
+                {
+                    OrderId = o.OrderId,
+                    UserId = o.UserId,
+                    Email = o.Email,
+                    OrderDate = o.OrderDate,
+                    Address = o.Address,
+                    City = o.City,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    State = o.State,
+                    Country = o.Country,
+                    Phone = o.Phone,
+                    PostalCode = o.PostalCode,
+                    TotalAmount = o.TotalAmount,
+                    OrderDetails = o.OrderDetails.Select(od => new OrderDetailServiceModel()
+                    {
+                        ImageUrl = od.Movie.ImageURL,
+                        ItemTotal = od.ItemTotal,
+                        Quantity = od.Quantity,
+                        Title = od.Movie.Title
+                    })
+                    .ToList(),
+                })
+                .FirstAsync();
         }
     }
 }

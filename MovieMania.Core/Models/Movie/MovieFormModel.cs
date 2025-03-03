@@ -10,7 +10,7 @@ namespace MovieMania.Core.Models.Movie
         [StringLength(MovieTitleMaxLength,
             MinimumLength = MovieTitleMinLength,
             ErrorMessage = LengthMessage)]
-        public string Title { get; set; } = null!;
+        public string Title { get; set; } = string.Empty;
 
         [Display(Name = "Genre")]
         public int GenreId { get; set; }
@@ -18,11 +18,19 @@ namespace MovieMania.Core.Models.Movie
         public IEnumerable<MovieGenreServiceModel> Genres { get; set; } 
             = new List<MovieGenreServiceModel>();
 
+        [Display(Name = "Actors")]
+        public IEnumerable<int> ActorIds { get; set; } = new List<int>();
+
+        public IEnumerable<MovieActorServiceModel> Actors { get; set; } 
+            = new List<MovieActorServiceModel>();
+
+
         [Required(ErrorMessage = RequiredMessage)]
-        [Range(MovieReleaseDateMinLength,
-            MovieReleaseDateMaxLength,
-            ErrorMessage = LengthMessage)]
         [Display(Name = "Release date")]
+        [Range(typeof(int),
+            MovieReleaseDateMinYear,
+            MovieReleaseDateMaxYear,
+            ErrorMessage = MovieReleaseDateRangeMessage)]
         public int ReleaseDate { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]
@@ -30,15 +38,14 @@ namespace MovieMania.Core.Models.Movie
             MoviePriceMinLength,
             MoviePriceMaxLength,
             ConvertValueInInvariantCulture = true,
-            ErrorMessage = "Price must be a positive number and less than {2} leva")]
+            ErrorMessage = PriceMustBePositiveMessage)]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(MovieDescriptionMaxLength,
             MinimumLength = MovieDescriptionMinLength,
             ErrorMessage = LengthMessage)]
-        public string Description { get; set; } = null!;
-
+        public string Description { get; set; } = string.Empty;
 
         [Display(Name = "Director")]
         public int DirectorId { get; set; }
@@ -48,7 +55,7 @@ namespace MovieMania.Core.Models.Movie
 
         [Required(ErrorMessage = RequiredMessage)]
         [Display(Name = "Image URL")]
-        public string ImageUrl { get; set; } = null!;
+        public string ImageUrl { get; set; } = string.Empty;
 
     }
 }

@@ -3,6 +3,8 @@
     public enum MovieSorting
     {
         Newest = 0,
-        Price = 1,
+        Oldest = 1,
+        HighestPrice = 2,
+        LowestPrice = 3,
     }
 }

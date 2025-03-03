@@ -16,10 +16,10 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
 
         [Required]
         [Comment("User's identifier")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
-        public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; } = null!;
 
         [Required]
         [MaxLength(UserFirstNameMaxLength)]
@@ -41,14 +41,17 @@ namespace MovieMania.Infrastructure.Data.Models.Orders
         [Comment("User's city")]
         public string City { get; set; } = null!;
 
+        [Required]
         [MaxLength(StateMaxLength)]
         [Comment("User's state")]
-        public string State { get; set; } = string.Empty;
+        public string State { get; set; } = null!;
 
+        [Required]
         [MaxLength(PostalCodeMaxLength)]
         [Comment("User's postal code")]
-        public string PostalCode { get; set; } = string.Empty;
+        public string PostalCode { get; set; } = null!;
 
+        [Required]
         [MaxLength(UserCountryMaxLength)]
         [Comment("User's country")]
         public string Country { get; set; } = null!;

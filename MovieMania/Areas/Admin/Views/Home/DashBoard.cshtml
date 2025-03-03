@@ -2,7 +2,7 @@
     ViewData["Title"] = "Dashboard";
 } 
 
-<div class="mt-4 p-5 bg-light text-center"> 
+<div class="container mt-4 p-5 bg-light text-center"> 
     <h2 class="display-4">Welcome, Admin!</h2> 
     <p class="lead mb-1 mt-3"> 
         This is your administrator area - you can <b>read</b>, <b>create</b>, <b>delete</b> and <b>edit</b> movies, actors and directors. 
@@ -11,16 +11,26 @@
     <p class="lead mt-1"> 
         You can also see <b>all users and orders</b> in the system. 
     </p>
-        <hr class="my-4"> 
-        <a asp-area="" asp-controller="Movie" asp-action="All" class="btn btn-primary btn-lg">All Movies</a>
-        <a asp-area="" asp-controller="Movie" asp-action="Add" class="btn btn-primary btn-lg">Add Movie</a> 
-        <span> | </span>
-        <a asp-area="" asp-controller="Actor" asp-action="All" class="btn btn-primary btn-lg">All Actors</a>
-        <a asp-area="" asp-controller="Actor" asp-action="Add" class="btn btn-primary btn-lg">Add Actor</a>
-        <span> | </span>
-        <a asp-area="" asp-controller="Director" asp-action="All" class="btn btn-primary btn-lg">All Directors</a>
-        <a asp-area="" asp-controller="Director" asp-action="Add" class="btn btn-primary btn-lg">Add Director</a>
-        <span> | </span> 
-        <a asp-area="Admin" asp-controller="Order" asp-action="All" class="btn btn-primary btn-lg">All Orders</a>
-        <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-primary btn-lg">All Users</a>
+        <hr class="my-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 justify-content-center">
+        <div class="col d-grid gap-2">
+            <a asp-area="" asp-controller="Movie" asp-action="All" class="btn btn-primary btn-lg">All Movies</a>
+            <a asp-area="" asp-controller="Movie" asp-action="Add" class="btn btn-primary btn-lg">Add Movie</a>
+        </div>
+
+        <div class="col d-grid gap-2">
+            <a asp-area="" asp-controller="Actor" asp-action="All" class="btn btn-primary btn-lg">All Actors</a>
+            <a asp-area="" asp-controller="Actor" asp-action="Add" class="btn btn-primary btn-lg">Add Actor</a>
+        </div>
+
+        <div class="col d-grid gap-2">
+            <a asp-area="" asp-controller="Director" asp-action="All" class="btn btn-primary btn-lg">All Directors</a>
+            <a asp-area="" asp-controller="Director" asp-action="Add" class="btn btn-primary btn-lg">Add Director</a>
+        </div>
+
+        <div class="col d-grid gap-2">
+            <a asp-area="Admin" asp-controller="Order" asp-action="All" class="btn btn-primary btn-lg">All Orders</a>
+            <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-primary btn-lg">All Users</a>
+        </div>
+    </div>
 </div>
