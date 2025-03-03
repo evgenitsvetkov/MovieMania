@@ -84,10 +84,12 @@
             },
             success: function (response) {
                 if (response.success) {
+                    let itemPrice = response.itemPrice.toFixed(2);
+                    let totalAmount = response.totalAmount.toFixed(2);
 
                     $('.quantity-' + data.Id).text(response.newQuantity);
-                    $('.itemPrice-' + data.Id).text((response.itemPrice).toFixed(2) + " BGN");
-                    $('.cart-total-amount').text("Total Amount: " + response.totalAmount.toFixed(2) + " BGN")
+                    $('.itemPrice-' + data.Id).text(itemPrice + " BGN");
+                    $('.cart-total-amount').text("Total Amount: " + totalAmount + " BGN");
 
                     updateCartCount();
                 } else {

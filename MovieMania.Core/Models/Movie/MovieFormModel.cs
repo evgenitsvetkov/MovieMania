@@ -27,6 +27,10 @@ namespace MovieMania.Core.Models.Movie
 
         [Required(ErrorMessage = RequiredMessage)]
         [Display(Name = "Release date")]
+        [Range(typeof(int),
+            MovieReleaseDateMinYear,
+            MovieReleaseDateMaxYear,
+            ErrorMessage = MovieReleaseDateRangeMessage)]
         public int ReleaseDate { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]

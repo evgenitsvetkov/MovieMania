@@ -8,6 +8,8 @@
 
         public const string PriceMustBePositiveMessage = "Price must be a positive number and less than {2} leva";
 
+        public const string MovieReleaseDateRangeMessage = "Date must be between {1} and {2} year.";
+
         public const string AddingMovieNotFoundMessage = "Error while adding movie. Movie not found.";
 
         public const string UserUnauthorizedMessage = "You are not authenticated. Please log in.";

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MovieMania.Core.Contracts;
 using MovieMania.Core.Models.Cart;
 using System.Security.Claims;
-using static MovieMania.Core.Constants.MessageConstants;
 using static MovieMania.Core.Constants.LogMessageConstants;
+using static MovieMania.Core.Constants.MessageConstants;
 
 namespace MovieMania.Controllers
 {

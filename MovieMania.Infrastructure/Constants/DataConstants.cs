@@ -11,6 +11,9 @@
         public const int MovieDescriptionMaxLength = 300;
         public const int MovieDescriptionMinLength = 10;
 
+        public const string MovieReleaseDateMinYear = "1900";
+        public const string MovieReleaseDateMaxYear = "2025";
+
         public const int BioMaxLength = 400;
         public const int BioMinLength = 10;
 
