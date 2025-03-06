@@ -1,3 +1,21 @@
-# MovieMania
+#🎬 Movie Mania – ASP.NET Core MVC Movie Marketplace
+Movie Mania is a movie marketplace built with ASP.NET Core MVC.
 
-MovieMania is online movie store built on ASP.NET Core MVC. The application developed stores several movies, that customers are able to buy after they have registered.Also MovieMania allows users to browse information for movies, actors and directors. The administrator has authority to create, read, delete and edit the movies, actors and directors. He can also check how many users are registered.
+🎭 Features
+User Features
+🔍 Browse and search for movies, actors, and directors.
+🛒 Add movies to the shopping cart and proceed to checkout.
+📋 Place an order after entering address details.
+📒 View all past orders in the "My Orders" section.
+
+Admin Features
+🔑 Access an Admin Interface page for complete control.
+🔧 Perform CRUD operations to Movies, Actors and Directors.
+⚙️ Manage Users & Orders.
+
+🛠️ Technologies Used
+  - ASP.NET Core MVC
+  - Entity Framework Core (EF Core)
+  - SQL Server (Database)
+  - Identity & Role-Based Authorization
+  - Bootstrap & CSS (Frontend UI)
